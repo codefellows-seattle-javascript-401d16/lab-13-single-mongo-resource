@@ -12,6 +12,8 @@ const app = express();
 app.use(morgan('dev'));
 app.use(cors());
 
+app.use(require('./error-handler.js'));
+
 app.all('/api/*', (req, res, next) => {
   res.sendStatus(404);
 });
