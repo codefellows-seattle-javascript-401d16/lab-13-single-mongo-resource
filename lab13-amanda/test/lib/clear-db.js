@@ -2,9 +2,9 @@
 
 const List = require('../../model/list.js');
 
-model.exports = () => {
+module.exports = () => {
   return Promise.all([
     List.remove({}),
-  
+
   ]);
 };

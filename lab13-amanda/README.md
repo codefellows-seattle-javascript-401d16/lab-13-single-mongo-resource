@@ -1,23 +1,7 @@
-Directions
-Create these directories to organize your code:
 
-lib
+. 1. nm run start-db (starts mongo db)
 
-model
 
-route
-
-db
-
-test
-
-Create a HTTP Server using express
-
-Come up with two models that have a one to many relationship
-
-using mongoose create the first resource in the one to many relationship
-
-it can not have the same properties as the in class sample code, or yesterdays lab
 
 make sure you include at least one propertie with the unique validator set to true
 

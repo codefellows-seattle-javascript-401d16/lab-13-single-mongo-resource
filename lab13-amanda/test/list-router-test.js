@@ -6,7 +6,6 @@ const faker = require('faker');
 const expect = require('expect');
 const superagent = require('superagent');
 
-
 const server = require('../lib/server.js');
 const clearDB = require('./lib/clear-db.js');
 const mockList = require('./lib/mock-list.js');
@@ -82,7 +81,6 @@ describe('testing /api/lists', () => {
         console.log(res.body.map(list => list.title));
         expect(res.status).toEqual(200);
         expect(res.body.length).toEqual(50);
-        //expect(res.body[0].title[0] > 'a').toBeTruthy()
         res.body.forEach(list => {
           expect(list._id).toExist();
           expect(list.tasks).toEqual([]);

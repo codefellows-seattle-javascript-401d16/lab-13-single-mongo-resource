@@ -5,11 +5,11 @@ const List = require('../../model/list.js');
 
 const mockList = module.exports = {};
 
-mockList.createONe = () => {
+mockList.createOne = () => {
   return new List({
     title: faker.random.words(3),
-  });
-  save();
+  })
+  .save();
 };
 
 mockList.createMany = (n) => {
