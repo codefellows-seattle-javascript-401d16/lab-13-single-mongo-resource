@@ -20,11 +20,9 @@ listRouter.get('/api/lists/:id', (req, res, next) => {
   console.log('hit GET /api/lists/:id');
 
   List.findById(req.params.id)
-  //.populate('tasks')
   .then(list => res.json(list))
   .catch(next);
 });
-
 
 listRouter.get('/api/lists', (req, res, next) => {
   console.log('hit /api/lists');
