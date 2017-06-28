@@ -11,7 +11,7 @@ const app = express();
 
 app.use(morgan('dev'));
 
-app.use(require('../route/nhl-team-route.js'));
+app.use(require('../route/nhl-team-router.js'));
 
 app.all('/*', (req, res) => {
   res.sendStatus(404);
@@ -39,12 +39,11 @@ server.start = () => {
 server.stop = () => {
   return new Promise((resolve, reject) => {
     if(server.http && server.isOn) {
-      server.http = app.close(() => {
+      return server.http.close(() => {
         server.isOn = false;
         console.log('Server down');
         resolve();
       });
-      return;
     }
     reject(new Error('Server is not running'));
   });

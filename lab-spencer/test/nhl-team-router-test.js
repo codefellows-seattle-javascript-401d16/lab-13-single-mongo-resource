@@ -30,20 +30,23 @@ describe('testing /api/nhl/teams routes', () => {
 
   describe('POST', () => {
     it('Should respond 200 with the character', () => {
-      return mockTeam.makeOne()
+      return mockTeam.createOne()
         .then(team => {
           clearDB();
+          console.log(typeof team.lastUpdated);
           return superagent.post(`${API_URL}/api/nhl/teams`)
             .send(team)
             .then(res => {
               expect(res.body._id).toMatch(/^[a-f\d]{24}$/i);
               expect(res.body.name).toEqual(team.name);
-              expect(res.body.city).toEqual(team.ciy);
+              expect(res.body.city).toEqual(team.city);
               expect(res.body.state).toEqual(team.state);
               expect(res.body.wins).toEqual(team.wins);
               expect(res.body.losses).toEqual(team.losses);
               expect(res.body.ties).toEqual(team.ties);
-              expect(res.body.lastUpdated).toBeA(Date);
+              expect(res.body.lastUpdated).toBeA('string');
+              expect(new Date(res.body.lastUpdated)).toNotBe('Invalid Date');
+              expect(new Date(res.body.lastUpdated).getTime()).toBeLessThan(Date.now());
             });
         });
     });
