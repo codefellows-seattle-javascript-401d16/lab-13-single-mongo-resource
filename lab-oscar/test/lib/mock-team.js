@@ -7,9 +7,9 @@ const mockTeam = module.exports = {};
 
 mockTeam.createOne = () => {
   return new Team({
-    name: faker.name.findName,
-    owner: faker.name.findName,
-    founded: faker.date.past,
+    name: faker.name.findName(),
+    owner: faker.name.findName(),
+    founded: faker.date.past(),
   })
     .save();
 };

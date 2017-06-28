@@ -21,12 +21,22 @@ describe('testing /api/teams', () => {
   // afterEach(clearDB);
 
   describe('testing POST /api/teams', () => {
-    let data = {name: 'America', owner: 'oscar', founded: '1959'};
+    let data = {name:`${faker.name.findName()}`, owner: `${faker.name.findName()}`, founded: `${faker.date.past()}`};
     it('should respond with a team', () => {
       return superagent.post(`${API_URL}/api/teams`)
         .send(data)
         .then(res => {
           expect(res.status).toEqual(200);
+          expect(res.body.name).toEqual(data.name);
+          expect(res.body.owner).toEqual(data.owner);
+          expect(res.body.founded).toEqual(data.founded);
+        });
+    });
+    it('should respond with 400 code', () => {
+      return superagent.post(`${API_URL}/api/teams`)
+        .send({})
+        .catch(res => {
+          expect(res.status).toEqual(400);
         });
     });
   });
