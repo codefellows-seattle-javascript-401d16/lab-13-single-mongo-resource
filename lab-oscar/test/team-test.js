@@ -60,6 +60,12 @@ describe('testing /api/teams', () => {
           expect(res.status).toEqual(200);
         });
     });
+    it('should respond with code 404', () => {
+      return superagent.get(`${API_URL}/api/teams/73737929`)
+        .catch(res => {
+          expect(res.status).toEqual(404);
+        });
+    });
   });
 });
 
