@@ -13,6 +13,7 @@ app.use(morgan('dev'));
 app.use(cors());
 
 app.use(require('./error-handler.js'));
+app.use(require('../route/team-router.js'));
 
 app.all('/api/*', (req, res, next) => {
   res.sendStatus(404);
