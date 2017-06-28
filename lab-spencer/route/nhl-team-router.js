@@ -12,9 +12,10 @@ teamRouter.post('/api/nhl/teams', jsonParser, (req, res, next) => {
     .catch(next);
 });
 
-teamRouter.get('/api/nhl/teams', (req, res, next) => {
+teamRouter.get('/api/nhl/teams*?pageNum=:pageNum&numPer=:numPer', (req, res, next) => {
   let pageNum = Number(req.params.pageNum) || 1;
   let numPer = Number(req.params.numPer) || 50;
+  console.log(pageNum, numPer);
   if(pageNum < 1) pageNum = 1;
   if(numPer < 1) numPer = 1;
   pageNum--;
@@ -35,7 +36,7 @@ teamRouter.get('/api/nhl/teams/:id', (req, res, next) => {
 
 teamRouter.put('/api/nhl/teams/:id', jsonParser, (req, res, next) => {
   Team.findByIdAndUpdate(req.params.id, req.body)
-    .then(team => res.json(team))
+    .then(() => res.sendStatus(200))
     .catch(next);
 });
 

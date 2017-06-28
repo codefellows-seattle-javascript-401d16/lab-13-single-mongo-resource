@@ -7,12 +7,12 @@ let mockTeam = module.exports = {};
 
 mockTeam.createOne = () => {
   return new Team({
-    name: faker.company.companyName(),
+    name: faker.commerce.productName(),
     city: faker.address.city(),
     state: faker.address.state(),
-    wins: faker.random.number(),
-    losses: faker.random.number(),
-    ties: faker.random.number(),
+    wins: faker.random.number(37),
+    losses: faker.random.number(37),
+    ties: faker.random.number(8),
   })
   .save();
 };
