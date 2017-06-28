@@ -7,10 +7,9 @@ const expect = require('expect');
 const superagent = require('superagent');
 
 const server = require('../lib/server.js');
-// const clearDB = require('./lib/clear-db.js');
+const clearDB = require('./lib/clear-db.js');
 const mockTeam = require('./lib/mock-team.js');
 
-let tempTeam;
 const API_URL = process.env.API_URL;
 
 
@@ -18,9 +17,9 @@ const API_URL = process.env.API_URL;
 describe('testing /api/teams', () => {
   before(server.start);
   after(server.stop);
-  // afterEach(clearDB);
 
   describe('testing POST /api/teams', () => {
+    after(clearDB);
     let data = {name:`${faker.name.findName()}`, owner: `${faker.name.findName()}`, founded: `${faker.date.past()}`};
     it('should respond with a team', () => {
       return superagent.post(`${API_URL}/api/teams`)
@@ -37,6 +36,13 @@ describe('testing /api/teams', () => {
         .send({})
         .catch(res => {
           expect(res.status).toEqual(400);
+        });
+    });
+    it('should respond with 409 code', () => {
+      return superagent.post(`${API_URL}/api/teams`)
+        .send(data)
+        .catch(res => {
+          expect(res.status).toEqual(409);
         });
     });
   });
