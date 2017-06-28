@@ -13,7 +13,7 @@ app.use(morgan('dev'));
 
 app.use(require('../route/nhl-team-route.js'));
 
-app.all('/api/*', (req, res) => {
+app.all('/*', (req, res) => {
   res.sendStatus(404);
 });
 
@@ -44,6 +44,7 @@ server.stop = () => {
         console.log('Server down');
         resolve();
       });
+      return;
     }
     reject(new Error('Server is not running'));
   });

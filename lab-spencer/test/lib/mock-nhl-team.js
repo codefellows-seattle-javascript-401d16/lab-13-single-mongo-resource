@@ -20,7 +20,7 @@ mockTeam.createOne = () => {
 mockTeam.createMany = n => {
   return Promise.all(
     new Array(n)
-      .fill()
+      .fill(0)
       .map(() => mockTeam.createOne())
   );
 };

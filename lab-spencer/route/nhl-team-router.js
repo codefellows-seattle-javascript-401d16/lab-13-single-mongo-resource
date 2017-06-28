@@ -1,7 +1,6 @@
 'use strict';
 
 const jsonParser = require('body-parser').json();
-
 const teamRouter = module.exports = new require('express').Router;
 
 const Team = require('../model/nhl-team.js');
