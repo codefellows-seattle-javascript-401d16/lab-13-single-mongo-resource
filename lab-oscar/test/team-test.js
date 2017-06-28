@@ -46,6 +46,21 @@ describe('testing /api/teams', () => {
         });
     });
   });
+
+  //Get Test
+  describe('testing GET /api/teams/:id', () => {
+    it('should respond with a team', () => {
+      let tempTeam;
+      return mockTeam.createOne()
+        .then(team => {
+          tempTeam = team;
+          return superagent.get(`${API_URL}/api/teams/${team._id}`) ;
+        })
+        .then(res => {
+          expect(res.status).toEqual(200);
+        });
+    });
+  });
 });
 
 //
