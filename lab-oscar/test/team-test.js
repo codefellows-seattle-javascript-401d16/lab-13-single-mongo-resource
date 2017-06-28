@@ -17,9 +17,10 @@ const API_URL = process.env.API_URL;
 describe('testing /api/teams', () => {
   before(server.start);
   after(server.stop);
+  after(clearDB);
 
   describe('testing POST /api/teams', () => {
-    after(clearDB);
+
     let data = {name:`${faker.name.findName()}`, owner: `${faker.name.findName()}`, founded: `${faker.date.past()}`};
     it('should respond with a team', () => {
       return superagent.post(`${API_URL}/api/teams`)
@@ -58,6 +59,9 @@ describe('testing /api/teams', () => {
         })
         .then(res => {
           expect(res.status).toEqual(200);
+          expect(res.body.name).toEqual(tempTeam.name);
+          expect(res.body.owner).toEqual(tempTeam.owner);
+          expect(res.body.founded).toEqual(tempTeam.founded);
         });
     });
     it('should respond with code 404', () => {
