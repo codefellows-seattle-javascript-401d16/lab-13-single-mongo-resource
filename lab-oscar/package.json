@@ -1,0 +1,31 @@
+{
+  "name": "lab-oscar",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "start-db": "mkdir -p ./db && mongod --dbpath ./db",
+    "stop-db": "killall mongod",
+    "lint": "eslint",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "dotenv": "^4.0.0",
+    "eslint": "^4.1.1",
+    "express": "^4.15.3",
+    "mongoose": "^4.11.0",
+    "morgan": "^1.8.2"
+  },
+  "devDependencies": {
+    "cors": "^2.8.3",
+    "expect": "^1.20.2",
+    "faker": "^4.1.0",
+    "mocha": "^3.4.2",
+    "superagent": "^3.5.2"
+  }
+}
