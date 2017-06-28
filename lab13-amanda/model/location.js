@@ -1,9 +1,10 @@
 'use strict';
+
 const mongoose = require('mongoose');
 
-const locationSchema = mongoose.Schema({
-  location: {location: String, required: true, unique: true},
-  location: [{location: mongoose.Schema.Type.ObjectId, ref: 'task'}],
+const listSchema = mongoose.Schema({
+  title: {type: String, required: true, unique: true},
+  tasks: [{type: mongoose.Schema.Types.ObjectId, ref: 'task'}],
 });
 
-module.exports = mongoose.model('location', listSchema);
+module.exports = mongoose.model('list', listSchema);
