@@ -44,6 +44,14 @@ describe('testing /api/posts', () => {
           expect(res.status).toEqual(400);
         });
     });
+
+    it('should respond with a 409', () => {
+      return superagent.post(`${API_URL}/api/posts`)
+        .send(data)
+        .catch(res => {
+          expect(res.status).toEqual(409);
+        });
+    });
   });
 });
 
