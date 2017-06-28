@@ -53,38 +53,47 @@ describe('testing /api/posts', () => {
         });
     });
   });
+
+  describe('testing GET /api/posts/:id', () => {
+    it('should respond with a post', () => {
+      let tempPost;
+      return mockPost.createOne()
+        .then(post => {
+          tempPost = post;
+          return superagent.get(`${API_URL}/api/posts/${post._id}`);
+        })
+        .then(res => {
+          expect(res.status).toEqual(200);
+          expect(res.body.title).toEqual(tempPost.title);
+          expect(res.body.comments).toEqual([]);
+          expect(res.body._id).toExist();
+        });
+    });
+
+    it('should respond with a 404 not found', () => {
+      return superagent.get(`${API_URL}/api/blogs/5437`)
+        .catch(res => {
+          expect(res.status).toEqual(404);
+        });
+    });
+  });
+
+  describe('testing PUT /api/lists/:id', () => {
+    it('should respond with a 200 and updated post', () => {
+      return mockPost.createOne()
+        .then(createdPost => {
+          return superagent.put(`${API_URL}/api/posts/${createdPost._id}`)
+            .send({author: 'Izabella Baer'})
+            .then(() => {
+              return superagent.get(`${API_URL}/api/posts/${createdPost._id}`)
+                .then(res => {
+                  expect(res.status).toEqual(200);
+                  expect(res.body.author).toEqual(createdPost.author);
+                  expect(res.body.title).toEqual(createdPost.title);
+                  expect(res.body._id).toExist();
+                });
+            });
+        });
+    });
+  });
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// YAAAAAAAS KWEEN

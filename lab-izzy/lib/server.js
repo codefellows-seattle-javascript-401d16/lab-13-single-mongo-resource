@@ -1,13 +1,15 @@
 'use strict';
 
+const morgan = require('morgan');
 const express = require('express');
 const mongoose = require('mongoose');
 
 mongoose.Promise = Promise;
-mongoose.connect(process.end.MONGODB_URI);
+mongoose.connect(process.env.MONGODB_URI);
 
 const app = express();
 
+app.use(morgan('dev'));
 app.use(require('../route/post-router.js'));
 
 app.all('/api/*', (req, res, next) => {
