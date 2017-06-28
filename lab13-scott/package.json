@@ -6,9 +6,9 @@
   "scripts": {
     "test": "mocha",
     "lint": "eslint .",
-    "start": "node index.js",
+    "start": "node ./index.js",
     "start-db": "mkdir -p ./db && mongod --dbpath ./db",
-    "stop-db": "killall mongod",
+    "stop-db": "killall mongod"
   },
   "keywords": [],
   "author": "",
