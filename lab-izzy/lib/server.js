@@ -7,36 +7,40 @@ mongoose.Promise = Promise;
 mongoose.connect(process.end.MONGODB_URI);
 
 const app = express();
-let server;
 
 app.use(require('../route/post-router.js'));
+
+app.all('/api/*', (req, res, next) => {
+  res.sendStatus(404);
+});
+
 app.use(require('./error-middleware.js'));
 
-const serverControl = module.exports = {};
-serverControl.start = () => {
+const server = module.exports = {};
+server.isOn = false;
+server.start = () => {
   return new Promise((resolve, reject) => {
-    if(!server || server.isOn) {
-      server = app.listen(process.env.PORT, () => {
-        console.log('servin up some halt and catch fire, yall', process.env.PORT);
+    if(!server.isOn) {
+      server.http = app.listen(process.env.PORT, () => {
         server.isOn = true;
+        console.log('servin up some game of thrones, yall', process.env.PORT);
         resolve();
       });
       return;
     }
-    reject();
+    reject(new Error('server is already running'));
   });
 };
 
-serverControl.stop = () => {
+server.stop = () => {
   return new Promise((resolve, reject) => {
-    if(server && server.isOn) {
-      server.close(() => {
-        console.log('server gone, yall, byeeee!');
+    if(server.http && server.isOn) {
+      return server.http.close(() => {
         server.isOn = false;
+        console.log('server gone yall');
         resolve();
       });
-      return;
     }
-    reject();
+    reject(new Error('the server is not running'));
   });
 };
