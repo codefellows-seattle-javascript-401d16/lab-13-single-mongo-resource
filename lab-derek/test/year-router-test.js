@@ -12,6 +12,7 @@ const mockYear = require('./lib/mock-year.js');
 
 const API_URL = (process.env.API_URL);
 let tempYear;
+let tempYears = [];
 
 describe('testing api/years', () => {
   //DONE - TODO: your tests should start your server when they begin and stop your server when they finish
@@ -73,6 +74,12 @@ describe('testing api/years', () => {
         tempYear = year;
       });
     });
+    beforeEach(() => {
+      return mockYear.createMany(20)
+      .then((years) => {
+        tempYears = years;
+      });
+    });
     it('should return a status 404 for invalid id', () => {
       return superagent.get(`${API_URL}/api/years/not-an-id`)
       .catch(res => {
@@ -88,8 +95,32 @@ describe('testing api/years', () => {
         expect(res.body.dayJan1).toEqual(tempYear.dayJan1);
       });
     });
+  //TODO: create a GET /api/resource route that has pagination using query strings
+    it('should return a status 200 and array of 3 years', () => {
+      return superagent.get(`${API_URL}/api/years`)
+      .then(res => {
+        console.log(res.body.map(year => year.name));
+        expect(res.status).toEqual(200);
+        expect(res.body.length).toEqual(3);
+        res.body.forEach(year => {
+          expect(year._id).toExist();
+          expect(year.name).toExist();
+        });
+      });
+    });
+    it('should return a status 200 and array of 3 years', () => {
+      return superagent.get(`${API_URL}/api/years?=page2`)
+      .then(res => {
+        console.log(res.body.map(year => year.name));
+        expect(res.status).toEqual(200);
+        expect(res.body.length).toEqual(3);
+        res.body.forEach(year => {
+          expect(year._id).toExist();
+          expect(year.name).toExist();
+        });
+      });
+    });
   });
-
   describe('testing PUT api/years/:id', () => {
     beforeEach(() => {
       return mockYear.createOne()
@@ -127,7 +158,26 @@ describe('testing api/years', () => {
       });
     });
   });
-  //TODO: DELETE - test 204, with valid id
-  //TODO: DELETE - test 404, with invalid id
-
+  describe('testing DELETE api/years/:id', () => {
+    beforeEach(() => {
+      return mockYear.createOne()
+      .then((year) => {
+        tempYear = year;
+      });
+    });
+    //TODO: DELETE - test 204, with valid id
+    it('should return a status 204 for valid id', () => {
+      return superagent.delete(`${API_URL}/api/years/${tempYear._id}`)
+      .catch(res => {
+        expect(res.status).toEqual(204);
+      });
+    });
+    //TODO: DELETE - test 404, with invalid id
+    it('should return a status 404 for valid id', () => {
+      return superagent.delete(`${API_URL}/api/years/not-an-id`)
+      .catch(res => {
+        expect(res.status).toEqual(404);
+      });
+    });
+  });
 }); // end top-level describe block.
