@@ -35,7 +35,7 @@ teamRouter.get('/api/nhl/teams/:id', (req, res, next) => {
 });
 
 teamRouter.put('/api/nhl/teams/:id', jsonParser, (req, res, next) => {
-  Team.findByIdAndUpdate(req.params.id, req.body)
+  Team.findByIdAndUpdate(req.params.id, req.body, {new: true, runValidators: true})
     .then(() => res.sendStatus(200))
     .catch(next);
 });

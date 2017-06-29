@@ -13,11 +13,12 @@ app.use(morgan('dev'));
 
 app.use(require('../route/nhl-team-router.js'));
 
+app.use(require('./error-middleware.js'));
+
 app.all('/*', (req, res) => {
   res.sendStatus(404);
 });
 
-app.use(require('./error-middleware.js'));
 
 const server = module.exports = {};
 server.isOn = false;

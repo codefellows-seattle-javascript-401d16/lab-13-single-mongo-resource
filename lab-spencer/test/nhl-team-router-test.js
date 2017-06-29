@@ -143,10 +143,17 @@ describe('testing /api/nhl/teams routes', () => {
       return mockTeam.createOne()
         .then(createdTeam => {
           return superagent.put(`${API_URL}/api/nhl/teams/${createdTeam._id}`)
-            .send(532532)
+            .send('dsadsadas')
             .catch(res => {
               expect(res.status).toEqual(400);
             });
+        });
+    });
+    it('Should respond 404', () => { // fix this{
+      return superagent.put(`${API_URL}/api/nhl/teams/asdasdasdasdsa`)
+        .send({city: 'Mukilteo', state: 'Washington'})
+        .catch(res => {
+          expect(res.status).toEqual(404);
         });
     });
   });
