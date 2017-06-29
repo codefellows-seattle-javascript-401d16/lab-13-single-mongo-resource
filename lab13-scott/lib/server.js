@@ -3,7 +3,10 @@
 const express = require('express');
 const app = express();
 
-
+//connect and config mongoose/mongoose
+const mongoose = require('mongoose');
+mongoose.Promise = Promise;
+mongoose.connect(process.env.MONGODB_URI);
 
 const server = module.exports = {};
 server.isOn = false;
