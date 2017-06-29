@@ -74,22 +74,25 @@ describe('Testing for /api/resort routes', () => {
           return superagent.get(`${API_URL}/api/resorts`);
         })
         .then(res => {
-          console.log('ARRAY OF RESORTS: ', res.body.map(resorts => resorts.name));
+          // console.log('ARRAY OF RESORTS: ', res.body.map(resorts => resorts.name));
           expect(res.status).toEqual(200);
           expect(res.body.length).toEqual(15);
           res.body.forEach(resort => {
             expect(resort.name).toExist();
             expect(resort._id).toExist();
             expect(resort.trails).toEqual([]);
-
           });
         });
       });
     });
     describe('If passing in a bad pathname', () => {
       it('it should respond with 404 status', () => {
-        return superagent.get(`${API_URL}/api/notapath`)
-        .send({name: `${faker.hacker.verb()} pass resort`})
+        return mockResort.createOne()
+        .then(resort => {
+          tempResort = resort;
+          return superagent.get(`${API_URL}/api/notapath`)
+        .send({name: `${faker.hacker.verb()} pass resort`});
+        })
         .catch(res => {
           expect(res.status).toEqual(404);
         });
@@ -119,8 +122,14 @@ describe('Testing for /api/resort routes', () => {
     });
     describe('If passing in a bad pathname', () => {
       it('it should respond with 404 status', () => {
-        return superagent.put(`${API_URL}/api/notapath`)
-        .send({name: `${faker.hacker.verb()} pass resort`})
+        let tempResort;
+        return mockResort.createOne()
+        .then(resort => {
+          tempResort = resort;
+          console.log('tempResort :', tempResort);
+          return superagent.put(`${API_URL}/api/notapath`)
+          .send({name: `${faker.hacker.verb()} pass resort`});
+        })
         .catch(res => {
           expect(res.status).toEqual(404);
         });
