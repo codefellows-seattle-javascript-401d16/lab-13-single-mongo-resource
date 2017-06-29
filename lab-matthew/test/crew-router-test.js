@@ -20,12 +20,14 @@ const API_URL = process.env.API_URL;
 describe('testing /api/crews', () => {
   before(server.start);
   after(server.stop);
-  afterEach(clearDB);
+  // afterEach(clearDB);
+  let tempCrew;
+  let tempShip;
 
   describe('testing POST /api/crews', () => {
+    after(clearDB);
     it('should create a crew', () => {
-      let tempShip;
-      let tempCrew;
+
       return mockShip.createOne()
       .then(ship => {
         tempShip = ship;
@@ -67,6 +69,14 @@ describe('testing /api/crews', () => {
       .then(res => {throw res})
       .catch(res => {
         expect(res.status).toEqual(400);
+      });
+    });
+    it('should respond with a 409 status', () => {
+      return superagent.post(`${API_URL}/api/crews`)
+      .send(tempCrew)
+      .then(res => {throw res})
+      .catch(res => {
+        expect(res.status).toEqual(409);
       });
     });
   });
