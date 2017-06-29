@@ -4,7 +4,7 @@ module.exports = (err, req, res, next) => {
   console.error(err.message);
 
   //if validation error respond with 400
-  if(err.message.toLowerCase().includes('validation failed'))
+  if(err.message.toLowerCase().includes('validation failed') || err.message.toLowerCase().includes('number failed'))
     return res.sendStatus(400);
 
   //if duplication error respond with 409
