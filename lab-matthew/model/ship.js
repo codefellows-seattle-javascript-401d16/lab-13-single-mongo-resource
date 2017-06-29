@@ -3,7 +3,7 @@
 const mongoose = require('mongoose');
 
 const shipSchema = mongoose.Schema({
-  name: {type: String, required: true, unique: true},
+  name: {type: String, required: true, unique: true, minlength: 3},
   type: {type: String, required: true},
   captain: {type: String, required: true},
   crew: [{type: mongoose.Schema.Types.ObjectId, ref: 'crew'}],

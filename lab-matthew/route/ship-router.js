@@ -22,14 +22,9 @@ shipRouter.get('/api/ships:id', (req, res, next) => {
   .catch(next);
 });
 
-// shipRouter.put('/api/ships/:id', jsonParser, (req, res, next) => {
-//   Ship.findByIdAndUpdate(req.params.id, req.body, {new:true})
-//   .then(ship => res.json(ship))
-//   .catch(next);
-// });
-
 shipRouter.put('/api/ships/:id', jsonParser, (req, res, next) => {
-  Ship.findByIdAndUpdate(req.params.id, req.body, {new: true})
+  console.log('PUT ROUTE', typeof req.body.name);
+  Ship.findByIdAndUpdate(req.params.id, req.body, {new: true, runValidators: true})
   .then(ship => res.json(ship))
   .catch(next);
 });
