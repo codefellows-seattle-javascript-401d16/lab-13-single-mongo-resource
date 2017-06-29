@@ -76,6 +76,25 @@ describe('testing /api/posts', () => {
           expect(res.status).toEqual(404);
         });
     });
+
+    it('should respond with an array of 20 posts', () => {
+      let tempPosts;
+      return mockPost.createMany(40)
+        .then( posts => {
+          tempPosts = posts;
+          return superagent.get(`${API_URL}/api/posts`);
+        })
+        .then( res => {
+          console.log(res.body.map(post => post.title));
+          expect(res.status).toEqual(200);
+          expect(res.body.length).toEqual(20);
+          res.body.forEach(post => {
+            expect(post._id).toExist();
+            expect(post.comments).toEqual([]);
+            expect(post.title).toExist();
+          });
+        });
+    });
   });
 
   describe('testing PUT /api/lists/:id', () => {
@@ -139,4 +158,3 @@ describe('testing /api/posts', () => {
     });
   });
 });
-// });
