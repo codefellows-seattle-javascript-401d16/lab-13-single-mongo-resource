@@ -27,7 +27,7 @@ describe('testing /api/albums', () => {
       return superagent.post(`${API_URL}/api/albums`).send(data).then(res => {
         expect(res.status).toEqual(200);
         expect(res.body.userName).toEqual(data.userName);
-        expect(res.body.albumName).toEqual(data.userName);
+        expect(res.body.albumName).toEqual(data.albumName);
         expect(res.body._id).toExist();
       });
     });
@@ -44,8 +44,8 @@ describe('testing /api/albums', () => {
         })
         .then(res => {
           expect(res.status).toEqual(200);
-          expect(res.body.userName).toEqual(data.userName);
-          expect(res.body.albumName).toEqual(data.userName);
+          expect(res.body.userName).toEqual(tempPhotoAlbum.userName);
+          expect(res.body.albumName).toEqual(tempPhotoAlbum.albumName);
           expect(res.body._id).toExist();
         });
     });
@@ -55,10 +55,10 @@ describe('testing /api/albums', () => {
     it('should respond with a an array of pictures', () => {
       let tempPhotoAlbums;
       return mockPhotoAlbum
-        .createMany(100)
+        .createMany(20)
         .then(albums => {
           tempPhotoAlbums = albums;
-          return superagent.get(`${API_URL}/api/albums`);
+          return superagent.get(`${API_URL}/api/albums?page=1`);
         })
         .then(res => {
           expect(res.status).toEqual(200);
@@ -73,7 +73,7 @@ describe('testing /api/albums', () => {
     it('should respond with a an array of pictures', () => {
       let tempPhotoAlbums;
       return mockPhotoAlbum
-        .createMany(100)
+        .createMany(10)
         .then(albums => {
           tempPhotoAlbums = albums;
           return superagent.get(`${API_URL}/api/albums?page=2`);
@@ -91,7 +91,7 @@ describe('testing /api/albums', () => {
     it('should respond with a an array of pictures', () => {
       let tempPhotoAlbums;
       return mockPhotoAlbum
-        .createMany(100)
+        .createMany(10)
         .then(albums => {
           tempPhotoAlbums = albums;
           return superagent.get(`${API_URL}/api/albums?page=3`);
