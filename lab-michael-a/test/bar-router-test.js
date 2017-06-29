@@ -83,10 +83,8 @@ describe('testing Bar routes', () => {
     });
 
     it('should respond with an array of 30 bars!!', () => {
-      let tempBars;
       return mockBar.createMany(60)
       .then(bars => {
-        tempBars = bars;
         return superagent.get(`${API_URL}/api/bars?page=2`);
       })
       .then(res => {
