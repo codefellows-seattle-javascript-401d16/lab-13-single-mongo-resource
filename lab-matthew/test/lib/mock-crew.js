@@ -5,7 +5,6 @@ const faker = require('faker');
 // app modules
 const mockShip = require('./mock-ship.js');
 const Crew = require('../../model/crew.js');
-const Ship = require('../../model/ship.js');
 
 const mockCrew = module.exports = {};
 
@@ -14,8 +13,10 @@ mockCrew.createOne = () => {
   return mockShip.createOne()
   .then(ship => {
     result.ship = ship;
-    new Ship({
-      content: faker.random.words(1),
+    return new Crew({
+      name: `${faker.name.firstName()} ${faker.name.lastName()}`,
+      age: mockCrew.randomAge(),
+      profession: mockCrew.randomProfession(),
       ship: ship._id.toString(),
     })
     .save();
@@ -43,3 +44,11 @@ mockCrew.createMany = (n) => {
     return result;
   });
 };
+
+mockCrew.randomProfession = () => {
+  let professions = ['Poop-sweeper', 'Lookout', 'Cook', 'Stowaway', 'Cooper', 'Gunner', 'Deckhand', 'Mutineer', 'Navigator', 'Soldier'];
+
+  return professions[Math.floor(Math.random()*((professions.length - 1)))];
+};
+
+mockCrew.randomAge = () => Math.floor(Math.random() * ((120 - 16)));

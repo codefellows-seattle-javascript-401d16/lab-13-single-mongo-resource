@@ -16,8 +16,6 @@ const mockCrew = require('./lib/mock-crew');
 //module logic
 const API_URL = process.env.API_URL;
 
-let tempShip;
-let tempCrew;
 
 describe('testing /api/crews', () => {
   before(server.start);
@@ -26,23 +24,33 @@ describe('testing /api/crews', () => {
 
   describe('testing POST /api/crews', () => {
     it('should create a crew', () => {
+      let tempShip;
+      let tempCrew;
       return mockShip.createOne()
       .then(ship => {
+        tempShip = ship;
         return superagent.post(`${API_URL}/api/crews`)
         .send({
-          content: 'hello world',
+          name: 'Jack Sparrow',
+          profession: 'Piracy',
+          age: 38,
           ship: ship._id.toString(),
         });
       })
       .then(res => {
+        console.log('RES', res.body);
         expect(res.status).toEqual(200);
         expect(res.body._id).toExist();
-        expect(res.body.content).toEqual('hello world');
+        expect(res.body.name).toEqual('Jack Sparrow');
+        expect(res.body.profession).toEqual('Piracy');
+        expect(res.body.age).toEqual(38);
         expect(res.body.ship).toEqual(tempShip._id.toString());
+        tempCrew = res.body;
 
         return Ship.findById(tempShip._id);
       })
       .then(ship => {
+        console.log('SHIP', ship);
         expect(ship.crews.length).toEqual(1);
         expect(ship.crews[0].toString()).toEqual(tempCrew._id.toString());
       });

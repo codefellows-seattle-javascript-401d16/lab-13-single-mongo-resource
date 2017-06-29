@@ -6,7 +6,7 @@ const Ship = require('./ship.js');
 const crewSchema = mongoose.Schema({
   name: {type: String, required: true},
   age: {type: Number, required: true},
-  skill: {type: String, required: true},
+  profession: {type: String, required: true},
   ship: {type: mongoose.Schema.Types.ObjectId, required: true, ref: 'ship'},
   timestamp: {type: Date, default: Date.now},
 });
@@ -24,7 +24,7 @@ crewSchema.pre('save', function(next) {
   .catch(() => next(new Error('validation failed to hire crew because ship does not exist')));
 });
 
-crewSchema.post('save', function(doc, next) {
+crewSchema.post('remove', function(doc, next) {
   console.log('post save doc', doc);
   Ship.findById(doc.ship)
   .then(ship => {
