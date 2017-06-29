@@ -127,24 +127,8 @@ describe('testing /api/teams', () => {
   });
 });
 
-//
-//   describe('testing GET /api/lists/:id', () => {
-//     it('should respond with a list', () => {
-//       let tempList;
-//       return mockList.createOne()
-//       .then(list => {
-//         tempList = list;
-//         return superagent.get(`${API_URL}/api/lists/${list._id}`)
-//       })
-//       .then(res => {
-//         expect(res.status).toEqual(200)
-//         expect(res.body.title).toEqual(tempList.title)
-//         expect(res.body.tasks).toEqual([])
-//         expect(res.body._id).toExist()
-//       })
-//     })
-//   })
-//
+
+
 //   describe('testing GET /api/lists', () => {
 //     it('should respond with a an array of 50 list', () => {
 //       let tempLists

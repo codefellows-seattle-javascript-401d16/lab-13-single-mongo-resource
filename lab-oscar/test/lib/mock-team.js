@@ -14,17 +14,7 @@ mockTeam.createOne = () => {
     .save();
 };
 
-
-
-// mockList.createOne = () => {
-//   return new List({
-//     title: faker.random.words(3),
-//   })
-//   .save()
-// }
-//
-// mockList.createMany = (n) => {
-//   let mockListArray = new Array(n)
-//     .fill(0).map(() => mockList.createOne())
-//   return Promise.all(mockListArray)
-// }
+mockTeam.createMany = (n) => {
+  let mockListArray = new Array(n).fill(0).map(() => mockTeam.createOne());
+  return Promise.all(mockListArray);
+};
