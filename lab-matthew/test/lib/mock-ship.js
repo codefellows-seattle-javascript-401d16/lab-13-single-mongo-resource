@@ -23,5 +23,5 @@ mockShip.createMany = (n) => {
 mockShip.randomShipType = () => {
   let types = ['Schooner', 'Galleon', 'Treasure Galleon', 'Barque', 'Brigantine', 'Caravel', 'Carrack', 'Clipper', 'Corvette', 'Man of War'];
 
-  return types[Math.floor(Math.random()*((types.length - 0) + 1)) + 0];
+  return types[Math.floor(Math.random()*((types.length - 1)))];
 };
