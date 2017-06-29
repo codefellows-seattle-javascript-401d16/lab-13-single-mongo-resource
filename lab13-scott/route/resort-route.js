@@ -42,5 +42,12 @@ resortRouter.put('/api/resorts/:id', jsonParser, (req, res, next) => {
 
   Resort.findByIdAndUpdate(req.params.id, req.body, options)
   .then(updatedResort => res.json(updatedResort))
-  .catch(next);  
+  .catch(next);
+});
+
+resortRouter.delete('/api/resorts/:id', (req, res, next) => {
+  console.log('Hit DELETE /api/resorts/:id route');
+  Resort.findByIdAndRemove(req.params.id)
+  .then(() => res.sendStatus(204))
+  .catch(next);
 });
