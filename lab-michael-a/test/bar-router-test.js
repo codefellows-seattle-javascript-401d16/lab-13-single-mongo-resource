@@ -69,7 +69,7 @@ describe('testing Bar routes', () => {
       return mockBar.createOne() //have to write this part...
       .then(bar => {
         tempBar = bar;
-        console.log(tempBar);
+        // console.log(tempBar);
         return superagent.get(`${API_URL}/api/bars/${bar._id}`);
       })
       .then(res => {
@@ -88,7 +88,7 @@ describe('testing Bar routes', () => {
         return superagent.get(`${API_URL}/api/bars?page=2`);
       })
       .then(res => {
-        console.log(res.body.map(bar=>bar.name));
+        // console.log(res.body.map(bar=>bar.name));
         // console.log('res.^^^^',res.body);
         expect(res.status).toEqual(200);
         expect(res.body.length).toEqual(30);
@@ -123,29 +123,30 @@ describe('testing Bar routes', () => {
     });
   });
 
+
+
+
+
+
+
+
+
+
 //PUT REQUESTS!!!
 
   describe('testing PUT /api/bars', () => {
 
     //there are problems with this part, not quite sure how to approach it...
-    afterEach(() => Bar.remove({}));
-    beforeEach(() => {
-      return new Bar({
-        name: 'Seattle',
-        bestSpot: 'loredos',
-        bestPark: 'gasworks',
-        bestActivity: 'camping',
-      })
-      .save()
-      .then(bar => {
-        tempBar = bar;
-        console.log(tempBar);
-      });
-    });
 
     it('should respond with updating bar content information...', () => {
-      return superagent.put(`${API_URL}/api/bars/${tempBar._id}`)
-      .send({content:'updated'})
+      let tempList;
+      return mockList.createOne()
+      .then(bars => {
+        tempList = bars;
+      });
+        return superagent.put( `${API_URL}/api/bars/${bar._id}`);
+      })
+      .send({content:'updated'})/// LEFT OFF HERE
       .then(res => {
         expect(res.status).toEqual(200);
         expect(res.body._id).toEqual(tempBar._id);

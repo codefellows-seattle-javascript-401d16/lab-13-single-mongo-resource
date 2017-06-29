@@ -55,7 +55,6 @@ barRouter.put('/api/bars/:id', jsonParser, (req, res, next) => {
     runValidators: true,
     new: true,
   };
-//I noticed in class we used a cool runValidators key for the findByIdAndUpdate method... not sure if it needs to be included...
   Bar.findByIdAndUpdate(req.params.id, req.body, options)
   .then(bar => res.json(bar))
   .catch(next);
