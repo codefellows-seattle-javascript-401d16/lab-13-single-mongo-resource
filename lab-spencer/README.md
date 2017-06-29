@@ -1,4 +1,4 @@
-# Game Character REST API  
+# NHL Team REST API  
 
 ## Install  
 - To install my API you can do so by cloning this repo:  
@@ -40,39 +40,40 @@ API_URL='http://localhost:7000'
 
 ## Routes  
 
-### /api/characters  
+### /api/nhl/teams  
 - This route accepts POST GET PUT and DELETE requests  
 
 #### POST  
-- You can add game characters to the database by posting JSON in the following format. It will respond with the added character  
+- You can add teams to the database by posting JSON in the following format. It will respond with the added team  
 ```
 {
-  "name": "Some Dude",
-  "age": 44,
-  "class": "Mage",
-  "primaryProfession": "Leatherworking",
-  "secondaryProfession": "Coding"
+  "name": "Blackhawks",
+  "city": "Chicago",
+  "state": "IL",
+  "wins": 12,
+  "losses": 40,
+  "ties": 3
 }
 ```
 
 #### GET  
-- A GET request to plain old /api/characters will return an array of all the characters in the database  
-- A GET request in the format /api/characters/characterid will respond with the information for the character with the ID of characterid in the database  
+- A GET request in the format /api/nhl/teams/teamid will respond with the information for the team with the ID of teamid in the database  
 
 #### PUT  
-- You can update characters by sending a PUT request to /api/characters/characterid with the updated info as JSON in the following format:  
+- You can update teams by sending a PUT request to /api/nhl/teams/teamid with the updated info as JSON in the following format:  
 ```
 {
-  "name": "Some Dude",
-  "age": 44,
-  "class": "Mage",
-  "primaryProfession": "Leatherworking",
-  "secondaryProfession": "Coding"
+  "name": "Blackhawks",
+  "city": "Chicago",
+  "state": "IL",
+  "wins": 12,
+  "losses": 40,
+  "ties": 3
 }
 ```
 
 #### DELETE  
-- You can delete characters from the database by sending a request to /api/characters/characterid and you will receive 204 if it's successful and 404 if that character doesn't exist  
+- You can delete teams from the database by sending a request to /api/nhl/teams/teamid and you will receive 204 if it's successful and 404 if that team doesn't exist  
 
 ### /api/*  
 - Any other route will respond with a 404  
