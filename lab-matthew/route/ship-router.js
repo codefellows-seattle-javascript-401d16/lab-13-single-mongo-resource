@@ -28,3 +28,9 @@ shipRouter.put('/api/ships/:id', jsonParser, (req, res, next) => {
   .then(ship => res.json(ship))
   .catch(next);
 });
+
+shipRouter.delete('/api/ships/:id', (req, res, next) => {
+  Ship.findByIdAndRemove(req.params.id)
+  .then(() => res.sendStatus(204))
+  .catch(next);
+});
