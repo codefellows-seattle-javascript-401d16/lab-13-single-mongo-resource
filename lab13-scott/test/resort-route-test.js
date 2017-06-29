@@ -60,17 +60,8 @@ describe('Testing for /api/resort routes', () => {
           console.log('res.body: ', res.body);
           expect(res.status).toEqual(200);
           expect(res.body.name).toExist(tempResort.name);
-          expect(res.bosy.trails).toEqual([]);
+          expect(res.body.trails).toEqual([]);
           expect(res.body._id).toEqual(tempResort._id);
-        });
-      });
-    });
-    describe('If passing in bad content', () => {
-      it('it should respond with 400 status', () => {
-        return superagent.get(`${API_URL}/api/resorts`)
-        .send('bad content')
-        .catch(res => {
-          expect(res.status).toEqual(400);
         });
       });
     });

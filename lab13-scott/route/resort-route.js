@@ -15,3 +15,10 @@ resortRouter.post('/api/resorts', jsonParser, (req, res, next) => {
   .then(newResort => res.json(newResort))
   .catch(next);
 });
+
+resortRouter.get('/api/resorts/:id', (req, res, next) => {
+  console.log('Hit GET route');
+  Resort.findById(req.params.id)
+  .then(resort => res.json(resort))
+  .catch(next);
+});
