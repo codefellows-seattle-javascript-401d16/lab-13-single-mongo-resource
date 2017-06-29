@@ -51,7 +51,7 @@ postRouter.put('/api/posts/:id', jsonParser, (req, res, next) => {
 });
 
 postRouter.delete('/api/posts/:id', (req, res, next) => {
-  console.log('hittin DELETE /api/blogs/:id, yall');
+  console.log('hittin DELETE /api/posts/:id, yall');
 
   Post.findByIdAndRemove(req.params.id)
     .then(() => res.sendStatus(204))

@@ -10,11 +10,11 @@ mongoose.connect(process.env.MONGODB_URI);
 const app = express();
 
 app.use(morgan('dev'));
-app.use(require('../route/post-router.js'));
 
-app.all('/api/*', (req, res, next) => {
-  res.sendStatus(404);
-});
+app.use(require('../route/post-router.js'));
+app.use(require('../route/comment-router.js'));
+
+app.all('/api/*', (req, res, next) => res.sendStatus(404));
 
 app.use(require('./error-middleware.js'));
 
