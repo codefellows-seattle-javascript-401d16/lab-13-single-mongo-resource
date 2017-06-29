@@ -7,7 +7,7 @@ const mockResort = module.exports = {};
 
 mockResort.createOne = () => {
   return new Resort({
-    name: faker.hacker.verb(),
+    name: `${faker.random.words(2)} Pass Resort`,
   })
   .save();
 };

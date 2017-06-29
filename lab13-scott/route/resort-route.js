@@ -17,8 +17,17 @@ resortRouter.post('/api/resorts', jsonParser, (req, res, next) => {
 });
 
 resortRouter.get('/api/resorts/:id', (req, res, next) => {
-  console.log('Hit GET route');
+  console.log('Hit GET /api/resorts/:id route');
   Resort.findById(req.params.id)
   .then(resort => res.json(resort))
+  .catch(next);
+});
+
+resortRouter.get('/api/resorts', (req, res, next) => {
+  console.log('Hit GET /api/resorts route');
+  Resort.find({})
+  .sort({name: 'asc'})
+  .limit(15)
+  .then(resorts => res.json(resorts))
   .catch(next);
 });
