@@ -15,9 +15,7 @@ app.use(morgan('dev'));
 
 app.use(require('../route/bike-shop-router.js'));
 
-app.all('/api/*', (req, res, next) => {
-  res.sendStatus(404);
-});
+app.all('/api/*', (req, res, next) => res.sendStatus(404));
 app.use(require('./error-middleware.js'));
 
 const server = module.exports = {};
