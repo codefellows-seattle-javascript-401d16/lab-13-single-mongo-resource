@@ -27,8 +27,16 @@ const app = express();
 app.use(cors());
 app.use(morgan('dev'));
 
-//tell app to use ../route/hops-routerjs and ./error-middleware.js
-app.use(require('../route/router.js'));
+//use resource router(s)
+app.use(require('../route/beer.js'));
+app.use(require('../route/grain.js'));
+
+// add 404 route
+app.all('/api/*', (req, res, next) => {
+  res.sendStatus(404);
+});
+
+//use error-middleware
 app.use(require('./error-middleware.js'));
 
 //export server and server controls
