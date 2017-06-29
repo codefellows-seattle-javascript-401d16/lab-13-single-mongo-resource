@@ -13,6 +13,8 @@ const app = express();
 app.use(cors());
 app.use(morgan('dev'));
 
+app.use(require('../route/bike-shop-router.js'));
+
 app.all('/api/*', (req, res, next) => {
   res.sendStatus(404);
 });

@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = (err, req, res, next) => {
-  console.error(err.message);
+  
   // if validation error respond with 400
   if(err.message.toLowerCase().includes('validation failed'))
     return res.sendStatus(400);
