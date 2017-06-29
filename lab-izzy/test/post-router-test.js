@@ -97,5 +97,26 @@ describe('testing /api/posts', () => {
             });
         });
     });
+    it('should respond with a 400', () => {
+      return mockPost.createOne()
+        .then(createdPost => {
+          return superagent.put(`${API_URL}/api/posts/${createdPost._id}`)
+            .send({})
+            .catch(res => {
+              expect(res.status).toEqual(400);
+              expect(res.body.content).toEqual({});
+            });
+        });
+    });
+    it('should respond with a 404', () => {
+      return mockPost.createOne()
+        .then(() => {
+          return superagent.put(`${API_URL}/api/posts/0943`)
+            .catch(res => {
+              expect(res.status).toEqual(404);
+            });
+        });
+    });
   });
 });
+// });
