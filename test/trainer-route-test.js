@@ -31,6 +31,25 @@ describe('Testing resource requests', () => {
         expect(res.body._id).toExist();
       });
     });
+    it('should return a 400 status', () => {
+      return superagent.post(`${API_URL}/api/trainers`)
+      .send({})
+      .catch(res => {
+        expect(res.status).toEqual(400);
+      });
+    });
+    it('should delete data from db and return 409 status', () => {
+      let tempTrainer;
+      return mockTrainer.createOne()
+      .then(trainer => {
+        tempTrainer = trainer;
+        return superagent.post(`${API_URL}/api/trainers`)
+        .send(tempTrainer);
+      })
+      .catch(res => {
+        expect(res.status).toEqual(409);
+      });
+    });
   });
   describe('Testing GET requests', () => {
     it('Should return trainer name with 200 status', () => {
@@ -47,6 +66,17 @@ describe('Testing resource requests', () => {
         expect(res.body.plan).toEqual([]);
       });
     });
+    it('Should return trainer name with 404 status', () => {
+      let tempTrainer;
+      return mockTrainer.createOne()
+      .then(trainer => {
+        tempTrainer = trainer;
+        return superagent.get(`${API_URL}/api/trainers/1234`);
+      })
+      .catch(res => {
+        expect(res.status).toEqual(404);
+      });
+    });
   });
   describe('Testing PUT requests', () => {
     it('should update db and return 200 status', () => {
@@ -55,17 +85,65 @@ describe('Testing resource requests', () => {
       return mockTrainer.createOne()
       .then(trainer => {
         tempTrainer = trainer;
-        console.log('hero', trainerData);
-        console.log('hit', tempTrainer);
         return superagent.put(`${API_URL}/api/trainers/${trainer._id}`)
         .send({trainerData});
       })
       .then(res => {
-        console.log('poop', tempTrainer);
         expect(res.status).toEqual(200);
         expect(res.body.name).toEqual(tempTrainer.name);
-        expect(res.body_id).toExist();
+        expect(res.body._id).toExist();
         expect(res.body.plan).toEqual([]);
+      });
+    });
+    it('should attempt to update db and return 404 status', () => {
+      let trainerData = {name: faker.name.title()};
+      let tempTrainer;
+      return mockTrainer.createOne()
+      .then(trainer => {
+        tempTrainer = trainer;
+        return superagent.put(`${API_URL}/api/trainers/1234`)
+        .send({trainerData});
+      })
+      .catch(res => {
+        expect(res.status).toEqual(404);
+      });
+    });
+    it('should attempt to update db and return 400 status', () => {
+      let tempTrainer;
+      return mockTrainer.createOne()
+      .then(trainer => {
+        tempTrainer = trainer;
+        return superagent.put(`${API_URL}/api/trainers/${trainer._id}`);
+      })
+      .catch(res => {
+        console.log(res.body);
+        expect(res.status).toEqual(400);
+      });
+    });
+  });
+  describe('Testing Delete requests', () => {
+    it('should delete data from db and return 204 status', () => {
+      let tempTrainer;
+      return mockTrainer.createOne()
+      .then(trainer => {
+        tempTrainer = trainer;
+        return superagent.delete(`${API_URL}/api/trainers/${trainer._id}`);
+      })
+      .then(res => {
+        expect(res.status).toEqual(204);
+        expect(res.body).toEqual({});
+      });
+    });
+    it('should delete data from db and return 404 status', () => {
+      let tempTrainer;
+      return mockTrainer.createOne()
+      .then(trainer => {
+        tempTrainer = trainer;
+        return superagent.delete(`${API_URL}/api/trainers/1234`);
+      })
+      .then(res => {throw res})
+      .catch(res => {
+        expect(res.status).toEqual(404);
       });
     });
   });
