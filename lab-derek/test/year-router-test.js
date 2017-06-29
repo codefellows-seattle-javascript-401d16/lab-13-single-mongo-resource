@@ -150,7 +150,7 @@ describe('testing api/years', () => {
     });
   //TODO: PUT - test 400, with invalid body
     it('should return a status 400 with invalid body', () => {
-      let data = {name: '2017'};
+      let data = {name: 'asdf'};
       return superagent.put(`${API_URL}/api/years/${tempYear._id}`)
       .send(data)
       .catch(res => {
