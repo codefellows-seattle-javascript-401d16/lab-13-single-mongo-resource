@@ -5,7 +5,7 @@ const BikeShop = require('./bike-shop.js');
 
 const bikeSchema = mongoose.Schema({
   make: {type: String, required: true},
-  model: {type: String, required: true, unique: true},
+  model: {type: String, required: true},
   shop: {type: mongoose.Schema.Types.ObjectId, required: true, ref: 'bikeShop'},
 });
 
