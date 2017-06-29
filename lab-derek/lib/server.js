@@ -9,7 +9,6 @@ const mongoose = require('mongoose');
 //app modules
 
 
-
 //module logic
 // * config and connect to db
 mongoose.promise = Promise;
@@ -19,19 +18,20 @@ mongoose.connect(process.env.MONGODB_URI);
 const app = express();
 
 // * load middleware
-app.use('morgan'):
-app.use('cors');
+app.use(morgan('dev'));
+app.use(cors());
 
 // * load routes
 
+app.use(require('../route/year-router.js'));
 
 // * load 404 route
-app.all('api/*', (req, res, next) => {
-  req.sendStatus(404);
+app.all('/api/*', (req, res, next) => {
+  res.sendStatus(404);
 });
 
 // * load error handler
-
+app.use(require('./error-middleware.js'));
 
 //export start and stop
 
@@ -39,27 +39,28 @@ const server = module.exports = {};
 
 server.isOn = false;
 server.start = () => {
-  if(!server.isOn){
-    return new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
+    if(!server.isOn){
       server.http = app.listen(process.env.PORT, () => {
         server.isOn = true;
         console.log('server up on ', process.env.PORT);
         resolve();
       });
       return;
-    });
+    }
     reject(new Error('server is already running'));
-  };
+  });
 };
 
 server.stop = () => {
-  if(server.http && server.isOn){
-    return new Promise((resolve, reject) => {
-      server.http.close();
-      console.log('server down');
-      resolve();
-    });
-    return;
-  };
-  reject(new Error('server not running'));
+  return new Promise((resolve, reject) => {
+    if(server.http && server.isOn){
+      return server.http.close(() => {
+        server.isOn = false;
+        console.log('server down');
+        resolve();
+      });
+    }
+    reject(new Error('server not running'));
+  });
 };
