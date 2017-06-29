@@ -18,18 +18,18 @@ leaderRouter.get('/api/leader/:id', (req, res, next) => {
   .catch(next);
 });
 
-leaderRouter.get('/api/leaders', (req, res, next) => {
-  let pageNumber = Number(req.query.page);
-  if(!pageNumber || pageNumber < 1) pageNumber = 1;
-  pageNumber--;
-
-  Leader.find({})
-  .sort({title: 'asc'})
-  .skip(pageNumber * 10)
-  .limit(10)
-  .then(data => res.json(data))
-  .catch(next);
-});
+// leaderRouter.get('/api/leaders', (req, res, next) => {
+//   let pageNumber = Number(req.query.page);
+//   if(!pageNumber || pageNumber < 1) pageNumber = 1;
+//   pageNumber--;
+//
+//   Leader.find({})
+//   .sort({title: 'asc'})
+//   .skip(pageNumber * 10)
+//   .limit(10)
+//   .then(data => res.json(data))
+//   .catch(next);
+// });
 
 leaderRouter.put('/api/leader/:id', jsonParser, (req, res, next) => {
   let options = {

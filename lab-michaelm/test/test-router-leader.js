@@ -22,8 +22,8 @@ describe('Testing leader routes', () => {
 
   describe('Testing POST /api/leader', () => {
     let data = {
-      firstName: 'Michael',
-      lastName: 'Miller',
+      firstName: faker.name.firstName(),
+      lastName: faker.name.lastName(),
     };
     it('Should return a new leader', () => {
       return superagent.post(`${API_URL}/api/leader`)
@@ -51,15 +51,13 @@ describe('Testing leader routes', () => {
   });
 
   describe('Testing GET /api/leader:id', () => {
-
-    it('Should respond with a leader leader', () => {
+    it('Should respond with a leader', () => {
       return mockLeader.createOne()
       .then(leader => {
         tempLeader = leader;
         return superagent.get(`${API_URL}/api/leader/${tempLeader._id}`);
       })
       .then(res => {
-        console.log('res.body:\n\n', res.body);
         expect(res.status).toEqual(200);
         expect(res.body._id).toEqual(tempLeader._id);
         expect(res.body.firstName).toEqual(tempLeader.firstName);
@@ -76,77 +74,86 @@ describe('Testing leader routes', () => {
     });
   });
 
-  describe('Testing GET /api/leaders', () => {
-
-    it('Should respond with a paged array of all leaders', () => {
-      let tempLeaders;
-      return mockLeader.createMany(20)
-      .then(leaders => {
-        tempLeaders = leaders;
-        return superagent.get(`${API_URL}/api/leaders`);
-      })
-      .then(res => {
-        console.log('res.body:\n\n', res.body);
-        expect(res.status).toEqual(200);
-        expect(res.body.length).toEqual(10);
-        res.body.forEach(leaders => {
-          expect(leaders._id).toExist();
-          expect(leaders.firstName).toExist();
-          expect(leaders.lastName).toExist();
-        });
-      });
-    });
-
-    it('Should respond with a paged array of all leaders', () => {
-      let tempLeaders;
-      return mockLeader.createMany(20)
-      .then(leaders => {
-        tempLeaders = leaders;
-        return superagent.get(`${API_URL}/api/leaders?page=2`);
-      })
-      .then(res => {
-        console.log('res.body:\n\n', res.body);
-        expect(res.status).toEqual(200);
-        expect(res.body.length).toEqual(10);
-        res.body.forEach(leaders => {
-          expect(leaders._id).toExist();
-          expect(leaders.firstName).toExist();
-          expect(leaders.lastName).toExist();
-        });
-      });
-    });
-
-    it('Should respond with an empty array', () => {
-      let tempLeaders;
-      return mockLeader.createMany(20)
-      .then(leaders => {
-        tempLeaders = leaders;
-        return superagent.get(`${API_URL}/api/leaders?page=3`);
-      })
-      .then(res => {
-        console.log('res.body:\n\n', res.body);
-        expect(res.status).toEqual(200);
-        expect(res.body.length).toEqual(0);
-      });
-    });
-
-    it('Should respond with a 404', () => {
-      return superagent.get(`${API_URL}/api/leader/5952a8d5c1b8d566a64ea23g`)
-      .catch(res => {
-        expect(res.status).toEqual(404);
-      });
-    });
-  });
+  // describe('Testing GET /api/leaders', () => {
+  //
+  //   it('Should respond with a paged array of all leaders', () => {
+  //     let tempLeaders;
+  //     return mockLeader.createMany(20)
+  //     .then(leaders => {
+  //       tempLeaders = leaders;
+  //       return superagent.get(`${API_URL}/api/leaders`);
+  //     })
+  //     .then(res => {
+  //       console.log('res.body:\n\n', res.body);
+  //       expect(res.status).toEqual(200);
+  //       expect(res.body.length).toEqual(10);
+  //       res.body.forEach(leaders => {
+  //         expect(leaders._id).toExist();
+  //         expect(leaders.firstName).toExist();
+  //         expect(leaders.lastName).toExist();
+  //       });
+  //     });
+  //   });
+  //
+  //   it('Should respond with a paged array of all leaders', () => {
+  //     let tempLeaders;
+  //     return mockLeader.createMany(20)
+  //     .then(leaders => {
+  //       tempLeaders = leaders;
+  //       return superagent.get(`${API_URL}/api/leaders?page=2`);
+  //     })
+  //     .then(res => {
+  //       console.log('res.body:\n\n', res.body);
+  //       expect(res.status).toEqual(200);
+  //       expect(res.body.length).toEqual(10);
+  //       res.body.forEach(leaders => {
+  //         expect(leaders._id).toExist();
+  //         expect(leaders.firstName).toExist();
+  //         expect(leaders.lastName).toExist();
+  //       });
+  //     });
+  //   });
+  //
+  //   it('Should respond with an empty array', () => {
+  //     let tempLeaders;
+  //     return mockLeader.createMany(20)
+  //     .then(leaders => {
+  //       tempLeaders = leaders;
+  //       return superagent.get(`${API_URL}/api/leaders?page=3`);
+  //     })
+  //     .then(res => {
+  //       console.log('res.body:\n\n', res.body);
+  //       expect(res.status).toEqual(200);
+  //       expect(res.body.length).toEqual(0);
+  //     });
+  //   });
+  //
+  //   it('Should respond with a 404', () => {
+  //     return superagent.get(`${API_URL}/api/leader/5952a8d5c1b8d566a64ea23g`)
+  //     .catch(res => {
+  //       expect(res.status).toEqual(404);
+  //     });
+  //   });
+  // });
 
   describe('Testing PUT /api/leader/:id', () => {
-    it('Should respond with a changed leader leader', () => {
-      return superagent.put(`${API_URL}/api/leader/${tempLeader._id}`)
-      .send({firstName: 'John'})
+    let tempLeader;
+    it('Should respond with a changed leader', () => {
+      let data = {
+        firstName: faker.name.firstName(),
+        lastName: faker.name.lastName(),
+      };
+      return mockLeader.createOne()
+      .then(leader => {
+        tempLeader = leader;
+        return superagent.put(`${API_URL}/api/leader/${tempLeader._id}`)
+        .send(data);
+      })
       .then(res => {
         expect(res.status).toEqual(200);
         expect(res.body._id).toEqual(tempLeader._id);
-        expect(res.body.firstName).toEqual('John');
-        expect(res.body.lastName).toEqual(tempLeader.lastName);
+        expect(res.body.firstName).toEqual(data.firstName);
+        expect(res.body.lastName).toEqual(data.lastName);
         expect(res.body.submitted).toExist();
       });
     });
@@ -168,11 +175,12 @@ describe('Testing leader routes', () => {
   });
 
   describe('Testing DELETE /api/leader:id', () => {
-    it('Should remove specified(by _id) leader leader', () => {
+    let tempLeader;
+    it('Should remove specified(by _id) leader', () => {
       return mockLeader.createOne()
       .then(leader => {
         tempLeader = leader;
-        return superagent.get(`${API_URL}/api/leader/${tempLeader._id}`);
+        return superagent.delete(`${API_URL}/api/leader/${tempLeader._id}`);
       })
       .then(res => {
         expect(res.status).toEqual(204);

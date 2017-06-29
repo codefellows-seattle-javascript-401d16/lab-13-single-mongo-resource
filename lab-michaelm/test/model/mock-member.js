@@ -10,7 +10,7 @@ mockMember.createOne = () => {
   return new Member({
     firstName: faker.random.words(1),
     lastName: faker.random.words(1),
-    availabilityDate: [faker.date.future(), faker.date.future()],
+    availabilityDate: ['07/02/2017', '07/09/2017'],
   })
   .save();
 };
