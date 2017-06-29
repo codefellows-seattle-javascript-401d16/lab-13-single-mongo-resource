@@ -140,13 +140,12 @@ describe('testing Bar routes', () => {
 
     it('should respond with updating bar content information...', () => {
       let tempList;
-      return mockList.createOne()
-      .then(bars => {
-        tempList = bars;
+      return mockBar.createOne()
+      .then(bar => {
+        tempBar = bar;
       });
-        return superagent.put( `${API_URL}/api/bars/${bar._id}`);
-      })
-      .send({content:'updated'})/// LEFT OFF HERE
+      return superagent.put( `${API_URL}/api/bars/${bar._id}`)
+      .send({content:'updated'})
       .then(res => {
         expect(res.status).toEqual(200);
         expect(res.body._id).toEqual(tempBar._id);
@@ -163,6 +162,7 @@ describe('testing Bar routes', () => {
       });
     });
   });
+
   describe('test DELETE /api/bars', () => {
     it('should delete our tempBar...', () => {
       return superagent.delete(`${API_URL}/api/bars/${tempBar._id}`)
