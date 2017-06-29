@@ -71,6 +71,23 @@ describe('testing /api/teams', () => {
         });
     });
   });
+  describe('testing PUT /api/teams/:id', () => {
+    let tempTeam;
+    before(() => mockTeam.createOne()
+      .then(team => {
+        tempTeam = team;
+      })
+    );
+
+    it('should respond with code 200', () => {
+      return superagent.put(`${API_URL}/api/teams/${tempTeam._id}`)
+        .send({owner:'marineros'})
+        .then(res => {
+          expect(res.status).toEqual(200);
+          expect(res.body.owner).toEqual('marineros');
+        });
+    });
+  });
 });
 
 //

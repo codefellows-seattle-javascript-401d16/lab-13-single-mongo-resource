@@ -21,8 +21,30 @@ teamRouter.get('/api/teams/:id', (req, res, next) => {
     .catch(next);
 });
 
-
+teamRouter.put('/api/teams/:id', jsonParser, (req, res, next) => {
+  console.log('changing', req.body);
+  let options = {
+    runValidators: true,
+    new: true,
+  };
+  Team.findByIdAndUpdate(req.params.id, req.body, options)
+    .then(team => res.json(team))
+    .catch(next);
+});
 //
+
+
+
+// restaurantRouter.put('/api/restaurant/:id', jsonParser, (req, res, next) => {
+//   let options = {
+//     runValidators: true,
+//     new: true,
+//   };
+//   Restaurant.findByIdAndUpdate(req.params.id, req.body, options)
+//   .then(restaurant => res.json(restaurant))
+//   .catch(next);
+// });
+
 // listRouter.get('/api/lists/:id', (req, res, next) => {
 //   console.log('hit GET /api/lists/:id')
 //
