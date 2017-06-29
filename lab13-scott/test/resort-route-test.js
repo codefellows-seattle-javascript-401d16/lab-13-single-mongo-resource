@@ -100,15 +100,18 @@ describe('Testing for /api/resort routes', () => {
   describe('Testing PUT routes at /api/lists/:id', () => {
     describe('If successful', () => {
       it('it should update a resort and respond with the updated resort and 200', () => {
-        return mockResort.createMultiple()
+        let tempResort;
+        return mockResort.createOne()
         .then(resort => {
           tempResort = resort;
-          return superagent.put(`${API_URL}/api/resorts/${tempResort._id}`);
+          console.log('tempResort :', tempResort);
+          return superagent.put(`${API_URL}/api/resorts/${tempResort._id}`)
+          .send({name: 'Crystal Mountain'});
         })
         .then(res => {
           console.log('res.body: ', res.body);
           expect(res.status).toEqual(200);
-          expect(res.body.name).toExist(tempResort.name);
+          expect(res.body.name).toExist('Crystal Mountain');
           expect(res.body.trails).toEqual([]);
           expect(res.body._id).toEqual(tempResort._id);
         });

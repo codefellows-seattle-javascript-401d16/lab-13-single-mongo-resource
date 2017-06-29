@@ -31,3 +31,16 @@ resortRouter.get('/api/resorts', (req, res, next) => {
   .then(resorts => res.json(resorts))
   .catch(next);
 });
+
+resortRouter.put('/api/resorts/:id', jsonParser, (req, res, next) => {
+  console.log('Hit PUT /api/resorts/:id route`');
+
+  let options = {
+    new: true,
+    isValidators: true,
+  };
+
+  Resort.findByIdAndUpdate(req.params.id, req.body, options)
+  .then(updatedResort => res.json(updatedResort))
+  .catch(next);  
+});

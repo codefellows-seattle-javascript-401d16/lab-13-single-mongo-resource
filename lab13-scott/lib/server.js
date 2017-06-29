@@ -9,8 +9,8 @@ mongoose.Promise = Promise;
 mongoose.connect(process.env.MONGODB_URI);
 
 app.use(require('../route/resort-route.js'));
-app.use(require('./error-middleware.js'));
 app.all('/api/*', (req, res, next) => res.sendStatus(404));
+app.use(require('./error-middleware.js'));
 
 const server = module.exports = {};
 server.isOn = false;

@@ -8,6 +8,6 @@ module.exports = (err, req, res, next) => {
   //400 error if bad content
   if(err.message.toLowerCase().includes('validation failed')) return res.sendStatus(400);
   console.log('break point');
-  //404 error if bad pathname
+  //404 error if bad id
   if(err.message.toLowerCase().includes('validation failed')) return res.sendStatus(404);
 };
