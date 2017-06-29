@@ -7,6 +7,6 @@ const teamSchema = mongoose.Schema({
   owner: {type: String},
   founded: {type: String, minlength: 5 },
   players: [{type: mongoose.Schema.Types.ObjectId, ref: 'player'}],
-})
+});
 
 module.exports = mongoose.model('team', teamSchema);

@@ -15,17 +15,17 @@ to initialize the server to feed requests for client, the following command will
 -npm start
 
 Clients can consume the resources of the server by accessing the following endpoint
--http://localhost:3500/api/restaurant
+-http://localhost:3500/api/teams
 
 The server has 4 routes
 
-restaurantRouter.post
-this route serves the creating of new restaurantSchema
+teamRouter.post
+this route serves the creating of new teamSchema
 
-restaurantRouter.get - this route serves records from the restaurant collection and it requires that client passes a valid id.
+teamRouter.get - this route serves records from the teams collection and it requires that client passes a valid id.
 
-restaurantRouter.post - this route creates we restaurant records in the collections, the restaurant name is a required field and if not passed it will give you a 400 error code.
+teamRouter.post - this route creates we team records in the collections, the team name is a required field and if not passed it will give you a 400 error code.
 
-restaurantRouter.put - this route is to update existing records in the restaurant's collection and it requires a valid id, if an id is not passed it throws a 400 error code.
+teamRouter.put - this route is to update existing records in the team's collection and it requires a valid id, if an id is not passed it throws a 400 error code.
 
-restaurantRouter.delete - this route is for deleting existing restaurant's collections, it requires a valid id, error 400 will be send back if missing.
+teamRouter.delete - this route is for deleting existing team's collections, it requires a valid id, error 400 will be send back if missing.

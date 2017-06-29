@@ -47,18 +47,3 @@ teamRouter.get('/api/teams', (req, res, next) => {
     .then(teams => res.json(teams))
     .catch(next);
 });
-
-// listRouter.get('/api/lists', (req, res, next) => {
-//   console.log('hit /api/lists')
-//
-//   let pageNumber = Number(req.query.page)
-//   if(!pageNumber || pageNumber < 1) pageNumber = 1;
-//   pageNumber--;
-//
-//   List.find({})
-//   .sort({title: 'asc'})
-//   .skip(pageNumber * 50)
-//   .limit(50)
-//   .then(lists => res.json(lists))
-//   .catch(next)
-// })
