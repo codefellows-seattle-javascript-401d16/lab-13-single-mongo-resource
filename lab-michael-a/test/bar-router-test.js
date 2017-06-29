@@ -14,7 +14,7 @@ const clearDB =  require('./lib/clear-db.js'); //write these...
 
 
 const API_URL = `http://localhost:${process.env.PORT}`;
-let tempBar;
+let tempBar; //eslint-disable-line
 
 describe('testing Bar routes', () => {
   before(server.start);
@@ -26,7 +26,7 @@ describe('testing Bar routes', () => {
     let barData = {name: faker.name.title(),
       address:faker.address.streetAddress(),
       bestDrink: faker.address.streetAddress(),
-    }; ///???******* TODO
+    };
 
     it('should respond with a Bar', () => {
       return superagent.post(`${API_URL}/api/bars`)
@@ -84,7 +84,7 @@ describe('testing Bar routes', () => {
 
     it('should respond with an array of 30 bars!!', () => {
       return mockBar.createMany(60)
-      .then(bars => {
+      .then(() => {
         return superagent.get(`${API_URL}/api/bars?page=2`);
       })
       .then(res => {
@@ -101,11 +101,11 @@ describe('testing Bar routes', () => {
     });
 
     it('should respond with an array of 30 bars!!', () => {
-      let tempBars;
-      return mockBar.createMany(60) //have to write this part...
+      let tempBars; //eslint-disable-line
+      return mockBar.createMany(60)
       .then(bars => {
         tempBars = bars;
-        return superagent.get(`${API_URL}/api/bars?page=3`)
+        return superagent.get(`${API_URL}/api/bars?page=3`);
       })
       .then(res => {
         console.log(res.body.map(bar=>bar.name));
@@ -123,52 +123,57 @@ describe('testing Bar routes', () => {
     });
   });
 
-
-
-
-
-
-
-
-
-
 //PUT REQUESTS!!!
 
   describe('testing PUT /api/bars', () => {
 
-    //there are problems with this part, not quite sure how to approach it...
-
     it('should respond with updating bar content information...', () => {
-      let tempList;
+      let tempBar;
       return mockBar.createOne()
       .then(bar => {
         tempBar = bar;
-      });
-      return superagent.put( `${API_URL}/api/bars/${bar._id}`)
-      .send({content:'updated'})
+        return superagent.put( `${API_URL}/api/bars/${bar._id}`)
+        .send({name:'updated',address:'updated',bestDrink:'updated'});
+      })
       .then(res => {
         expect(res.status).toEqual(200);
         expect(res.body._id).toEqual(tempBar._id);
-        expect(res.body.name).toEqual(tempBar.name);
-        expect(res.body.content).toEqual('updated');
+        expect(res.body.name).toEqual('updated');
+        expect(res.body.bestDrink).toEqual('updated');
       });
     });
 
     it('should respond with a 400 bad request', () => {
-      return superagent.put(`${API_URL}/api/bars/${tempBar._id}`)
-      .send({})
+      let tempBar;
+      return mockBar.createOne()
+      .then(bar => {
+        tempBar = bar;
+        return superagent.put(`${API_URL}/api/bars/${tempBar._id}`)
+        .send({});
+      })
       .catch((err) => {
         expect(err.status).toEqual(400);
+      });
+    });
+    it('should respond with a 404 bad request', () => {
+      return superagent.put(`${API_URL}/api/bars/3948769356456badrequest`)
+      // .send({})
+      .catch((err) => {
+        expect(err.status).toEqual(404);
       });
     });
   });
 
   describe('test DELETE /api/bars', () => {
     it('should delete our tempBar...', () => {
-      return superagent.delete(`${API_URL}/api/bars/${tempBar._id}`)
+      let tempBar;
+      return mockBar.createOne()
+      .then(bar => {
+        tempBar = bar;
+        return superagent.delete(`${API_URL}/api/bars/${tempBar._id}`);
+      })
       .catch(err => {
         expect(err.status).toEqual(204);
-        // expect(err.body).toEqual({});
         console.log('im in the delete test');
       });
     });
@@ -177,7 +182,6 @@ describe('testing Bar routes', () => {
       return superagent.delete(`${API_URL}/api/bars/yeahhhhnooo`)
       .catch(err => {
         expect(err.status).toEqual(404);
-        // expect(err.body).toEqual({});
         console.log('im in the delete test');
       });
     });
