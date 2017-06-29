@@ -127,11 +127,26 @@ describe('Testing for /api/resort routes', () => {
         .then(resort => {
           tempResort = resort;
           console.log('tempResort :', tempResort);
-          return superagent.put(`${API_URL}/api/notapath`)
+          return superagent.put(`${API_URL}/api/resorts/notapath`)
           .send({name: `${faker.hacker.verb()} pass resort`});
         })
         .catch(res => {
           expect(res.status).toEqual(404);
+        });
+      });
+    });
+    describe('If passing in bad content', () => {
+      it('it should respond with 400 status', () => {
+        let tempResort;
+        return mockResort.createOne()
+        .then(resort => {
+          tempResort = resort;
+          console.log('tempResort :', tempResort);
+          return superagent.put(`${API_URL}/api/resorts/${tempResort._id}`)
+          .send('badcontent');
+        })
+        .catch(res => {
+          expect(res.status).toEqual(400);
         });
       });
     });

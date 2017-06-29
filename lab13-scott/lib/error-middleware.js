@@ -9,5 +9,5 @@ module.exports = (err, req, res, next) => {
   if(err.message.toLowerCase().includes('validation failed')) return res.sendStatus(400);
   console.log('break point');
   //404 error if bad id
-  if(err.message.toLowerCase().includes('validation failed')) return res.sendStatus(404);
+  if(err.message.toLowerCase().includes('objectid failed')) return res.sendStatus(404);
 };
