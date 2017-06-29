@@ -132,7 +132,7 @@ describe('testing /api/ships', () => {
       expect(res.status).toEqual(204);
     });
   });
-  it('should sink (delete) a ship and return a 204 status', () => {
+  it('should sink (delete) a ship and return a 404 status', () => {
     return superagent.delete(`${API_URL}/api/ships/3245674533254754`)
     .catch(res => {
       expect(res.status).toEqual(404);

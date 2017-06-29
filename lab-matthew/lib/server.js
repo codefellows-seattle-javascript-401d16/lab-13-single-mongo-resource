@@ -19,6 +19,7 @@ app.use(morgan('dev'));
 
 // routes
 
+app.use(require('../route/crew-router.js'));
 app.use(require('../route/ship-router.js'));
 
 app.all('api/*', (req, res, next) => {
