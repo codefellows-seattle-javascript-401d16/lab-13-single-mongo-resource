@@ -31,7 +31,12 @@ teamRouter.put('/api/teams/:id', jsonParser, (req, res, next) => {
     .then(team => res.json(team))
     .catch(next);
 });
-//
+
+teamRouter.delete('/api/teams/:id', (req, res, next) => {
+  Team.findByIdAndRemove(req.params.id)
+    .then(()=> res.sendStatus(204))
+    .catch(next);
+});
 
 
 

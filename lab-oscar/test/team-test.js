@@ -20,7 +20,6 @@ describe('testing /api/teams', () => {
   after(clearDB);
 
   describe('testing POST /api/teams', () => {
-
     let data = {name:`${faker.name.findName()}`, owner: `${faker.name.findName()}`, founded: `${faker.date.past()}`};
     it('should respond with a team', () => {
       return superagent.post(`${API_URL}/api/teams`)
@@ -73,6 +72,7 @@ describe('testing /api/teams', () => {
   });
   describe('testing PUT /api/teams/:id', () => {
     let tempTeam;
+    after(clearDB);
     before(() => mockTeam.createOne()
       .then(team => {
         tempTeam = team;
@@ -85,6 +85,43 @@ describe('testing /api/teams', () => {
         .then(res => {
           expect(res.status).toEqual(200);
           expect(res.body.owner).toEqual('marineros');
+        });
+    });
+    it('should respond with code 400', () => {
+      return superagent.put(`${API_URL}/api/teams/${tempTeam._id}`)
+        .send({founded: '56'})
+        .catch(res => {
+          expect(res.status).toEqual(400);
+        });
+    });
+    it('should respond with code 404', () => {
+      return superagent.put(`${API_URL}/api/teams/47834`)
+        .send({founded: '56'})
+        .catch(res => {
+          expect(res.status).toEqual(404);
+        });
+    });
+  });
+
+  describe('testing DELETE /api/teams/:id', () => {
+    let tempTeam;
+    // after(clearDB);
+    before(() => mockTeam.createOne()
+      .then(team => {
+        tempTeam = team;
+      })
+    );
+    it('should respond with 200 code', () => {
+      return superagent.delete(`${API_URL}/api/teams/${tempTeam._id}`)
+        .then(res => {
+          expect(res.status).toEqual(204);
+          expect(res.body).toEqual({});
+        });
+    });
+    it('should respond with 404 code', () => {
+      return superagent.delete(`${API_URL}/api/teams/4747747`)
+        .catch(res => {
+          expect(res.status).toEqual(404);
         });
     });
   });
