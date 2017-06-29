@@ -20,16 +20,29 @@ describe('testing /api/nations', () => {
   afterEach(clearDB);
 
   describe('testing POST /api/nations', () => {
-    let data = {title: faker.name.title()};
+    let data = {country: faker.name.title()};
     it('should respond with a nation', () => {
       return superagent.post(`${API_URL}/api/nations`)
       .send(data)
       .then(res => {
-        console.log('data', data);
+        // console.log('data', data);
         expect(res.status).toEqual(200);
-        expect(res.body.title).toEqual(data.title);
+        expect(res.body.country).toEqual(data.country);
         expect(res.body.teams).toEqual([]);
         expect(res.body._id).toExist();
+      });
+    });
+    it('should respond with a 400', () => {
+      return superagent.post(`${API_URL}/api/nations`)
+      .catch(res => {
+        expect(res.status).toEqual(400);
+      });
+    });
+    it('should respond with a 409', () => {
+      return superagent.post(`${API_URL}/api/nations`)
+      .send(data)
+      .catch(res => {
+        expect(res.status).toEqual(409);
       });
     });
   });
@@ -44,7 +57,7 @@ describe('testing /api/nations', () => {
       })
       .then(res => {
         expect(res.status).toEqual(200);
-        expect(res.body.title).toEqual(tempNation.title);
+        expect(res.body.country).toEqual(tempNation.country);
         expect(res.body.teams).toEqual([]);
         expect(res.body._id).toExist();
       });
@@ -52,7 +65,7 @@ describe('testing /api/nations', () => {
   });
 
   describe('testing GET /api/nations', () => {
-    it('should respond with a an array of 50 nation', () => {
+    it('should respond with a an array of 50 nations', () => {
       let tempNations;
       return mockNation.createMany(100)
       .then(nations => {
@@ -60,18 +73,18 @@ describe('testing /api/nations', () => {
         return superagent.get(`${API_URL}/api/nations`);
       })
       .then(res => {
-        console.log(res.body.map(nation => nation.title));
+        // console.log(res.body.map(nation => nation.country));
         expect(res.status).toEqual(200);
         expect(res.body.length).toEqual(50);
         res.body.forEach(nation => {
           expect(nation._id).toExist();
           expect(nation.teams).toEqual([]);
-          expect(nation.title).toExist();
+          expect(nation.country).toExist();
         });
       });
     });
-  
-    it('should respond with a an array of 50 nation', () => {
+
+    it('should respond with a an array of 50 nations', () => {
       let tempNations;
       return mockNation.createMany(100)
       .then(nations => {
@@ -79,18 +92,17 @@ describe('testing /api/nations', () => {
         return superagent.get(`${API_URL}/api/nations?page=2`);
       })
       .then(res => {
-        console.log(res.body.map(nation => nation.title));
+        // console.log(res.body.map(nation => nation.country));
         expect(res.status).toEqual(200);
         expect(res.body.length).toEqual(50);
         res.body.forEach(nation => {
           expect(nation._id).toExist();
           expect(nation.teams).toEqual([]);
-          expect(nation.title).toExist();
+          expect(nation.country).toExist();
         });
       });
     });
-
-    it('should respond with a an array of 50 nation', () => {
+    it('should respond with a an array of 50 nations', () => {
       let tempNations;
       return mockNation.createMany(100)
       .then(nations => {
@@ -98,10 +110,22 @@ describe('testing /api/nations', () => {
         return superagent.get(`${API_URL}/api/nations?page=3`);
       })
       .then(res => {
-        console.log(res.body.map(nation => nation.title));
+        // console.log(res.body.map(nation => nation.country));
         expect(res.status).toEqual(200);
         expect(res.body.length).toEqual(0);
       });
     });
+  });
+
+  it('should respond with a 404', () => {
+    let tempNations;
+    return mockNation.createMany(100)
+      .then(nations => {
+        tempNations = nations;
+        return superagent.get(`${API_URL}/api/nations/nope`);
+      })
+      .catch(res => {
+        expect(res.status).toEqual(404);
+      });
   });
 });

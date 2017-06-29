@@ -3,7 +3,7 @@
 const mongoose = require('mongoose');
 
 const teamSchema = mongoose.Schema({
-  nation: [{type: mongoose.Schema.Types.ObjectId, ref: 'nation'}],
+  country: [{type: mongoose.Schema.Types.ObjectId, ref: 'country'}],
   name: {type: String, required: true, unique: true},
 });
 

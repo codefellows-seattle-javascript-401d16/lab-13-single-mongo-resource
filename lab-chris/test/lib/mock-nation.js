@@ -8,7 +8,7 @@ const mockNation = module.exports = {};
 
 mockNation.createOne = () => {
   return new Nation({
-    title: faker.random.words(3),
+    country: faker.random.words(3),
   })
   .save();
 };
