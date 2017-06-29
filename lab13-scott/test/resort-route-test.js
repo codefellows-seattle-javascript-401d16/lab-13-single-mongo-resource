@@ -3,10 +3,11 @@
 require('dotenv').config({path: `${__dirname}/../.test.env`});
 const superagent = require('superagent');
 const expect = require('expect');
-const server = require('../server.js');
-const MockResort = require('./lib/mock-resort.js');
+const server = require('../lib/server.js');
+const mockResort = require('./lib/mock-resort.js');
 const clearDB = require('./lib/clear-db.js');
 const API_URL = process.env.API_URL;
+const faker = require('faker');
 
 describe('Testing for /api/resort routes', () => {
   before(server.start);
@@ -17,12 +18,30 @@ describe('Testing for /api/resort routes', () => {
     describe('If successful', () => {
       it('it should create a new resort and respond with 200', () => {
         return superagent.post(`${API_URL}/api/resorts`)
-        .send(MockResort.createOne)
+        .send({name: `${faker.hacker.verb()} pass resort`})
         .then(res => {
           console.log('res.body: ', res.body);
           expect(res.status).toEqual(200);
           expect(res.body.name).toExist();
           expect(res.body._id).toExist();
+        });
+      });
+    });
+    describe('If passing in bad content', () => {
+      it('it should respond with 400 status', () => {
+        return superagent.post(`${API_URL}/api/resorts`)
+        .send('bad content')
+        .catch(res => {
+          expect(res.status).toEqual(400);
+        });
+      });
+    });
+    describe('If passing in a bad pathname', () => {
+      it('it should respond with 404 status', () => {
+        return superagent.post(`${API_URL}/api/notapath`)
+        .send({name: `${faker.hacker.verb()} pass resort`})
+        .catch(res => {
+          expect(res.status).toEqual(404);
         });
       });
     });
