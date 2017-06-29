@@ -117,6 +117,26 @@ describe('testing /api/posts', () => {
             });
         });
     });
+
+    describe('testing DELETE routes', () => {
+      it('should respond with a 204', () => {
+        return mockPost.createOne()
+          .then(createdPost => {
+            return superagent.delete(`${API_URL}/api/posts/${createdPost._id}`)
+              .then( res => {
+                expect(res.status).toEqual(204);
+              });
+          });
+
+      });
+
+      it('should respond with a 404', () => {
+        return superagent.delete(`${API_URL}/api/posts/booya/vertical`)
+          .catch(res => {
+            expect(res.status).toEqual(404);
+          });
+      });
+    });
   });
 });
 // });
