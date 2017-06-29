@@ -140,10 +140,11 @@ describe('testing /api/nhl/teams routes', () => {
         });
     });
     it('Should respond 400', () => { // the docs here are ridiculous. No matter what it returns 200, except if i send a number, it times out. I tried everything and I can't get this to return a 400
+      // EDIT: Found I needed to pass a real property in with bad data, rather than fake data all together
       return mockTeam.createOne()
         .then(createdTeam => {
           return superagent.put(`${API_URL}/api/nhl/teams/${createdTeam._id}`)
-            .send({yo: 'yo'})
+            .send({wins: 'yo'})
             .catch(res => {
               expect(res.status).toEqual(400);
             });
