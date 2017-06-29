@@ -1,5 +1,7 @@
 'use strict';
 
+const cors = require('cors');
+const morgan = require('morgan');
 const express = require('express');
 const app = express();
 
@@ -8,6 +10,8 @@ const mongoose = require('mongoose');
 mongoose.Promise = Promise;
 mongoose.connect(process.env.MONGODB_URI);
 
+app.use(cors());
+app.use(morgan('dev'));
 app.use(require('../route/resort-route.js'));
 app.all('/api/*', (req, res, next) => res.sendStatus(404));
 app.use(require('./error-middleware.js'));

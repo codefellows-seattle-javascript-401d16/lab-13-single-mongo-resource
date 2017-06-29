@@ -22,7 +22,6 @@ describe('Testing for /api/resort routes', () => {
         return superagent.post(`${API_URL}/api/resorts`)
         .send({name: `${faker.hacker.verb()} pass resort`})
         .then(res => {
-          console.log('res.body: ', res.body);
           expect(res.status).toEqual(200);
           expect(res.body.name).toExist();
           expect(res.body._id).toExist();
@@ -47,6 +46,19 @@ describe('Testing for /api/resort routes', () => {
         });
       });
     });
+    describe('If passing in a dupliate name', () => {
+      it('it should respond with 409 status', () => {
+        return mockResort.createOne()
+        .then(resort => {
+          tempResort = resort;
+          return superagent.post(`${API_URL}/api/resorts`).
+          send({name: `${tempResort.name}`});
+        })
+        .catch(res => {
+          expect(res.status).toEqual(409);
+        });
+      });
+    });
   });
 
   describe('Testing GET routes at /api/lists/:id', () => {
@@ -58,7 +70,6 @@ describe('Testing for /api/resort routes', () => {
           return superagent.get(`${API_URL}/api/resorts/${tempResort._id}`);
         })
         .then(res => {
-          console.log('res.body: ', res.body);
           expect(res.status).toEqual(200);
           expect(res.body.name).toEqual(tempResort.name);
           expect(res.body.trails).toEqual([]);
@@ -90,8 +101,9 @@ describe('Testing for /api/resort routes', () => {
         .then(resort => {
           tempResort = resort;
           return superagent.get(`${API_URL}/api/notapath`)
-        .send({name: `${faker.hacker.verb()} pass resort`});
+        .send(tempResort);
         })
+        .then(res => {throw res;})
         .catch(res => {
           expect(res.status).toEqual(404);
         });
@@ -102,7 +114,6 @@ describe('Testing for /api/resort routes', () => {
   describe('Testing PUT routes at /api/lists/:id', () => {
     describe('If successful', () => {
       it('it should update a resort and respond with the updated resort and 200', () => {
-        let tempResort;
         return mockResort.createOne()
         .then(resort => {
           tempResort = resort;
@@ -119,13 +130,13 @@ describe('Testing for /api/resort routes', () => {
     });
     describe('If passing in a bad pathname', () => {
       it('it should respond with 404 status', () => {
-        let tempResort;
         return mockResort.createOne()
         .then(resort => {
           tempResort = resort;
           return superagent.put(`${API_URL}/api/resorts/notapath`)
           .send({name: `${faker.hacker.verb()} pass resort`});
         })
+        .then(res => {throw res;})
         .catch(res => {
           expect(res.status).toEqual(404);
         });
@@ -133,13 +144,13 @@ describe('Testing for /api/resort routes', () => {
     });
     describe('If passing in bad content', () => {
       it('it should respond with 400 status', () => {
-        let tempResort;
         return mockResort.createOne()
         .then(resort => {
           tempResort = resort;
           return superagent.put(`${API_URL}/api/resorts/${tempResort._id}`)
-          .send('badcontent');
+          .send();
         })
+        .then(res => {throw res;})
         .catch(res => {
           expect(res.status).toEqual(400);
         });
@@ -150,7 +161,6 @@ describe('Testing for /api/resort routes', () => {
   describe('Testing DELETE routes at /api/lists/:id', () => {
     describe('If successful', () => {
       it('it should delete a specific resort and respond with a 204', () => {
-        let tempResort;
         return mockResort.createOne()
         .then(resort => {
           tempResort = resort;
@@ -166,22 +176,16 @@ describe('Testing for /api/resort routes', () => {
     });
     describe('If passing in a bad pathname', () => {
       it('it should respond with 404 status', () => {
-        let tempResort;
         return mockResort.createOne()
         .then(resort => {
           tempResort = resort;
-          console.log('tempResort :', tempResort);
           return superagent.delete(`${API_URL}/api/resorts/notapath`);
         })
+        .then(res => {throw res;})
         .catch(res => {
           expect(res.status).toEqual(404);
         });
       });
     });
   });
-
-
-
-
-
 });
