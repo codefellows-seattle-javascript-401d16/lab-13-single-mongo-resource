@@ -24,6 +24,7 @@ describe('testing /api/posts', () => {
       author: faker.name.firstName(),
       content: faker.lorem.sentences(),
     };
+    tempPost = data.title;
     it('should respond with a post', () => {
       return superagent.post(`${API_URL}/api/posts`)
         .send(data)
@@ -46,8 +47,16 @@ describe('testing /api/posts', () => {
     });
 
     it('should respond with a 409', () => {
+      let duplicateData = {
+        title: tempPost,
+        author: faker.name.firstName(),
+        content: faker.lorem.sentences(),
+      };
       return superagent.post(`${API_URL}/api/posts`)
-        .send(data)
+        .send(duplicateData)
+        .then(res => {
+          throw res;
+        })
         .catch(res => {
           expect(res.status).toEqual(409);
         });
