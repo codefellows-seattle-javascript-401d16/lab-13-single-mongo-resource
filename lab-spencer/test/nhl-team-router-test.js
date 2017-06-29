@@ -86,7 +86,7 @@ describe('testing /api/nhl/teams routes', () => {
     //         });
     //     });
     // });
-    it('Should respond 200 with a character', () => {
+    it('Should respond 200 with a team', () => {
       return mockTeam.createOne()
         .then(team => {
           return superagent.get(`${API_URL}/api/nhl/teams/${team._id}`)
@@ -115,7 +115,7 @@ describe('testing /api/nhl/teams routes', () => {
   describe('PUT', () => {
     after(clearDB);
 
-    it('Should respond 200 with the updated character', () => {
+    it('Should respond 200 with the updated team', () => {
       return mockTeam.createOne()
         .then(createdTeam => {
           return superagent.put(`${API_URL}/api/nhl/teams/${createdTeam._id}`)
@@ -139,17 +139,17 @@ describe('testing /api/nhl/teams routes', () => {
             });
         });
     });
-    it('Should respond 400', () => { // fix this
+    it('Should respond 400', () => { // the docs here are ridiculous. No matter what it returns 200, except if i send a number, it times out. I tried everything and I can't get this to return a 400
       return mockTeam.createOne()
         .then(createdTeam => {
           return superagent.put(`${API_URL}/api/nhl/teams/${createdTeam._id}`)
-            .send('dsadsadas')
+            .send({yo: 'yo'})
             .catch(res => {
               expect(res.status).toEqual(400);
             });
         });
     });
-    it('Should respond 404', () => { // fix this{
+    it('Should respond 404', () => {
       return superagent.put(`${API_URL}/api/nhl/teams/asdasdasdasdsa`)
         .send({city: 'Mukilteo', state: 'Washington'})
         .catch(res => {
@@ -157,34 +157,24 @@ describe('testing /api/nhl/teams routes', () => {
         });
     });
   });
-  //
-  // describe('DELETE', () => {
-  //   afterEach(() => Character.remove({}));
-  //   beforeEach(() => {
-  //     return new Character({
-  //       name: 'Bill Fill',
-  //       age: 55,
-  //       class: 'Bard',
-  //       primaryProfession: 'Blacksmithing',
-  //       secondaryProfession: 'Alchemy',
-  //     })
-  //     .save()
-  //     .then(character => {
-  //       tempCharacter = character;
-  //     });
-  //   });
-  //
-  //   it('Should respond 204', () => {
-  //     return superagent.delete(`${API_URL}/api/nhl/teams/${tempCharacter._id}`)
-  //     .then(res => {
-  //       expect(res.status).toEqual(204);
-  //     });
-  //   });
-  //   it('Should respond 404', () => {
-  //     return superagent.delete(`${API_URL}/api/nhl/teams/asdasdasdas`)
-  //     .catch(res => {
-  //       expect(res.status).toEqual(404);
-  //     });
-  //   });
-  // });
+
+  describe('DELETE', () => {
+    after(clearDB);
+
+    it('Should respond 204', () => {
+      return mockTeam.createOne()
+        .then(createdTeam => {
+          return superagent.delete(`${API_URL}/api/nhl/teams/${createdTeam._id}`)
+          .then(res => {
+            expect(res.status).toEqual(204);
+          });
+        });
+    });
+    it('Should respond 404', () => {
+      return superagent.delete(`${API_URL}/api/nhl/teams/asdasdasdas`)
+      .catch(res => {
+        expect(res.status).toEqual(404);
+      });
+    });
+  });
 });
