@@ -2,6 +2,7 @@
 
 const express = require('express');
 const morgan = require('morgan');
+const cors = require('cors');
 const mongoose = require('mongoose');
 
 mongoose.Promise = Promise;
@@ -9,16 +10,17 @@ mongoose.connect(process.env.MONGODB_URI);
 
 const app = express();
 
+app.use(cors());
 app.use(morgan('dev'));
 
+app.use(require('../route/nhl-player-router.js'));
 app.use(require('../route/nhl-team-router.js'));
 
 app.use(require('./error-middleware.js'));
 
-app.all('/*', (req, res) => {
+app.all('/api/*', (req, res) => { // api/ because we might want a different 404 for our actual website
   res.sendStatus(404);
 });
-
 
 const server = module.exports = {};
 server.isOn = false;

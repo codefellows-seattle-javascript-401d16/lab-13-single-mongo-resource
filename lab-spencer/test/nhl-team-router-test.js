@@ -6,7 +6,6 @@ const superagent = require('superagent');
 const server = require('../lib/server.js');
 const clearDB = require('./lib/clear-db.js');
 const mockTeam = require('./lib/mock-nhl-team.js');
-// const mockPlayer = require('./lib/mock-nhl-player.js');
 
 const API_URL = process.env.API_URL;
 let tempTeam;
@@ -17,6 +16,9 @@ describe('testing nonexistent endpoint', () => {
 
   it('Should respond 404', () => {
     return superagent.get(`${API_URL}/dkasjdk`)
+      .then(res => {
+        throw res;
+      })
       .catch(res => {
         expect(res.status).toEqual(404);
       });
@@ -54,6 +56,9 @@ describe('testing /api/nhl/teams routes', () => {
     });
     it('Should respond 400', () => {
       return superagent.post(`${API_URL}/api/nhl/teams`)
+        .then(res => {
+          throw res;
+        })
         .catch(res => {
           expect(res.status).toEqual(400);
         });
@@ -61,6 +66,9 @@ describe('testing /api/nhl/teams routes', () => {
     it('Should respond 400', () => {
       return superagent.post(`${API_URL}/api/nhl/teams`)
         .send({city: 'Hamilton'})
+        .then(res => {
+          throw res;
+        })
         .catch(res => {
           expect(res.status).toEqual(400);
         });
@@ -68,6 +76,9 @@ describe('testing /api/nhl/teams routes', () => {
     it('Should respond 409', () => {
       return superagent.post(`${API_URL}/api/nhl/teams`)
         .send(tempTeam)
+        .then(res => {
+          throw res;
+        })
         .catch(res => {
           expect(res.status).toEqual(409);
         });
@@ -106,6 +117,9 @@ describe('testing /api/nhl/teams routes', () => {
     });
     it('Should respond 404', () => {
       return superagent.get(`${API_URL}/api/nhl/teams/afasfasfsadasd`)
+        .then(res => {
+          throw res;
+        })
         .catch(res => {
           expect(res.status).toEqual(404);
         });
@@ -139,12 +153,14 @@ describe('testing /api/nhl/teams routes', () => {
             });
         });
     });
-    it('Should respond 400', () => { // the docs here are ridiculous. No matter what it returns 200, except if i send a number, it times out. I tried everything and I can't get this to return a 400
-      // EDIT: Found I needed to pass a real property in with bad data, rather than fake data all together
+    it('Should respond 400', () => {
       return mockTeam.createOne()
         .then(createdTeam => {
           return superagent.put(`${API_URL}/api/nhl/teams/${createdTeam._id}`)
             .send({wins: 'yo'})
+            .then(res => {
+              throw res;
+            })
             .catch(res => {
               expect(res.status).toEqual(400);
             });
@@ -153,6 +169,9 @@ describe('testing /api/nhl/teams routes', () => {
     it('Should respond 404', () => {
       return superagent.put(`${API_URL}/api/nhl/teams/asdasdasdasdsa`)
         .send({city: 'Mukilteo', state: 'Washington'})
+        .then(res => {
+          throw res;
+        })
         .catch(res => {
           expect(res.status).toEqual(404);
         });
@@ -166,16 +185,19 @@ describe('testing /api/nhl/teams routes', () => {
       return mockTeam.createOne()
         .then(createdTeam => {
           return superagent.delete(`${API_URL}/api/nhl/teams/${createdTeam._id}`)
-          .then(res => {
-            expect(res.status).toEqual(204);
-          });
+            .then(res => {
+              expect(res.status).toEqual(204);
+            });
         });
     });
     it('Should respond 404', () => {
       return superagent.delete(`${API_URL}/api/nhl/teams/asdasdasdas`)
-      .catch(res => {
-        expect(res.status).toEqual(404);
-      });
+        .then(res => {
+          throw res;
+        })
+        .catch(res => {
+          expect(res.status).toEqual(404);
+        });
     });
   });
 });
