@@ -83,12 +83,14 @@ describe('testing /api/posts', () => {
       return mockPost.createOne()
         .then(createdPost => {
           return superagent.put(`${API_URL}/api/posts/${createdPost._id}`)
-            .send({author: 'Izabella Baer'})
+            .send({author: 'Maeve'})
             .then(() => {
+              console.log('createdPost', createdPost);
               return superagent.get(`${API_URL}/api/posts/${createdPost._id}`)
                 .then(res => {
+                  console.log(res.body);
                   expect(res.status).toEqual(200);
-                  expect(res.body.author).toEqual(createdPost.author);
+                  expect(res.body.author).toEqual('Maeve');
                   expect(res.body.title).toEqual(createdPost.title);
                   expect(res.body._id).toExist();
                 });
