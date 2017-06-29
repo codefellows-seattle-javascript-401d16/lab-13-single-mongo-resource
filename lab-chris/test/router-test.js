@@ -39,8 +39,13 @@ describe('testing /api/nations', () => {
       });
     });
     it('should respond with a 409', () => {
-      return superagent.post(`${API_URL}/api/nations`)
-      .send(data)
+      let tempNation;
+      return mockNation.createOne()
+      .then(nation => {
+        tempNation = nation;
+        return superagent.post(`${API_URL}/api/nations`)
+        .send(tempNation);
+      })
       .catch(res => {
         expect(res.status).toEqual(409);
       });
@@ -102,7 +107,8 @@ describe('testing /api/nations', () => {
         });
       });
     });
-    it('should respond with a an array of 50 nations', () => {
+
+    it('should respond with a an empty array', () => {
       let tempNations;
       return mockNation.createMany(100)
       .then(nations => {
@@ -115,17 +121,76 @@ describe('testing /api/nations', () => {
         expect(res.body.length).toEqual(0);
       });
     });
-  });
 
-  it('should respond with a 404', () => {
-    let tempNations;
-    return mockNation.createMany(100)
+    it('should respond with a 404', () => {
+      let tempNations;
+      return mockNation.createMany(100)
       .then(nations => {
         tempNations = nations;
         return superagent.get(`${API_URL}/api/nations/nope`);
       })
+      .then(res => {throw res})
       .catch(res => {
         expect(res.status).toEqual(404);
       });
+    });
+  });
+
+  describe('testing PUT /api/nations/:id', () => {
+    it('should respond with a nation', () => {
+      let tempNation;
+      let data = {country: faker.address.country()};
+      return mockNation.createOne()
+      .then(nation => {
+        tempNation = nation;
+        return superagent.put(`${API_URL}/api/nations/${tempNation._id}`)
+        .send(data);
+      })
+      .then(res => {
+        expect(res.status).toEqual(200);
+        expect(res.body._id).toEqual(tempNation._id);
+        expect(res.body.country).toEqual(data.country);
+      });
+    });
+    it('should respond with a nation', () => {
+      let tempNation;
+      let data = {country: faker.address.country()};
+      return mockNation.createOne()
+      .then(nation => {
+        tempNation = nation;
+        return superagent.put(`${API_URL}/api/nations/${tempNation._id}`)
+        .send(data);
+      })
+      .then(res => {
+        expect(res.status).toEqual(200);
+        expect(res.body._id).toEqual(tempNation._id);
+        expect(res.body.country).toEqual(data.country);
+      });
+    });
+    it('should respond with a 400', () => {
+      let tempNation;
+      return mockNation.createOne()
+      .then(nation => {
+        tempNation = nation;
+        return superagent.put(`${API_URL}/api/nations/${tempNation._id}`);
+      })
+      .catch(res => {
+        expect(res.status).toEqual(400);
+      });
+    });
+    it('should respond with a 404', () => {
+      let tempNation;
+      let data = {country: faker.address.country()};
+      return mockNation.createOne()
+      .then(nation => {
+        tempNation = nation;
+        return superagent.put(`${API_URL}/api/nations/nope12313`)
+        .send(data);
+      })
+      .then(res => {throw res})
+      .catch(res => {
+        expect(res.status).toEqual(404);
+      });
+    });
   });
 });
