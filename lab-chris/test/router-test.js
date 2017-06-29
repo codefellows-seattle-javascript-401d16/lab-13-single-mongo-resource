@@ -25,7 +25,6 @@ describe('testing /api/nations', () => {
       return superagent.post(`${API_URL}/api/nations`)
       .send(data)
       .then(res => {
-        // console.log('data', data);
         expect(res.status).toEqual(200);
         expect(res.body.country).toEqual(data.country);
         expect(res.body.teams).toEqual([]);
@@ -78,7 +77,6 @@ describe('testing /api/nations', () => {
         return superagent.get(`${API_URL}/api/nations`);
       })
       .then(res => {
-        // console.log(res.body.map(nation => nation.country));
         expect(res.status).toEqual(200);
         expect(res.body.length).toEqual(50);
         res.body.forEach(nation => {
@@ -97,7 +95,6 @@ describe('testing /api/nations', () => {
         return superagent.get(`${API_URL}/api/nations?page=2`);
       })
       .then(res => {
-        // console.log(res.body.map(nation => nation.country));
         expect(res.status).toEqual(200);
         expect(res.body.length).toEqual(50);
         res.body.forEach(nation => {
@@ -116,7 +113,6 @@ describe('testing /api/nations', () => {
         return superagent.get(`${API_URL}/api/nations?page=3`);
       })
       .then(res => {
-        // console.log(res.body.map(nation => nation.country));
         expect(res.status).toEqual(200);
         expect(res.body.length).toEqual(0);
       });
@@ -129,7 +125,6 @@ describe('testing /api/nations', () => {
         tempNations = nations;
         return superagent.get(`${API_URL}/api/nations/nope`);
       })
-      .then(res => {throw res})
       .catch(res => {
         expect(res.status).toEqual(404);
       });
@@ -137,22 +132,7 @@ describe('testing /api/nations', () => {
   });
 
   describe('testing PUT /api/nations/:id', () => {
-    it('should respond with a nation', () => {
-      let tempNation;
-      let data = {country: faker.address.country()};
-      return mockNation.createOne()
-      .then(nation => {
-        tempNation = nation;
-        return superagent.put(`${API_URL}/api/nations/${tempNation._id}`)
-        .send(data);
-      })
-      .then(res => {
-        expect(res.status).toEqual(200);
-        expect(res.body._id).toEqual(tempNation._id);
-        expect(res.body.country).toEqual(data.country);
-      });
-    });
-    it('should respond with a nation', () => {
+    it('should respond with an updated nation', () => {
       let tempNation;
       let data = {country: faker.address.country()};
       return mockNation.createOne()
@@ -187,7 +167,35 @@ describe('testing /api/nations', () => {
         return superagent.put(`${API_URL}/api/nations/nope12313`)
         .send(data);
       })
-      .then(res => {throw res})
+      .catch(res => {
+        expect(res.status).toEqual(404);
+      });
+    });
+  });
+  describe('testing Delete /api/nations/:id', () => {
+    it('should respond with a nation', () => {
+      let tempNation;
+      let data = {country: faker.address.country()};
+      return mockNation.createOne()
+      .then(nation => {
+        tempNation = nation;
+        return superagent.delete(`${API_URL}/api/nations/${tempNation._id}`)
+        .send(data);
+      })
+      .then(res => {
+        expect(res.status).toEqual(200);
+        expect(res.body).toEqual({});
+      });
+    });
+    it('should respond with a 404', () => {
+      let tempNation;
+      let data = {country: faker.address.country()};
+      return mockNation.createOne()
+      .then(nation => {
+        tempNation = nation;
+        return superagent.delete(`${API_URL}/api/nations/nope12313`)
+        .send(data);
+      })
       .catch(res => {
         expect(res.status).toEqual(404);
       });
