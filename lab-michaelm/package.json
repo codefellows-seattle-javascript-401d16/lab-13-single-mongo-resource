@@ -21,9 +21,10 @@
     "superagent": "^3.5.2"
   },
   "dependencies": {
-    "express": "^4.15.3",
     "body-parser": "^1.17.2",
     "dotenv": "^4.0.0",
+    "express": "^4.15.3",
+    "faker": "^4.1.0",
     "http-errors": "^1.6.1",
     "mongoose": "^4.11.0"
   }

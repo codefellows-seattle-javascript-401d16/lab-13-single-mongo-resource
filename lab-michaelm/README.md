@@ -12,14 +12,14 @@
 
 ## Routes
 
-* To Create a team member.
-> http POST localhost/api/team?firstName=**string**.&&lastName=**string**&&availabilityDate=**datestring**
+* To Create a leader member.
+> http POST localhost/api/leader?firstName=**string**.&&lastName=**string**&&availabilityDate=**datestring**
 
 * To Read a member from the database.
-> http GET localhost/api/team?_id=**id of user**
+> http GET localhost/api/leader?_id=**id of user**
 
-* To Update a team member's entry.
-> http PUT localhost/api/team?firstName=**string**.&&lastName=**string**&&availabilityDate=**datestring**
+* To Update a leader member's entry.
+> http PUT localhost/api/leader?firstName=**string**.&&lastName=**string**&&availabilityDate=**datestring**
 
-* To Delete a team member.
-> http GET localhost/api/team?_id=**id of user to be deleted**
+* To Delete a leader member.
+> http GET localhost/api/leader?_id=**id of user to be deleted**

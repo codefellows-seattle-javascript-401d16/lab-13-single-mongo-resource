@@ -9,42 +9,45 @@ mongoose.Promise = Promise;
 mongoose.connect(process.env.MONGODB_URI);
 
 const app = express();
-let server;
 
 // middleware
 app.use(cors());
 app.use(morgan('dev'));
 //  routes
-app.use(require('../route/team-router.js'));
+app.use(require('../route/leader-router.js'));
+app.use(require('../route/member-router.js'));
 // error middleware
 app.use(require('./error-middleware.js'));
+// 404 route
+app.all('/api/*', (req, res, next) => {
+  res.sendStatus(404);
+});
 
-const serverControl = module.exports = {};
+const server = module.exports = {};
 
-serverControl.start = () => {
+server.start = () => {
   return new Promise((resolve, reject) => {
     if(!server || !server.isOn) {
-      server = app.listen(process.env.PORT, () =>{
-        console.log('Server is now up on port: ', process.env.PORT);
+      server.http = app.listen(process.env.PORT, () =>{
+        console.log('Server is now started on port: ', process.env.PORT);
         server.isOn = true;
         resolve();
       });
       return;
     }
-    reject();
+    reject(new Error('Server is already started'));
   });
 };
 
-serverControl.stop = () => {
+server.stop = () => {
   return new Promise((resolve, reject) => {
-    if(server && server.isOn) {
-      server.close(() => {
+    if(server.http && server.isOn) {
+      return server.http.close(() => {
         console.log('Server is now offline');
         server.isOn = false;
         resolve();
       });
-      return;
     }
-    reject();
+    reject(new Error('The server is already stopped'));
   });
 };
