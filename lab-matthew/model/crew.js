@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const Ship = require('./ship.js');
 
 const crewSchema = mongoose.Schema({
-  name: {type: String, required: true},
+  name: {type: String, required: true, unique: true, minlength: 3},
   age: {type: Number, required: true},
   profession: {type: String, required: true},
   ship: {type: mongoose.Schema.Types.ObjectId, required: true, ref: 'ship'},

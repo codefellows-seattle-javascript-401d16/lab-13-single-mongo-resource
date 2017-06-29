@@ -25,3 +25,17 @@ crewRouter.put('/api/crews/:id', jsonParser, (req, res, next) => {
   .then(crew => res.json(crew))
   .catch(next);
 });
+
+crewRouter.get('/api/crews/:id', (req, res, next) => {
+  console.log('hit GET /api/crews/:id');
+  Crew.findById(req.params.id)
+  .then(crew => res.json(crew))
+  .catch(next);
+});
+
+crewRouter.delete('/api/crews/:id', (req, res, next) => {
+  console.log('hit DELETE /api/crews/:id');
+  Crew.findByIdAndRemove(req.params.id)
+  .then(() => res.sendStatus(204))
+  .catch(next);
+});
