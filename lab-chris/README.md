@@ -21,7 +21,7 @@
 * `GET` request
  * pass the id of a resource though the query string to fetch a resource   
 * `POST` request
- * pass data as stringified json in the body (see player.js for required data) to create a resource  
+ * pass data as stringified json in the body (see nation.js for required data) to create a resource  
 * `PUT` request
  * pass data as stringified json in the body of a put request to update a resource
 * `DELETE` request

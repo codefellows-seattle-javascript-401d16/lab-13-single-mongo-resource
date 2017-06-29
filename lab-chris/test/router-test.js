@@ -70,7 +70,7 @@ describe('testing /api/nations', () => {
         });
       });
     });
-
+  
     it('should respond with a an array of 50 nation', () => {
       let tempNations;
       return mockNation.createMany(100)
