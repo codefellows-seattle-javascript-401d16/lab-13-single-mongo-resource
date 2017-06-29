@@ -7,7 +7,6 @@ const Team = require('../model/team.js');
 
 //module logic
 teamRouter.post('/api/teams', jsonParser, (req, res, next) => {
-  console.log('hit POST', req.body);
   new Team(req.body)
     .save()
     .then(team => res.json(team))
@@ -22,7 +21,6 @@ teamRouter.get('/api/teams/:id', (req, res, next) => {
 });
 
 teamRouter.put('/api/teams/:id', jsonParser, (req, res, next) => {
-  console.log('changing', req.body);
   let options = {
     runValidators: true,
     new: true,
@@ -38,28 +36,18 @@ teamRouter.delete('/api/teams/:id', (req, res, next) => {
     .catch(next);
 });
 
+teamRouter.get('/api/teams', (req, res, next) => {
+  let pageNumber = Number(req.query.page);
+  if(!pageNumber || pageNumber < 1) pageNumber = 1;
+  pageNumber--;
+  Team.find({})
+    .sort({name: 'asc'})
+    .skip(pageNumber * 50)
+    .limit(50)
+    .then(teams => res.json(teams))
+    .catch(next);
+});
 
-
-// restaurantRouter.put('/api/restaurant/:id', jsonParser, (req, res, next) => {
-//   let options = {
-//     runValidators: true,
-//     new: true,
-//   };
-//   Restaurant.findByIdAndUpdate(req.params.id, req.body, options)
-//   .then(restaurant => res.json(restaurant))
-//   .catch(next);
-// });
-
-// listRouter.get('/api/lists/:id', (req, res, next) => {
-//   console.log('hit GET /api/lists/:id')
-//
-//   List.findById(req.params.id)
-//   //.populate('tasks')
-//   .then(list => res.json(list))
-//   .catch(next)
-// })
-//
-//
 // listRouter.get('/api/lists', (req, res, next) => {
 //   console.log('hit /api/lists')
 //

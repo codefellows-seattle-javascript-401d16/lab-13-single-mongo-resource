@@ -17,7 +17,7 @@ const API_URL = process.env.API_URL;
 describe('testing /api/teams', () => {
   before(server.start);
   after(server.stop);
-  after(clearDB);
+  afterEach(clearDB);
 
   describe('testing POST /api/teams', () => {
     let data = {name:`${faker.name.findName()}`, owner: `${faker.name.findName()}`, founded: `${faker.date.past()}`};
@@ -105,7 +105,6 @@ describe('testing /api/teams', () => {
 
   describe('testing DELETE /api/teams/:id', () => {
     let tempTeam;
-    // after(clearDB);
     before(() => mockTeam.createOne()
       .then(team => {
         tempTeam = team;
@@ -125,62 +124,54 @@ describe('testing /api/teams', () => {
         });
     });
   });
+  describe('testing GET /api/teams', () => {
+    after(clearDB);
+    it('should respond with an array of 50 teams', () => {
+      let tempTeams;
+      return mockTeam.createMany(100)
+        .then(teams => {
+          tempTeams = teams;
+          return superagent.get(`${API_URL}/api/teams`);
+        })
+        .then(res => {
+          console.log(res.body.map(team => team.name));
+          expect(res.status).toEqual(200);
+          expect(res.body.length).toEqual(50);
+          res.body.forEach(team => {
+            expect(team._id).toExist();
+            expect(team.name).toExist();
+          });
+        });
+    });
+    it('should respond with an array of 50 teams', () => {
+      let tempTeams;
+      return mockTeam.createMany(100)
+        .then(teams => {
+          tempTeams = teams;
+          return superagent.get(`${API_URL}/api/teams?page=2`);
+        })
+        .then(res => {
+          console.log(res.body.map(team => team.name));
+          expect(res.status).toEqual(200);
+          expect(res.body.length).toEqual(50);
+          res.body.forEach(team => {
+            expect(team._id).toExist();
+            expect(team.name).toExist();
+          });
+        });
+    });
+    it('should respond with no teams', () => {
+      let tempTeams;
+      return mockTeam.createMany(100)
+        .then(teams => {
+          tempTeams = teams;
+          return superagent.get(`${API_URL}/api/teams?page=3`);
+        })
+        .then(res => {
+          console.log(res.body.length);
+          expect(res.status).toEqual(200);
+          expect(res.body.length).toEqual(0);
+        });
+    });
+  });
 });
-
-
-
-//   describe('testing GET /api/lists', () => {
-//     it('should respond with a an array of 50 list', () => {
-//       let tempLists
-//       return mockList.createMany(100)
-//       .then(lists => {
-//         tempLists = lists;
-//         return superagent.get(`${API_URL}/api/lists`)
-//       })
-//       .then(res => {
-//         console.log(res.body.map(list => list.title))
-//         expect(res.status).toEqual(200)
-//         expect(res.body.length).toEqual(50)
-//         res.body.forEach(list => {
-//           expect(list._id).toExist()
-//           expect(list.tasks).toEqual([])
-//           expect(list.title).toExist()
-//         })
-//       })
-//     })
-//
-//     it('should respond with a an array of 50 list', () => {
-//       let tempLists
-//       return mockList.createMany(100)
-//       .then(lists => {
-//         tempLists = lists;
-//         return superagent.get(`${API_URL}/api/lists?page=2`)
-//       })
-//       .then(res => {
-//         console.log(res.body.map(list => list.title))
-//         expect(res.status).toEqual(200)
-//         expect(res.body.length).toEqual(50)
-//         //expect(res.body[0].title[0] > 'a').toBeTruthy()
-//         res.body.forEach(list => {
-//           expect(list._id).toExist()
-//           expect(list.tasks).toEqual([])
-//           expect(list.title).toExist()
-//         })
-//       })
-//     })
-//
-//     it('should respond with a an array of 50 list', () => {
-//       let tempLists
-//       return mockList.createMany(100)
-//       .then(lists => {
-//         tempLists = lists;
-//         return superagent.get(`${API_URL}/api/lists?page=3`)
-//       })
-//       .then(res => {
-//         console.log(res.body.map(list => list.title))
-//         expect(res.status).toEqual(200)
-//         expect(res.body.length).toEqual(0)
-//       })
-//     })
-//   })
-// })
