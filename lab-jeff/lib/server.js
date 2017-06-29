@@ -15,12 +15,12 @@ const app = express();
 app.use(morgan('dev'));
 app.use(cors());
 
+app.use(require('../route/school-router.js'));
+app.use(require('./error-middleware.js'));
+
 app.all('/api/*', (req, res, next) => {
   res.sendStatus(404);
 });
-
-app.use(require('../route/school-router.js'));
-app.use(require('./error-middleware.js'));
 
 const server = module.exports = {};
 

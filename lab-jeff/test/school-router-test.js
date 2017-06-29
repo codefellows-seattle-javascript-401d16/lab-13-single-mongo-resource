@@ -19,17 +19,20 @@ describe('testing schools routes', () => {
   describe('test POST /api/schools', () => {
 
     let data = {
-      schoolName: faker.name.schoolName(),
+      schoolName: faker.name.firstName(),
     };
 
     it('should respond with a school and 200 status', () => {
+      console.log(data, '+++++++++++++++');
       return superagent.post(`${API_URL}/api/schools`)
       .send(data)
       .then(res => {
         expect(res.status).toEqual(200);
         expect(res.body._id).toExist();
         expect(res.body.schoolName).toEqual(data.schoolName);
-
+      })
+      .catch(error => {
+        console.log(error.message);
       });
     });
     it('should reply with a 400', () => {
@@ -74,9 +77,7 @@ describe('testing schools routes', () => {
     tempSchool;
     it('should respond with an updated school', () => {
 
-      let data = {
-        schoolName: faker.name.schoolName(),
-      };
+      let data = mockSchool.createOne();
 
       return mockSchool.createOne()
       .then(school => {
