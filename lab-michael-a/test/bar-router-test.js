@@ -1,6 +1,6 @@
 'use strict';
 
-require('dotenv').config({path: `${__dirname}/../.test.env`});
+require('dotenv').config({path: `${__dirname}/.test.env`});
 const faker = require('faker');
 const superagent = require('superagent');
 const expect = require('expect');
@@ -9,8 +9,8 @@ const expect = require('expect');
 
 
 const server = require('../lib/server.js');
-const clearDB //write these...
-const mockBar //write these...
+const mockBar = require('./lib/mock-bar.js');
+const clearDB =  require('./lib/clear-db.js'); //write these...
 
 
 const API_URL = `http://localhost:${process.env.PORT}`;
@@ -19,24 +19,26 @@ let tempBar;
 describe('testing Bar routes', () => {
   before(server.start);
   after(server.stop);
-  // afterEach(clearDB)
+  afterEach(clearDB);
 
 ///POST REQUEST
   describe('test POST /api/bars',() => {
-    let barData = {name: faker.name.title} ///???
+    let barData = {name: faker.name.title(),
+      address:faker.address.streetAddress(),
+      bestDrink: faker.address.streetAddress(),
+    }; ///???******* TODO
 
     it('should respond with a Bar', () => {
       return superagent.post(`${API_URL}/api/bars`)
       .send(barData)
       .then(res => {
-        // console.log('res.status^^^',res.status);
-        // console.log((!res.body._id),'there is an id??');
+
+
         expect(res.status).toEqual(200);
         expect(res.body._id).toExist();
-        // console.log('res.body.name^^^^',res.body.name);
+
         expect(res.body.name).toEqual(barData.name);
         expect(res.body.tasks).toEqual([]);
-        // tempBar = res.body; Don't need this..
       });
     });
 
@@ -62,32 +64,30 @@ describe('testing Bar routes', () => {
 ////GET REQUEST
   describe('testing GET /api/bars/:id', () => {
 
-    it('should respond with an array of 30 bars!!', () => {
-      let tempBars;
-      return mockBar.createMany(60) //have to write this part...
-      .then(bars => {
-        tempBars = bars;
-        return superagent.get(`${API_URL}/api/bars`)
+    it('should respond with an a list', () => {
+      let tempBar;
+      return mockBar.createOne() //have to write this part...
+      .then(bar => {
+        tempBar = bar;
+        console.log(tempBar);
+        return superagent.get(`${API_URL}/api/bars/${bar._id}`);
       })
       .then(res => {
-        console.log(res.body.map(bar=>bar.name));
+
         // console.log('res.^^^^',res.body);
         expect(res.status).toEqual(200);
-        expect(res.body.length).toEqual(30);
-        res.body.forEach(bar =>{
-          expect(bar._id).toExist();
-          expect(bar.tasks).toExist([]);
-          expect(bar.name).toExist();
-        });
+        expect(res.body.name).toEqual(tempBar.name);
+        expect(res.body.tasks).toEqual([]);
+        expect(res.body._id).toExist();
       });
-    })
+    });
 
     it('should respond with an array of 30 bars!!', () => {
       let tempBars;
-      return mockBar.createMany(60) //have to write this part...
+      return mockBar.createMany(60)
       .then(bars => {
         tempBars = bars;
-        return superagent.get(`${API_URL}/api/bars?page=2`)
+        return superagent.get(`${API_URL}/api/bars?page=2`);
       })
       .then(res => {
         console.log(res.body.map(bar=>bar.name));

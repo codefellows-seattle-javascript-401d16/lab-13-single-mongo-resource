@@ -16,6 +16,9 @@ barRouter.post('/api/bars', jsonParser, (req, res, next) => {
   .catch(next);
 });
 
+
+//GET ROUTES
+
 barRouter.get('/api/bars/:id', (req, res, next) => {
   // console.log('hit get /api/bars/:id');
   // console.log(req.params.id);
@@ -27,6 +30,23 @@ barRouter.get('/api/bars/:id', (req, res, next) => {
   })
   .catch(next);
 });
+
+
+barRouter.get('/api/bars', (req, res, next) => {
+  console.log('hit /api/bars');
+
+  let pageNumber = Number(req.query.page);
+  if(!pageNumber || pageNumber < 1) pageNumber = 1;
+  pageNumber--;
+
+  Bar.find({})
+  .sort({name: 'asc'})
+  .skip(pageNumber * 30)
+  .limit(30)
+  .then(bars => res.json(bars))
+  .catch(next);
+});
+
 
 barRouter.put('/api/bars/:id', jsonParser, (req, res, next) => {
   console.log('hit put /api/bars/:id');
@@ -45,6 +65,7 @@ barRouter.put('/api/bars/:id', jsonParser, (req, res, next) => {
 barRouter.delete('/api/bars/:id', (req, res, next) => {
 
   Bar.findByIdAndRemove(req.params.id)
+  .find({})
   .then(()=> res.sendStatus(204))
   .catch(next);
 

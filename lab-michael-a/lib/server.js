@@ -42,7 +42,7 @@ server.start = () => {
       });
       return;
     }
-    reject(new Error('server allread running'));
+    reject(new Error('server all read running'));
   });
 };
 
@@ -55,6 +55,6 @@ server.stop = () => {
         resolve();
       });
     }
-    reject(new Error('ther server is not running'));
+    reject(new Error('the server is not running'));
   });
 };
