@@ -3,6 +3,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const studentRouter = require('../route/student-routes.js');
+const errorMiddleware = require('./error-middleware.js');
 
 mongoose.Promise = Promise;
 mongoose.connect(process.env.MONGODB_URI);
@@ -11,6 +12,7 @@ let server;
 const app = express();
 
 app.use(studentRouter);
+app.use(errorMiddleware)
 
 const serverControll = module.exports = {};
 
