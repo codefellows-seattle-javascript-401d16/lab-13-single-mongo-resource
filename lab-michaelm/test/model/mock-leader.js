@@ -8,8 +8,9 @@ const mockLeader = module.exports = {};
 
 mockLeader.createOne = () => {
   return new Leader({
-    firstName: faker.random.words(1),
-    lastName: faker.random.words(1),
+    firstName: faker.name.firstName(),
+    lastName: faker.name.lastName(),
+    userName: faker.random.words(1),
   })
   .save();
 };

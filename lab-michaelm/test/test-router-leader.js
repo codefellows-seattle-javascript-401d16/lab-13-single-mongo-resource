@@ -15,7 +15,7 @@ const mockLeader = require('./model/mock-leader.js');
 let tempLeader;
 const API_URL = process.env.API_URL;
 
-describe('Testing leader routes', () => {
+describe('----------Testing leader routes-----------', () => {
   before(server.start);
   after(server.stop);
   afterEach(clearDB);
@@ -24,6 +24,7 @@ describe('Testing leader routes', () => {
     let data = {
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
+      userName: faker.random.words(1),
     };
     it('Should return a new leader', () => {
       return superagent.post(`${API_URL}/api/leader`)
@@ -142,6 +143,7 @@ describe('Testing leader routes', () => {
       let data = {
         firstName: faker.name.firstName(),
         lastName: faker.name.lastName(),
+        userName: faker.random.words(1),
       };
       return mockLeader.createOne()
       .then(leader => {
@@ -160,7 +162,6 @@ describe('Testing leader routes', () => {
 
     it('Should respond with a 400 status code', () => {
       return superagent.put(`${API_URL}/api/leader/${tempLeader._id}`)
-      .send({})
       .catch(res => {
         expect(res.status).toEqual(400);
       });
