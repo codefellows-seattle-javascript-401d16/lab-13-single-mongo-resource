@@ -50,32 +50,53 @@ describe('testing /api/players', () => {
         });
     });
   });
-
+  describe('testing GET /api/players/:id', () => {
+    it('should respond with a player', () => {
+      let tempTeam, tempPlayer;
+      return mockPlayer.createOne()
+        .then(({team, player}) => {
+          tempPlayer = player;
+          tempTeam = team;
+          return superagent.get(`${API_URL}/api/players/${tempPlayer._id.toString()}`);
+        })
+        .then(res => {
+          expect(res.status).toEqual(200);
+          expect(res.body.name).toEqual(tempPlayer.name);
+          expect(res.body._id).toEqual(tempPlayer._id);
+          return Team.findById(tempTeam._id);
+        })
+        .then(team => {
+          expect(team.players.length).toEqual(1);
+          expect(team.players[0].toString()).toEqual(tempPlayer._id.toString());
+        });
+    });
+    it('should respond with code 404', () => {
+      return superagent.get(`${API_URL}/api/players/802983475`)
+        .catch(res => {
+          expect(res.status).toEqual(404);
+        });
+    });
+  });
+  describe('testing PUT /api/players/:id', () => {
+    it('should resping with the updated player', () => {
+      let tempTeam, tempPlayer;
+      return mockPlayer.createOne()
+        .then(({team, player}) => {
+          tempPlayer = player;
+          tempTeam = team;
+          return superagent.put(`${API_URL}/api/players/${tempPlayer._id.toString()}`)
+            .send({age: 40});
+        })
+        .then(res => {
+          expect(res.status).toEqual(200);
+          expect(res.body.age).toEqual(40);
+          expect(res.body._id).toEqual(tempPlayer._id);
+          return Team.findById(tempTeam._id);
+        })
+        .then(team => {
+          expect(team.players.length).toEqual(1);
+          expect(team.players[0].toString()).toEqual(tempPlayer._id.toString());
+        });
+    });
+  });
 });
-
-//
-//   describe('testing PUT /api/tasks/:id', () => {
-//     it('should respond with the updated task', () => {
-//       let tempList, tempTask
-//       return mockTask.createOne()
-//       .then(({list, task}) => {
-//         tempTask = task
-//         tempList = list
-//         return superagent.put(`${API_URL}/api/tasks/${tempTask._id.toString()}`)
-//         .send({content: 'hello world'})
-//       })
-//       .then(res => {
-//         expect(res.status).toEqual(200)
-//         expect(res.body.content).toEqual('hello world')
-//         expect(res.body._id).toEqual(tempTask._id)
-//         expect(res.body.list).toEqual(tempList._id)
-//         return List.findById(tempList._id)
-//       })
-//       .then(list => {
-//         expect(list.tasks.length).toEqual(1)
-//         expect(list.tasks[0].toString()).toEqual(tempTask._id.toString())
-//       })
-//     })
-//   })
-//
-// })
