@@ -25,7 +25,7 @@ describe('testing /api/days', () => {
 
   //TODO: POST - test 200, response body like {<data>} for a post request with a valid body
   describe('testing POST /api/days', () => {
-    it('should create a day', () => {
+    it('should respond with 200 and create a day', () => {
       return mockYear.createOne()
       .then(year => {
         tempYear = year;
@@ -61,7 +61,7 @@ describe('testing /api/days', () => {
           dayOfYear: 1,
           year: tempYear._id.toString(),
         })
-        .then(res => {throw res})
+        .then(res => {throw res;})
         .catch(res => {
           expect(res.status).toEqual(400);
         });
@@ -75,6 +75,7 @@ describe('testing /api/days', () => {
       .then((year) => {
         tempYear = year;
         return superagent.get(`${API_URL}/api/days/not-an-id`)
+        .then(res => {throw res;})
         .catch(res => {
           expect(res.status).toEqual(404);
         });
@@ -85,18 +86,75 @@ describe('testing /api/days', () => {
       return mockDay.createOne()
       .then((year) => {
         tempYear = year;
-        console.log('year', year);
-        console.log('tempday.name', tempYear.name);
-        console.log('tempYear', tempYear);
         return superagent.get(`${API_URL}/api/days/${tempYear.day._id}`)
         .then(res => {
-          console.log('looking for tempYear.day lulwat', tempYear.day);
           expect(res.status).toEqual(200);
-          expect(res.body.name).toEqual(tempYear.day.dayOfWeek);
-          expect(res.body.dayJan1).toEqual(tempYear.day.dayOfYear);
-        })
-        .catch(res =>
-        console.log('watwat', tempYear.day._id));
+          expect(res.body.dayOfWeek).toEqual(tempYear.day.dayOfWeek);
+          expect(res.body.dayOfYear).toEqual(tempYear.day.dayOfYear);
+        });
+      });
+    });
+  });
+  // describe('testing PUT /api/days', () => {
+  //   //TODO: PUT - test 200, response body like {<data>} for a post request with a valid body
+  //   it('should return a status 200 and updated year', () => {
+  //     let data = {dayOfYear: 1};
+  //     return mockDay.createOne()
+  //     .then((year) => {
+  //       tempYear = year;
+  //       return superagent.put(`${API_URL}/api/days/${tempYear.day._id}`)
+  //       .send(data)
+  //       .then(res => {
+  //         // console.log('update', data);
+  //         // console.log('tempYear.day.dayOfYear', tempYear.day.dayOfYear);
+  //         expect(res.status).toEqual(200);
+  //         expect(res.body.dayOfYear).toEqual(tempYear.day.dayOfYear);
+  //       });
+  //     });
+  //   });
+  // TODO: PUT - test 404, with invalid id
+  //     it('should return a status 404 for invalid id', () => {
+  //       let data = {name: 2017};
+  //       return superagent.put(`${API_URL}/api/years/not-an-id`)
+  //       .send(data)
+  //       .catch(res => {
+  //         expect(res.status).toEqual(404);
+  //       });
+  //     });
+  //   //TODO: PUT - test 400, with invalid body
+  //     it('should return a status 400 with invalid body', () => {
+  //       let data = {name: 'asdf'};
+  //       return superagent.put(`${API_URL}/api/years/${tempYear._id}`)
+  //       .send(data)
+  //       .catch(res => {
+  //         expect(res.status).toEqual(400);
+  //       });
+  //     });
+  //   });
+  // });
+  describe('testing DELETE api/years/:id', () => {
+    //TODO: DELETE - test 204, with valid id
+    it('should return a status 204 for valid id', () => {
+      return mockDay.createOne()
+      .then((year) => {
+        tempYear = year;
+        return superagent.delete(`${API_URL}/api/days/${tempYear.day._id}`)
+        .then(res => {throw res;})
+        .catch(res => {
+          expect(res.status).toEqual(204);
+        });
+      });
+    });
+    //TODO: DELETE - test 404, with invalid id
+    it('should return a status 404 for valid id', () => {
+      return mockDay.createOne()
+      .then((year) => {
+        tempYear = year;
+        return superagent.delete(`${API_URL}/api/days/not-an-id`)
+        .then((res) => {throw res;})
+        .catch(res => {
+          expect(res.status).toEqual(404);
+        });
       });
     });
   });
@@ -146,63 +204,7 @@ describe('testing /api/days', () => {
 //       });
 //     });
 //   });
-//   describe('testing PUT api/years/:id', () => {
-//     beforeEach(() => {
-//       return mockYear.createOne()
-//       .then((year) => {
-//         tempYear = year;
-//       });
-//     });
-//     //TODO: PUT - test 200, response body like {<data>} for a post request with a valid body
-//     it('should return a status 200 and updated year', () => {
-//       let data = {name: 2017};
-//       return superagent.put(`${API_URL}/api/years/${tempYear._id}`)
-//       .send(data)
-//       .then(res => {
-//         expect(res.status).toEqual(200);
-//         expect(res.body.name).toEqual(data.name);
-//         expect(res.body.dayJan1).toEqual(tempYear.dayJan1);
-//       });
-//     });
-//   //TODO: PUT - test 404, with invalid id
-//     it('should return a status 404 for invalid id', () => {
-//       let data = {name: 2017};
-//       return superagent.put(`${API_URL}/api/years/not-an-id`)
-//       .send(data)
-//       .catch(res => {
-//         expect(res.status).toEqual(404);
-//       });
-//     });
-//   //TODO: PUT - test 400, with invalid body
-//     it('should return a status 400 with invalid body', () => {
-//       let data = {name: 'asdf'};
-//       return superagent.put(`${API_URL}/api/years/${tempYear._id}`)
-//       .send(data)
-//       .catch(res => {
-//         expect(res.status).toEqual(400);
-//       });
-//     });
-//   });
-//   describe('testing DELETE api/years/:id', () => {
-//     beforeEach(() => {
-//       return mockYear.createOne()
-//       .then((year) => {
-//         tempYear = year;
-//       });
-//     });
-//     //TODO: DELETE - test 204, with valid id
-//     it('should return a status 204 for valid id', () => {
-//       return superagent.delete(`${API_URL}/api/years/${tempYear._id}`)
-//       .catch(res => {
-//         expect(res.status).toEqual(204);
-//       });
-//     });
-//     //TODO: DELETE - test 404, with invalid id
-//     it('should return a status 404 for valid id', () => {
-//       return superagent.delete(`${API_URL}/api/years/not-an-id`)
-//       .catch(res => {
-//         expect(res.status).toEqual(404);
-//       });
-//     });
-//   });
+
+
+//
 // }); // end top-level describe block.

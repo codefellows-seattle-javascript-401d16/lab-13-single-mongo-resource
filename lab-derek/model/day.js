@@ -10,7 +10,7 @@ const daySchema = mongoose.Schema({
 });
 
 daySchema.pre('save', function(next) {
-  console.log('pre save doc', this);
+  // console.log('pre save doc', this);
   Year.findById(this.year)
   .then(year => {
     let dayIDSet = new Set(year.days);
@@ -25,7 +25,7 @@ daySchema.pre('save', function(next) {
 });
 
 daySchema.post('remove', function(doc, next) {
-  console.log('post remove doc', doc);
+  // console.log('post remove doc', doc);
   Year.findById(doc.year)
   .then(year => {
     year.days = year.days.filter(day => day._id !== doc._id);
