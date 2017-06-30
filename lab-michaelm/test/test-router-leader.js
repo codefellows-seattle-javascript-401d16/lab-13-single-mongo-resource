@@ -75,68 +75,6 @@ describe('----------Testing leader routes-----------', () => {
     });
   });
 
-  // describe('Testing GET /api/leaders', () => {
-  //
-  //   it('Should respond with a paged array of all leaders', () => {
-  //     let tempLeaders;
-  //     return mockLeader.createMany(20)
-  //     .then(leaders => {
-  //       tempLeaders = leaders;
-  //       return superagent.get(`${API_URL}/api/leaders`);
-  //     })
-  //     .then(res => {
-  //       console.log('res.body:\n\n', res.body);
-  //       expect(res.status).toEqual(200);
-  //       expect(res.body.length).toEqual(10);
-  //       res.body.forEach(leaders => {
-  //         expect(leaders._id).toExist();
-  //         expect(leaders.firstName).toExist();
-  //         expect(leaders.lastName).toExist();
-  //       });
-  //     });
-  //   });
-  //
-  //   it('Should respond with a paged array of all leaders', () => {
-  //     let tempLeaders;
-  //     return mockLeader.createMany(20)
-  //     .then(leaders => {
-  //       tempLeaders = leaders;
-  //       return superagent.get(`${API_URL}/api/leaders?page=2`);
-  //     })
-  //     .then(res => {
-  //       console.log('res.body:\n\n', res.body);
-  //       expect(res.status).toEqual(200);
-  //       expect(res.body.length).toEqual(10);
-  //       res.body.forEach(leaders => {
-  //         expect(leaders._id).toExist();
-  //         expect(leaders.firstName).toExist();
-  //         expect(leaders.lastName).toExist();
-  //       });
-  //     });
-  //   });
-  //
-  //   it('Should respond with an empty array', () => {
-  //     let tempLeaders;
-  //     return mockLeader.createMany(20)
-  //     .then(leaders => {
-  //       tempLeaders = leaders;
-  //       return superagent.get(`${API_URL}/api/leaders?page=3`);
-  //     })
-  //     .then(res => {
-  //       console.log('res.body:\n\n', res.body);
-  //       expect(res.status).toEqual(200);
-  //       expect(res.body.length).toEqual(0);
-  //     });
-  //   });
-  //
-  //   it('Should respond with a 404', () => {
-  //     return superagent.get(`${API_URL}/api/leader/5952a8d5c1b8d566a64ea23g`)
-  //     .catch(res => {
-  //       expect(res.status).toEqual(404);
-  //     });
-  //   });
-  // });
-
   describe('Testing PUT /api/leader/:id', () => {
     let tempLeader;
     it('Should respond with a changed leader', () => {

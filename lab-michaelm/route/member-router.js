@@ -18,19 +18,6 @@ memberRouter.get('/api/member/:id', (req, res, next) => {
   .catch(next);
 });
 
-// memberRouter.get('/api/members', (req, res, next) => {
-//   let pageNumber = Number(req.query.page);
-//   if(!pageNumber || pageNumber < 1) pageNumber = 1;
-//   pageNumber--;
-//
-//   Member.find({})
-//   .sort({title: 'asc'})
-//   .skip(pageNumber * 10)
-//   .limit(10)
-//   .then(data => res.json(data))
-//   .catch(next);
-// });
-
 memberRouter.put('/api/member/:id', jsonParser, (req, res, next) => {
   let options = {
     runValidators: true,
