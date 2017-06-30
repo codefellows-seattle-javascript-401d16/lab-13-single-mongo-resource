@@ -115,7 +115,14 @@ describe('testing /api/players', () => {
           return superagent.delete(`${API_URL}/api/players/${tempPlayer._id.toString()}`);
         })
         .then(res => {
-          expect(res.status).toEqual(200);
+          expect(res.status).toEqual(204);
+          expect(res.body).toEqual({});
+        });
+    });
+    it('should respond with 404', () => {
+      return superagent.delete(`${API_URL}/api/players/098572483597`)
+        .catch(res => {
+          expect(res.status).toEqual(404);
         });
     });
   });

@@ -29,6 +29,11 @@ playerRouter.put('/api/players/:id', jsonParser, (req, res, next) => {
     .then(player => res.json(player))
     .catch(next);
 });
+playerRouter.delete('/api/players/:id', (req, res, next) => {
+  Player.findByIdAndRemove(req.params.id)
+    .then(() => res.sendStatus(204))
+    .catch(next);
+});
 // taskRouter.put('/api/tasks/:id', jsonParser, (req, res, next) => {
 //   console.log('hit PUT /api/tasks/:id')
 //   let options = {
