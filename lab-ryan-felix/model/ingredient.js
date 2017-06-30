@@ -14,35 +14,26 @@ const ingredientSchema = mongoose.Schema({
 });
 
 
-// // FIXME: this works once then fails
-// ingredientSchema.pre('save', function(next) {
-//   console.log('saving an ingredient');
-//   console.log(this);
-//   Recipe.findById(this.recipe)
-//     .then(recipe => {
-//       console.log('pre save recipe id: ');
-//       console.log(recipe._id);
-//       const uniqueIngredients = new Set(recipe.ingredients);
-//       uniqueIngredients.add(this._id);
-//       recipe.ingredients = Array.from(uniqueIngredients);
-//       // FIXME: I think this is changing the recipe's id so future ingredients can't find it???
-//       return recipe.save();
-//     })
-//     .then(recipe => {
-//       console.log('post save recipe id: ')
-//       console.log(recipe._id)
-//     })
-//     .then(() => {
-//       console.log('successfully saved ingredient: ')
-//       console.log(this)
-//       next()
-//     })
-//     .catch((err) => {
-//       console.log('error in saving ingredient: ')
-//       console.log(this)
-//       next(err)
-//     });
-// });
+// FIXME: this works once then fails
+ingredientSchema.pre('save', function(next) {
+  console.log('saving an ingredient');
+  console.log(this);
+  Recipe.findById(this.recipe)
+    .then(recipe => {
+      console.log('pre save recipe id: ');
+      console.log(recipe._id);
+      if(!recipe.ingredients.includes(this._id))
+        recipe.ingredients.push(this._id);
+      // const uniqueIngredients = new Set(recipe.ingredients);
+      // uniqueIngredients.add(this._id);
+      // recipe.ingredients = Array.from(uniqueIngredients);
+      // FIXME: I think this is changing the recipe's id so future ingredients can't find it???
+      // FIXED!
+      return recipe.save();
+    })
+    .then(() => next())
+    .catch((err) => next(err));
+});
 
 ingredientSchema.post('remove', function(removedIngredient, next) {
   Recipe.findById(removedIngredient.recipe)

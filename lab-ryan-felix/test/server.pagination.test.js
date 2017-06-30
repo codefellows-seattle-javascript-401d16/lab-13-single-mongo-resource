@@ -18,7 +18,7 @@ describe('server pagination test', () => {
     return server.start()
       .then(() => Ingredient.remove({}))
       .then(() => Recipe.remove({}))
-      .then(() => mockDatabase(1))
+      .then(() => mockDatabase(50))
       .then(() => Ingredient.find({}))
       .then(() => console.log('100 mock recipes (with ingredients) added to db'));
   });
