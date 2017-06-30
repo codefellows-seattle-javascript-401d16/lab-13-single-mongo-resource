@@ -150,9 +150,13 @@ describe('Testing for /api/resort routes', () => {
           return superagent.put(`${API_URL}/api/resorts/${tempResort._id}`)
           .send();
         })
-        .then(res => {throw res;})
-        .catch(res => {
-          expect(res.status).toEqual(400);
+        .then(res => {
+          console.log('res.body.name: ', res.body.name);
+          console.log('tempResort.name: ', tempResort.name);
+          if (res.body.name == tempResort.name){
+            throw new Error(400);}
+        })
+        .catch(res => {expect(res.status).toEqual(400);
         });
       });
     });

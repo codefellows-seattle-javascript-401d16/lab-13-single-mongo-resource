@@ -33,8 +33,10 @@ trailSchema.pre('save', function(next){
 //after saving the new trail and updated resort, run this logic
 trailSchema.post('save', function(doc, next){
   console.log('Hit post save trail model, remove doc: ', doc);
+  //find the resort object by the resort property value on the trail/doc being passed in.
   Resort.findById(doc.resort)
   .then(resort => {
+    //filter the resort trails array to remove this trail
     resort.trails.filter(trail => doc._id !== trail._id);
     return resort.save();
   })
