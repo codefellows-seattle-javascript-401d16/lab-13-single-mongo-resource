@@ -16,7 +16,7 @@ const API_URL = process.env.API_URL;
 describe('testing /api/posts', () => {
   before(server.start);
   after(server.stop);
-  afterEach(clearDB);
+  after(clearDB);
 
   describe('testing POST routes', () => {
     let data = {
@@ -24,6 +24,7 @@ describe('testing /api/posts', () => {
       author: faker.name.firstName(),
       content: faker.lorem.sentences(),
     };
+    tempPost = data.title;
     it('should respond with a post', () => {
       return superagent.post(`${API_URL}/api/posts`)
         .send(data)
@@ -46,8 +47,17 @@ describe('testing /api/posts', () => {
     });
 
     it('should respond with a 409', () => {
+      let duplicateData = {
+        title: tempPost,
+        author: faker.name.firstName(),
+        content: faker.lorem.sentences(),
+      };
       return superagent.post(`${API_URL}/api/posts`)
-        .send(data)
+        .send(duplicateData)
+        .then(res => {
+          console.log(duplicateData, 'duplicateData');
+          throw res;
+        })
         .catch(res => {
           expect(res.status).toEqual(409);
         });
@@ -80,7 +90,7 @@ describe('testing /api/posts', () => {
     it('should respond with an array of 20 posts', () => {
       let tempPosts;
       return mockPost.createMany(40)
-        .then( posts => {
+        .then(posts => {
           tempPosts = posts;
           return superagent.get(`${API_URL}/api/posts`);
         })
@@ -120,10 +130,9 @@ describe('testing /api/posts', () => {
       return mockPost.createOne()
         .then(createdPost => {
           return superagent.put(`${API_URL}/api/posts/${createdPost._id}`)
-            .send({})
+            .send({title: 'slugz'})
             .catch(res => {
               expect(res.status).toEqual(400);
-              expect(res.body.content).toEqual({});
             });
         });
     });
