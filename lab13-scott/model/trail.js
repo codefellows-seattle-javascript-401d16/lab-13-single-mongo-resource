@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const Resort = require('./resort.js');
 
 const trailSchema = mongoose.Schema({
-  name: {type: String, required: true, min: 1},
+  name: {type: String, required: true, min: 1, unique: true},
   resort: {type: mongoose.Schema.Types.ObjectId, ref:'resort', required: true},
 });
 

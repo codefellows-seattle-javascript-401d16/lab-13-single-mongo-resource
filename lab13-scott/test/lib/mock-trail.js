@@ -11,7 +11,7 @@ mockTrail.createOne = () => {
   .then(resort => {
     result.resort = resort;
     return new Trail({
-      name: faker.company.bs,
+      name: `${faker.company.bsBuzz()} trail`,
       resort: result.resort._id,
     })
     .save();
@@ -29,7 +29,7 @@ mockTrail.createMultiple = (num) => {
     result.resort = resort;
     let manyTrailPromises = new Array(num).fill(0).map(() => {
       new Trail({
-        name: faker.company.bs,
+        name: `${faker.company.bsBuzz()} trail`,
         resort: result.resort._id,
       })
       .save();
