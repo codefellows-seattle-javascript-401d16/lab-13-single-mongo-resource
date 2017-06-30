@@ -78,7 +78,7 @@ describe('testing /api/players', () => {
     });
   });
   describe('testing PUT /api/players/:id', () => {
-    it('should resping with the updated player', () => {
+    it('should respond with the updated player', () => {
       let tempTeam, tempPlayer;
       return mockPlayer.createOne()
         .then(({team, player}) => {
@@ -96,6 +96,26 @@ describe('testing /api/players', () => {
         .then(team => {
           expect(team.players.length).toEqual(1);
           expect(team.players[0].toString()).toEqual(tempPlayer._id.toString());
+        });
+    });
+    it('should respond with code 400', () => {
+      return superagent.put(`${API_URL}/api/players/28574087`)
+        .catch(res => {
+          expect(res.status).toEqual(404);
+        });
+    });
+  });
+  describe('testing DELETE /api/players/:id', () => {
+    it('should respond with 200', () => {
+      let tempTeam, tempPlayer;
+      return mockPlayer.createOne()
+        .then(({team, player}) => {
+          tempPlayer = player;
+          tempTeam = team;
+          return superagent.delete(`${API_URL}/api/players/${tempPlayer._id.toString()}`);
+        })
+        .then(res => {
+          expect(res.status).toEqual(200);
         });
     });
   });
