@@ -35,14 +35,19 @@ resortRouter.get('/api/resorts', (req, res, next) => {
 });
 
 resortRouter.put('/api/resorts/:id', jsonParser, (req, res, next) => {
-  console.log('Hit PUT /api/resorts/:id route`');
+  console.log('Hit PUT /api/resorts/:id route');
+
+  let keys = Object.keys(req.body);
+  if (keys.length < 1 || req.body.name.length < 2 || typeof req.body.name !== 'string') {
+    return res.sendStatus(400);
+  }
 
   let options = {
     new: true,
     runValidators: true,
   };
 
-  Resort.findOneAndUpdate({_id: req.params.id}, req.body, options)
+  Resort.findByIdAndUpdate(req.params.id, req.body, options)
   .then(updatedResort => {
     res.json(updatedResort);
   })
