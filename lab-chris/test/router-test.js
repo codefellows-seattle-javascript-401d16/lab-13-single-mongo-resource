@@ -10,7 +10,6 @@ const server = require('../lib/server.js');
 const clearDB = require('./lib/clear-db.js');
 const mockNation = require('./lib/mock-nation.js');
 
-let tempNation;
 const API_URL = process.env.API_URL;
 
 
@@ -67,56 +66,56 @@ describe('testing /api/nations', () => {
       });
     });
   });
+  //
+  // describe('testing GET /api/nations', () => {
+  //   it('should respond with a an array of 50 nations', () => {
+  //     let tempNations;
+  //     return mockNation.createMany(100)
+  //     .then(nations => {
+  //       tempNations = nations;
+  //       return superagent.get(`${API_URL}/api/nations`);
+  //     })
+  //     .then(res => {
+  //       expect(res.status).toEqual(200);
+  //       expect(res.body.length).toEqual(50);
+  //       res.body.forEach(nation => {
+  //         expect(nation._id).toExist();
+  //         expect(nation.teams).toEqual([]);
+  //         expect(nation.country).toExist();
+  //       });
+  //     });
+  //   });
 
-  describe('testing GET /api/nations', () => {
-    it('should respond with a an array of 50 nations', () => {
-      let tempNations;
-      return mockNation.createMany(100)
-      .then(nations => {
-        tempNations = nations;
-        return superagent.get(`${API_URL}/api/nations`);
-      })
-      .then(res => {
-        expect(res.status).toEqual(200);
-        expect(res.body.length).toEqual(50);
-        res.body.forEach(nation => {
-          expect(nation._id).toExist();
-          expect(nation.teams).toEqual([]);
-          expect(nation.country).toExist();
-        });
-      });
-    });
-
-    it('should respond with a an array of 50 nations', () => {
-      let tempNations;
-      return mockNation.createMany(100)
-      .then(nations => {
-        tempNations = nations;
-        return superagent.get(`${API_URL}/api/nations?page=2`);
-      })
-      .then(res => {
-        expect(res.status).toEqual(200);
-        expect(res.body.length).toEqual(50);
-        res.body.forEach(nation => {
-          expect(nation._id).toExist();
-          expect(nation.teams).toEqual([]);
-          expect(nation.country).toExist();
-        });
-      });
-    });
-
-    it('should respond with a an empty array', () => {
-      let tempNations;
-      return mockNation.createMany(100)
-      .then(nations => {
-        tempNations = nations;
-        return superagent.get(`${API_URL}/api/nations?page=3`);
-      })
-      .then(res => {
-        expect(res.status).toEqual(200);
-        expect(res.body.length).toEqual(0);
-      });
-    });
+    // it('should respond with a an array of 50 nations', () => {
+    //   let tempNations;
+    //   return mockNation.createMany(100)
+    //   .then(nations => {
+    //     tempNations = nations;
+    //     return superagent.get(`${API_URL}/api/nations?page=2`);
+    //   })
+    //   .then(res => {
+    //     expect(res.status).toEqual(200);
+    //     expect(res.body.length).toEqual(50);
+    //     res.body.forEach(nation => {
+    //       expect(nation._id).toExist();
+    //       expect(nation.teams).toEqual([]);
+    //       expect(nation.country).toExist();
+    //     });
+    //   });
+    // });
+    //
+    // it('should respond with a an empty array', () => {
+    //   let tempNations;
+    //   return mockNation.createMany(100)
+    //   .then(nations => {
+    //     tempNations = nations;
+    //     return superagent.get(`${API_URL}/api/nations?page=3`);
+    //   })
+    //   .then(res => {
+    //     expect(res.status).toEqual(200);
+    //     expect(res.body.length).toEqual(0);
+    //   });
+    // });
 
     it('should respond with a 404', () => {
       let tempNations;
