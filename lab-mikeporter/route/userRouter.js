@@ -17,6 +17,20 @@ userRouter.get('/api/users/:id', (req, res, next) => {
     .catch(next);
 });
 
+userRouter.get('/api/users', (req, res, next) => {
+  let pageNumber = Number(req.query.page);
+  if(!pageNumber || pageNumber < 1)
+    pageNumber = 1;
+  pageNumber--;
+
+  User.find({})
+    .sort({name: 'asc'})
+    .skip(pageNumber * 10)
+    .limit(10)
+    .then((users) => res.json(users))
+    .catch(next);
+});
+
 userRouter.put('/api/users/:id', jsonParser, (req, res, next) => {
   let options = {
     new: true,

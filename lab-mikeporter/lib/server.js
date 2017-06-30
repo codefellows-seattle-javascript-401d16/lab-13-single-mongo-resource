@@ -19,7 +19,7 @@ app.all('/api/*', (req, res, next) => {
   res.sendStatus(404);
 });
 
-app.user(require('./error-middleware.js'));
+app.use(require('./error-middleware.js'));
 
 
 const server = module.exports = {};

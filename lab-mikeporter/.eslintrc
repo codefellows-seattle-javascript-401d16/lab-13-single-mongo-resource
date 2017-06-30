@@ -16,7 +16,8 @@
     "indent": [ "error", 2 ],
     "semi": ["error", "always"],
     "comma-dangle": ["error", "always-multiline"],
-    "quotes": ["error", "single", { "allowTemplateLiterals": true }]
+    "quotes": ["error", "single", { "allowTemplateLiterals": true }],
+    "no-unused-vars": ["error", { "args": "none" }]
   },
   "extends": "eslint:recommended"
 }
