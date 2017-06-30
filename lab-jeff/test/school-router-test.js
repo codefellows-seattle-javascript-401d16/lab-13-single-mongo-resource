@@ -19,11 +19,10 @@ describe('testing schools routes', () => {
   describe('test POST /api/schools', () => {
 
     let data = {
-      schoolName: faker.name.firstName(),
+      schoolName: faker.company.companyName(),
     };
-
+    console.log(data, '=================');
     it('should respond with a school and 200 status', () => {
-      console.log(data, '+++++++++++++++');
       return superagent.post(`${API_URL}/api/schools`)
       .send(data)
       .then(res => {
