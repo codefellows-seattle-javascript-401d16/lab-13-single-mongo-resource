@@ -2,36 +2,54 @@
 
 UPDATE THE BELOW FOR LAB-13
 
-### This app functions as a data store for hops and their basic characteristics that uses a RESTful API for data storage, display, and manipulation.
+### This app functions as a data store for beers and their basic characteristics that uses a RESTful API for data storage, display, and manipulation.
+
+  * Installation:
+    * Install Node.JS: `sudo apt-get install node`
+    * Clone this repository: `git clone https://github.com/0smium/lab-13-single-mongo-resource.git`
+    * Navigate to the newly created 'lab-13-single-mongo-resource' folder
+    * Navigate to the the 'lab-steve' directory
+    * Install all node dependencies for the project: `npm-install-all`
+    * Use:
+      * Create a `.env` file with the following content or similar:
+        * PORT=3000
+        * MONGODB_URI='mongodb://localhost/beers-db'
+      * `npm run start-db &` (this may take some time on first run)
+      * `npm start`
+      * Install HTTPie: `sudo apt-get install httpie`
+      * Usage: `http <method> localhost:<port from .env>/api/beers...` using the examples below.
+      * When done, in the server terminal window, type `ctrl+c` to end the server.
+      * `npm run stop-db`
 
   * index.js employs 'dotenv', imports lib/server.js, and calls a server start script from server.js using the environmental port variable (3000).
-  * lib/server.js defines the connection to the database using MongooseJS, sets up the server using Express, and requires route/hops-router.js, which defines all routes for the single-resource API.
+  * lib/server.js defines the connection to the database using MongooseJS, sets up the server using Express, and requires route/beer-router.js, which defines all routes for the single-resource API.
     * The CORS module allows the API to be CORS-enabled for all origins.
     * The morgan module, in its simplest implementation, logs response codes, response times, and content-length for all HTTP requests.
-  * model/hops.js defines the hops constructor and implements basic validation to prevent duplicate names.
+  * model/beers.js defines the beer constructor and implements basic validation to prevent duplicate names.
   * The following methods will return the following results:
-    * `GET localhost:3000/api/hops` - without a valid ID returns status code 200 and an array of all of the ids for that resource.
-    * `GET localhost:3000/api/hops/xxxxxxxxxxxxxxxxxxxxxxxx` (hexadecimal) - returns status code 200 and a hop object matching a valid ID.
-    * `GET localhost:3000/api/hops/12345` - returns a 404 error code and the details of the error if a valid ID is not included.
-    * `POST localhost:3000/api/hops` - returns a 400 error code and the details of the error.
-    * `POST localhost:3000/api/hops name=<name of the hop variety> minAA=<minimum alpha acid percent as a number> maxAA=<maximum alpha acid percent as a number> aroma=<aroma characteristics as a string> use=<the primary usages of the hop i.e., bittering, flavoring, or dry hopping...>` - returns status code 201 and a new hop object for a POST request with a valid body.
-    * `PUT localhost:3000/api/hops` - returns a 404 error code and the details of the error if a valid ID is not included.
-    * `PUT localhost:3000/api/hops/xxxxxxxxxxxxxxxxxxxxxxxx` - returns a 400 error code and the details of the error.
-    * `PUT localhost:3000/api/hops/xxxxxxxxxxxxxxxxxxxxxxxx name=<STRING> minAA=<NUM> maxAA=<NUM> aroma=<STRING> use=<STRING>` - returns status code 202 an updated hop object for PUT request with valid ID and ANY NUMBER of parameters that should be changed, for instance, `PUT localhost:3000/api/hops/xxxxxxxxxxxxxxxxxxxxxxxx name='new name' use='new use'`.
-    * `DELETE localhost:3000/api/hops` - returns a 204 status code and deletes all records for the resource.
-    * `DELETE localhost:3000/api/hops?id=1` - returns 404 error code and and the details of the error for valid DELETE request made with an ID that was not found.
-    * `DELETE localhost:3000/api/hops/xxxxxxxxxxxxxxxxxxxxxxxx` - returns  204 status code for a DELETE request with a valid ID.
-  * Tests - Mocha spins up the server before all tests and spins it down afterwards and tests the routes in route/hops-router.js while employing Expect.
-    1. `POST localhost:3000/api/hops passes in name='Magnum' minAA='10' maxAA='14' aroma='mild, herbal, piney and resinous' use='bittering'` - should return 201 status code and an object with name 'Magnum' and tests all the other parameters.  'res.body' is then assigned to the 'tempHop' variable, which is used in the remainder of the tests.
-    2. `POST localhost:3000/api/hops` - should return a 400 error code for a POST request with no body.
-    3. `POST localhost:3000/api/hops/${tempHop._id}` name='Magnum' ... - should return a 409 error code for a valid POST request that has a name parameter that already exists for another object in the DB.
-    4. `GET localhost:3000/api/hops/${tempHop._id}` - should return a 200 status code and tempHop data for the specific ID.
-    5. `GET localhost:3000/api/hops` - should return a 200 status code and an array of hops IDs.
-    6. `GET localhost:3000/api/hops/12345` - should return 404 error code for GET request without a valid ID.
-    7. `PUT localhost:3000/api/hops/${tempHop._id}` - passing in `{minAA: '11', aroma: 'herbal, piney and resinous'}` should return a 202 status code for valid PUT request with the specific ID with minAA changed to '11' and aroma changed to 'herbal, piney and resinous'.
-    8. `PUT localhost:3000/api/hops/${tempHop._id}` - with no body should return 400 error code.
-    9. `PUT localhost:3000/api/hops/12345` - should return 404 error code for PUT request without a valid ID and not delete anything.
-    10. `DELETE localhost:3000/api/hops/${tempHop._id}` - should return 204 status code and DELETE the record matching the ID.
+    * `GET localhost:3000/api/beers` - without a valid ID returns status code 200 and an array of all of the records for that resource.
+    * **STRETCH GOAL** `GET localhost:3000/api/beers?page=n` - where each page includes 50 records for the resource and n represents the page number, returns status code 200 and an array of up to 50 records for that resource.
+    * `GET localhost:3000/api/beers/xxxxxxxxxxxxxxxxxxxxxxxx` (hexadecimal) - returns status code 200 and a beer object matching a valid ID.
+    * `GET localhost:3000/api/beers/12345` - returns a 404 error code and the details of the error if a valid ID is not included.
+    * `POST localhost:3000/api/beers` - returns a 400 error code and the details of the error.
+    * `POST localhost:3000/api/beers name=<name of the beer> type=<type of beer i.e., IPA, Kolsch...> - returns status code 201 and a new beer object for a POST request with a valid body.
+    * `PUT localhost:3000/api/beers` - returns a 404 error code and the details of the error if a valid ID is not included.
+    * `PUT localhost:3000/api/beers/xxxxxxxxxxxxxxxxxxxxxxxx` - returns a 400 error code and the details of the error.
+    * `PUT localhost:3000/api/beers/xxxxxxxxxxxxxxxxxxxxxxxx name=<STRING> type=<STRING> - returns status code 202 an updated beer object for PUT request with valid ID and ANY NUMBER of parameters that should be changed, for instance, `PUT localhost:3000/api/beers/xxxxxxxxxxxxxxxxxxxxxxxx type='new type'`.
+    * `DELETE localhost:3000/api/beers` - returns a 204 status code and deletes all records for the resource.
+    * `DELETE localhost:3000/api/beers?id=1` - returns 404 error code and and the details of the error for valid DELETE request made with an ID that was not found.
+    * `DELETE localhost:3000/api/beers/xxxxxxxxxxxxxxxxxxxxxxxx` - returns  204 status code for a DELETE request with a valid ID.
+  * Tests - Mocha spins up the server before all tests and spins it down afterwards and tests the routes in route/beer-router.js using Expect, while clearing the DB after each test.
+    1. `POST localhost:3000/api/beers` uses the 'faker' NPM module to pass in a fake name and type - should return 201 status code and an object with name and use properties matching the fake data passed in and tests all the other parameters.  'res.body' is then assigned to the 'tempBeer' variable, which is used in the remainder of the tests.
+    2. `POST localhost:3000/api/beers` - should return a 400 error code for a POST request with no body.
+    3. `POST localhost:3000/api/beers/${tempBeer._id}` and passes in tempBeer as the request body - should return a 409 error code for a valid POST request that has a name parameter that already exists for another object in the DB.
+    4. `GET localhost:3000/api/beers/${tempBeer._id}` - should return a 200 status code and tempBeer data for the specific ID.
+    5. `GET localhost:3000/api/beers` - should return a 200 status code and an array of beer IDs.
+    6. `GET localhost:3000/api/beers/12345` - should return 404 error code for GET request without a valid ID.
+    7. `PUT localhost:3000/api/beers/${tempBeer._id}` - passing in `{name: 'Space Dust', type: 'IPA'}` should return a 202 status code for valid PUT request with the specific ID with name changed to 'Space Dust' and type changed to 'IPA'.
+    8. `PUT localhost:3000/api/beers/${tempBeer._id}` - with no body should return 400 error code.
+    9. `PUT localhost:3000/api/beers/12345` - should return 404 error code for PUT request without a valid ID and not delete anything.
+    10. `DELETE localhost:3000/api/beers/${tempBeer._id}` - should return 204 status code and DELETE the record matching the ID.
   * Project passes esLint.
   * NPM Scripts:
     * "test": "mocha" - Runs test scripts.

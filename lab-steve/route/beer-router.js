@@ -27,7 +27,7 @@ beerRouter.get('/api/beers/:id', (req, res, next) => {
 });
 
 beerRouter.get('/api/beers', (req, res, next) => {
-  console.log('hit /api/beers');
+  console.log('hit GET /api/beers');
 
   let pageNumber = Number(req.query.page);
   if(!pageNumber || pageNumber < 1) pageNumber = 1;
