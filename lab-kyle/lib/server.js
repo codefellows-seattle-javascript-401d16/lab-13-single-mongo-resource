@@ -14,6 +14,7 @@ app.use(cors());
 app.use(morgan('dev'));
 
 app.use(require('../route/bike-shop-router.js'));
+app.use(require('../route/bike-router.js'));
 
 app.all('/api/*', (req, res, next) => res.sendStatus(404));
 app.use(require('./error-middleware.js'));
