@@ -28,8 +28,8 @@ app.use(cors());
 app.use(morgan('dev'));
 
 //use resource router(s)
-app.use(require('../route/beer.js'));
-// app.use(require('../route/grain.js')); //to be used in lab14
+app.use(require('../route/beer-router.js'));
+// app.use(require('../route/grain-router.js')); //to be used in lab14
 
 // add 404 route
 app.all('/api/*', (req, res, next) => {

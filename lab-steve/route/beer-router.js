@@ -1,18 +1,18 @@
 'use strict';
 
 //npm modules
-const beerRouter = module.exports = require('express').Router;
+const beerRouter = module.exports = require('express').Router();
 const jsonParser = require('body-parser').json();
 
 //module imports
-const Beer = require('../model/beer.js');
+const Beer = require('../model/beers.js');
 
 //module logic
 beerRouter.post('/api/beers', jsonParser, (req, res, next) => {
   console.log('hit POST /api/beers');
   new Beer(req.body)
     .save()
-    .then(beer => res.json(beer))
+    .then(beer => res.status(201).json(beer))
     .catch(next);
 });
 
@@ -22,7 +22,7 @@ beerRouter.get('/api/beers/:id', (req, res, next) => {
 
   Beer.findById(req.params.id)
 
-    .then(beer => res.json(beer))
+    .then(beer => res.status(200).json(beer))
     .catch(next);
 });
 
@@ -37,7 +37,7 @@ beerRouter.get('/api/beers', (req, res, next) => {
     .sort({title: 'asc'})
     .skip(pageNumber * 50)
     .limit(50)
-    .then(beers => res.json(beers))
+    .then(beers => res.status(200).json(beers))
     .catch(next);
 });
 
