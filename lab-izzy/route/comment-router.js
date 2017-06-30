@@ -17,7 +17,7 @@ commentRouter.post('/api/comments', jsonParser, (req, res, next) => {
 commentRouter.get('/api/comments/:id', (req, res, next) => {
   console.log('hittin GET routes for COMMENTS');
 
-  Comment.findbyId(req.params.id)
+  Comment.findById(req.params.id)
     .then(comment => res.json(comment))
     .catch(next);
 });
