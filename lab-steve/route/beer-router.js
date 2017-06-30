@@ -42,12 +42,17 @@ beerRouter.get('/api/beers', (req, res, next) => {
 });
 
 beerRouter.put('/api/beers/:id', jsonParser, (req, res, next) => {
-  console.log('PUT /api/beers:id');
+  console.log('PUT /api/beers/:id');
 
   if (Object.keys(req.body).length === 0) {
     Beer.findById(req.params.id)
-      .then(beer => res.status(400).json(beer))
+      // .then((beer) => res.status(400))
+      .then(beer => {
+        res.status(400);
+        res.json(beer);
+      })
       .catch(next);
+    return;
   }
 
   let options = {
