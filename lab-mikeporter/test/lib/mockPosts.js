@@ -1,0 +1,27 @@
+'use strict';
+
+const faker = require('faker');
+const mockUsers = require('./mockUsers.js');
+const Post = require('../../model/post.js');
+
+const mockPosts = module.exports = {};
+
+// might have to toString user._id
+mockPosts.one = () => {
+  let usersHolder = {};
+  return mockUsers.one()
+    .then((user) => {
+      console.log(user._id);
+      usersHolder.user = user;
+      return new Post({
+        phoneNumber: faker.phone.phoneNumber(),
+        address: faker.address.streetAddress(),
+        ad: faker.hacker.phrase(),
+        user: user._id,
+      });
+    });
+};
+
+mockPosts.many = () => {
+
+}
