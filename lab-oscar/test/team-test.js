@@ -134,7 +134,6 @@ describe('testing /api/teams', () => {
           return superagent.get(`${API_URL}/api/teams`);
         })
         .then(res => {
-          console.log(res.body.map(team => team.name));
           expect(res.status).toEqual(200);
           expect(res.body.length).toEqual(50);
           res.body.forEach(team => {
@@ -151,7 +150,6 @@ describe('testing /api/teams', () => {
           return superagent.get(`${API_URL}/api/teams?page=2`);
         })
         .then(res => {
-          console.log(res.body.map(team => team.name));
           expect(res.status).toEqual(200);
           expect(res.body.length).toEqual(50);
           res.body.forEach(team => {
@@ -168,7 +166,6 @@ describe('testing /api/teams', () => {
           return superagent.get(`${API_URL}/api/teams?page=3`);
         })
         .then(res => {
-          console.log(res.body.length);
           expect(res.status).toEqual(200);
           expect(res.body.length).toEqual(0);
         });

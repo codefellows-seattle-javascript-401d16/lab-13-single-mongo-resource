@@ -13,6 +13,7 @@ app.use(morgan('dev'));
 app.use(cors());
 
 app.use(require('../route/team-router.js'));
+app.use(require('../route/player-router.js'));
 app.use(require('./error-handler.js'));
 
 app.all('/api/*', (req, res, next) => {
