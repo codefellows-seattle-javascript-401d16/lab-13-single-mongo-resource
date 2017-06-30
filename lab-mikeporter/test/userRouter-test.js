@@ -208,7 +208,7 @@ describe('testing /api/users paths', () => {
     it('should return invalid DELETE 404 with invalid id', () => {
       return mockUsers.one()
         .then((user) => {
-          return superagent.delete(`${API_URL}/api/users3`);
+          return superagent.delete(`${API_URL}/api/users/3`);
         })
         .catch((err) => {
           expect(err.status).toEqual(404);
@@ -216,9 +216,18 @@ describe('testing /api/users paths', () => {
     });
   });
 
-  // describe('', () => {
-  //   it('', () => {
-  //
-  //   });
-  // });
+  describe('testing 404 for invalid urls', () => {
+    it('should respond with 404 for /api/potato', () => {
+      return superagent.get(`${API_URL}/api/potato`)
+        .catch((err) => {
+          expect(err.status).toEqual(404);
+        });
+    });
+    it('should respond with 404 for /potato', () => {
+      return superagent.get(`${API_URL}/potato`)
+        .catch((err) => {
+          expect(err.status).toEqual(404);
+        });
+    });
+  });
 });
