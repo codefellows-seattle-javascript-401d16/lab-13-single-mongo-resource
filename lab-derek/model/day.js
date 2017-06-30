@@ -5,7 +5,7 @@ const Year = require('./year.js');
 
 const daySchema = mongoose.Schema({
   dayOfWeek: {type: 'String', required: true, match: /sun/||/mon/||/tue/||/wed/||/thu/||/fri/||/sat/},
-  dayOfYear: {type: Number, required: true, min: 0, max: 366},
+  dayOfYear: {type: Number, required: true, min: 0, max: 366, unique: true},
   year: {type: mongoose.Schema.Types.ObjectId, required: true, ref: 'year'},
 });
 
@@ -20,7 +20,7 @@ daySchema.pre('save', function(next) {
   })
   .then(() => next())
   .catch(() => {
-    next(new Error('failed to create a new day because year does not exist'));
+    next(new Error('duplicate key - already exists'));
   });
 });
 
