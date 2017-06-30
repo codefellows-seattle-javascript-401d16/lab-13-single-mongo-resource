@@ -1,3 +1,5 @@
+//map keeps breaing my code
+
 'use strict';
 
 require('dotenv').config({path: `${__dirname}/../.test.env`});
@@ -17,6 +19,7 @@ describe('testing /api/lists', () => {
   after(server.stop);
   afterEach(clearDB);
 
+//POST
   describe('testing POST /api/lists', () => {
     let data = {title: faker.name.title()};
     it('should respond with a list', () => {
@@ -29,6 +32,13 @@ describe('testing /api/lists', () => {
         expect(res.body.tasks).toEqual([]);
         expect(res.body._id).toExist();
       });
+    });
+    it('shoudl respond wiht a 400', () => {
+      return superagent.post(`${API_URL}/api/lists`);
+      // .send(123)
+      .catch(err => {
+        expect(err.status).toEqual(400)
+      })
     });
   });
 
