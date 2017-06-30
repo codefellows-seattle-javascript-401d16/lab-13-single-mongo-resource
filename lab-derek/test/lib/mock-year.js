@@ -8,7 +8,7 @@ const mockYear = module.exports = {};
 mockYear.createOne = () => {
   return new Year ({
     name: Math.floor(1400+Math.random()*50000),
-    dayJan1: faker.date.weekday(),
+    dayJan1: 'sun',
   })
   .save();
 };

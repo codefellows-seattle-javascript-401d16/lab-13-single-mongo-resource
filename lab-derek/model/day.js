@@ -3,10 +3,10 @@
 const mongoose = require('mongoose');
 const Year = require('./year.js');
 
-let daySchema = mongoose.Schema({
+const daySchema = mongoose.Schema({
   dayOfWeek: {type: 'String', required: true, match: /sun/||/mon/||/tue/||/wed/||/thu/||/fri/||/sat/},
-  year: {type: mongoose.Schema.Type.ObjectId, required: true, ref: 'year'},
   dayOfYear: {type: Number, required: true, min: 0, max: 366},
+  year: {type: mongoose.Schema.Types.ObjectId, required: true, ref: 'year'},
 });
 
 daySchema.pre('save', function(next) {
@@ -24,7 +24,7 @@ daySchema.pre('save', function(next) {
   });
 });
 
-daySchema.post('save', function(doc, next) {
+daySchema.post('remove', function(doc, next) {
   console.log('post remove doc', doc);
   Year.findById(doc.year)
   .then(year => {
@@ -34,3 +34,5 @@ daySchema.post('save', function(doc, next) {
   .then(() => next())
   .catch(next);
 });
+
+module.exports = mongoose.model('day', daySchema);

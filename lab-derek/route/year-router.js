@@ -62,3 +62,6 @@ yearRouter.delete('/api/years/:id', (req, res, next) => {
   .then(() => res.sendStatus(204))
   .catch(next);
 });
+
+
+//TODO: Add toLowerCase() for dayOfWeek and dayJan1.
