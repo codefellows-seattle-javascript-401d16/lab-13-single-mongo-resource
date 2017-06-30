@@ -1,3 +1,5 @@
+//map keeps breaing my code
+
 'use strict';
 
 require('dotenv').config({path: `${__dirname}/../.test.env`});
@@ -5,7 +7,6 @@ require('dotenv').config({path: `${__dirname}/../.test.env`});
 const faker = require('faker');
 const expect = require('expect');
 const superagent = require('superagent');
-
 const server = require('../lib/server.js');
 const clearDB = require('./lib/clear-db.js');
 const mockList = require('./lib/mock-list.js');
@@ -18,6 +19,7 @@ describe('testing /api/lists', () => {
   after(server.stop);
   afterEach(clearDB);
 
+//POST
   describe('testing POST /api/lists', () => {
     let data = {title: faker.name.title()};
     it('should respond with a list', () => {
@@ -29,6 +31,23 @@ describe('testing /api/lists', () => {
         expect(res.body.title).toEqual(data.title);
         expect(res.body.tasks).toEqual([]);
         expect(res.body._id).toExist();
+      });
+    });
+    // it('should respond with a 400 status', () => {
+    //   return superagent.post(`${API_URL}/api/lists`);
+    //   // let data = {title: faker.name.title()}
+    //   .send(tempList)
+    //   //why is send breakign this?
+    //   .catch(err => {
+    //     expect(err.status).toEqual(400);
+    //   });
+    // });
+    it('should respond with a 409 status', () => {
+      return superagent.post(`${API_URL}/api/lists`)
+      .send(tempList)
+      .then(res => {throw res;})
+      .catch(res => {
+        expect(res.status).toEqual(409);
       });
     });
   });
@@ -51,7 +70,7 @@ describe('testing /api/lists', () => {
   });
 
   describe('testing GET /api/lists', () => {
-    it('should respond with a an array of 50 list', () => {
+    it('should respond with a an array of 20 list', () => {
       let tempLists;
       return mockList.createMany(100)
       .then(lists => {
@@ -61,7 +80,7 @@ describe('testing /api/lists', () => {
       .then(res => {
         console.log(res.body.map(list => list.title));
         expect(res.status).toEqual(200);
-        expect(res.body.length).toEqual(50);
+        expect(res.body.length).toEqual(20);
         res.body.forEach(list => {
           expect(list._id).toExist();
           expect(list.tasks).toEqual([]);
@@ -70,7 +89,7 @@ describe('testing /api/lists', () => {
       });
     });
 
-    it('should respond with a an array of 50 list', () => {
+    it('should respond with an array of 20 list', () => {
       let tempLists;
       return mockList.createMany(100)
       .then(lists => {
@@ -80,7 +99,7 @@ describe('testing /api/lists', () => {
       .then(res => {
         console.log(res.body.map(list => list.title));
         expect(res.status).toEqual(200);
-        expect(res.body.length).toEqual(50);
+        expect(res.body.length).toEqual(20);
         res.body.forEach(list => {
           expect(list._id).toExist();
           expect(list.tasks).toEqual([]);
@@ -89,7 +108,7 @@ describe('testing /api/lists', () => {
       });
     });
 
-    it('should respond with a an array of 50 list', () => {
+    it('should respond with a an array of 20 list', () => {
       let tempLists;
       return mockList.createMany(100)
       .then(lists => {

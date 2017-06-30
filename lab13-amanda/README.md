@@ -1,6 +1,32 @@
 
 . 1. nm run start-db (starts mongo db)
 
+ERRORS:
+
+1) testing /api/lists testing GET /api/lists/:id should respond with a list:
+   Error: Not Found
+    at Request.callback (node_modules/superagent/lib/node/index.js:675:11)
+    at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/index.js:883:18)
+    at endReadableNT (_stream_readable.js:974:12)
+    at _combinedTickCallback (internal/process/next_tick.js:80:11)
+    at process._tickCallback (internal/process/next_tick.js:104:9)
+
+2) testing /api/lists testing GET /api/lists should respond with a an array of 20 list:
+   TypeError: Cannot read property 'map' of null
+    at mockList.createMany.then.then.res (test/list-router-test.js:61:29)
+    at process._tickCallback (internal/process/next_tick.js:109:7)
+
+3) testing /api/lists testing GET /api/lists should respond with an array of 20 list:
+   TypeError: Cannot read property 'map' of null
+    at mockList.createMany.then.then.res (test/list-router-test.js:80:29)
+    at process._tickCallback (internal/process/next_tick.js:109:7)
+
+4) testing /api/lists testing GET /api/lists should respond with a an array of 20 list:
+   TypeError: Cannot read property 'length' of null
+    at mockList.createMany.then.then.res (test/list-router-test.js:101:24)
+    at process._tickCallback (internal/process/next_tick.js:109:7)
+
+
 
 
 make sure you include at least one propertie with the unique validator set to true
@@ -30,7 +56,7 @@ write a test to ensure that your api returns a status code of 404 for routes tha
 write tests to ensure your /api/resource-name endpoint responds as described for each condition below:
 GET - test 404, responds with 'not found' for valid request made with an id that was not found
 GET - test 200, response body like {<data>} for a request made with a valid id
-PUT - test 200, response body like {<data>} for a post request with a valid body
+X PUT - test 200, response body like {<data>} for a post request with a valid body
 PUT - test 400, with invalid body
 PUT - test 404, with invalid id
 DELETE - test 204, with valid id
