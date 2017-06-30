@@ -16,6 +16,10 @@ app.use(morgan('dev'));
 
 app.use(require('../route/car-router.js'));
 
+app.all('/api/*', (req, res, next) => {
+  res.sendStatus(404);
+});
+
 app.use(require('./error-middleware.js'));
 
 //export server control

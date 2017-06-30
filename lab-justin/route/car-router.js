@@ -28,7 +28,7 @@ carRouter.get('/api/cars/:id', (req, res, next) => {
 
 
 carRouter.put('/api/cars/:id', jsonParser, (req, res, next) => {
-  console.log('POST /api/cars/:id');
+  console.log('PUT /api/cars/:id');
 
   let options = {
     runValidators: true,
