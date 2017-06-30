@@ -14,7 +14,7 @@ mockComment.createOne = () => {
       result.post = post;
       return new Comment({
         title: faker.random.words(10),
-        author: faker.random.name(2),
+        author: faker.random.first_name(2),
         post: post._id.toString(),
       })
         .save();

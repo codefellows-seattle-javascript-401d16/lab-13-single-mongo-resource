@@ -1,7 +1,7 @@
 'use strict';
 
 const mongoose = require('mongoose');
-const Post = require('../model/post.js');
+const Post = require('./post.js');
 
 const commentSchema = mongoose.Schema({
   title: {type: String, required: true},
