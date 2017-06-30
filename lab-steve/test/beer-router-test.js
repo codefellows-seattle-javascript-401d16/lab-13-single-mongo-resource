@@ -139,5 +139,32 @@ describe('testing /api/beers', () => {
         });
     });
   });//end of testing PUT block
-
+  describe('testing DELETE /api/beers', () => {
+    it('should respond with a 404 status code and not delete anything', () => {
+      return request.post(`${API_URL}/api/beers`)
+        .send({name: tempBeer.name, type: tempBeer.type})
+        .then((res) => {
+          tempBeer = res.body;
+          // console.log(tempBeer);
+          return request.delete(`${API_URL}/api/hops/12345`);
+        })
+        .catch(err => {
+          expect(err.status).toEqual(404);
+          return request.get(`${API_URL}/api/beers/${tempBeer._id}`)
+            .then(res => {
+              expect(res.body).toExist();
+            });
+        });
+    });
+    it('should respond with a 204 status code and delete the given beer object', () => {
+      return request.delete(`${API_URL}/api/beers/${tempBeer._id}`)
+        .then(res => {
+          expect(res.status).toEqual(204);
+          return request.get(`${API_URL}/api/beers/${tempBeer._id}`)
+            .then(res => {
+              expect(res.body).toNotExist();
+            });
+        });
+    });
+  });
 });//end of top-level describe block
