@@ -16,12 +16,12 @@ app.use(morgan('dev'));
 //  routes
 app.use(require('../route/leader-router.js'));
 app.use(require('../route/member-router.js'));
-// error middleware
-app.use(require('./error-middleware.js'));
 // 404 route
 app.all('/api/*', (req, res, next) => {
   res.sendStatus(404);
 });
+// error middleware
+app.use(require('./error-middleware.js'));
 
 const server = module.exports = {};
 

@@ -23,7 +23,7 @@ memberRouter.put('/api/member/:id', jsonParser, (req, res, next) => {
     runValidators: true,
     new: true,
   };
-  Member.findByIdAndUpdate(req.params.id, req.body, options)
+  return Member.findByIdAndUpdate(req.params.id, req.body, options)
   .then(data => res.json(data))
   .catch(next);
 });

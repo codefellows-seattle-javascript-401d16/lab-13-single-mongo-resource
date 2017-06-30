@@ -76,8 +76,8 @@ describe('----------Testing leader routes-----------', () => {
   });
 
   describe('Testing PUT /api/leader/:id', () => {
-    let tempLeader;
     it('Should respond with a changed leader', () => {
+      let tempLeader;
       let data = {
         firstName: faker.name.firstName(),
         lastName: faker.name.lastName(),
@@ -86,7 +86,7 @@ describe('----------Testing leader routes-----------', () => {
       return mockLeader.createOne()
       .then(leader => {
         tempLeader = leader;
-        return superagent.put(`${API_URL}/api/leader/${tempLeader._id}`)
+        return superagent.put(`${API_URL}/api/leader/${tempLeader._id.toString()}`)
         .send(data);
       })
       .then(res => {
@@ -99,7 +99,21 @@ describe('----------Testing leader routes-----------', () => {
     });
 
     it('Should respond with a 400 status code', () => {
-      return superagent.put(`${API_URL}/api/leader/${tempLeader._id}`)
+      let tempLeader;
+      return mockLeader.createOne()
+      .then(leader => {
+        tempLeader = leader;
+        let data = {
+          firstName: 'mike',
+          lastName: 'miller',
+          userName: '',
+        };
+        return superagent.put(`${API_URL}/api/leader/${tempLeader._id.toString()}`)
+        .send(data);
+      })
+      .then(res => {
+        throw res;
+      })
       .catch(res => {
         expect(res.status).toEqual(400);
       });

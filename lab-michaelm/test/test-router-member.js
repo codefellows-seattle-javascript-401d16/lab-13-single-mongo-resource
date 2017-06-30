@@ -162,7 +162,13 @@ describe('--------Testing member routes----------', () => {
       .then(({member}) => {
         tempMember = member;
         return superagent.put(`${API_URL}/api/member/${tempMember._id.toString()}`)
-        .send({});
+        .send({
+          firstName: 'Mike',
+          lastName: 'Miller',
+          availabilityDate: ['07/02/2017', '07/09/2017'],
+          userName: 'bling',
+          leader: '654684653548',
+        });
       })
       .then(res => {
         throw res;
