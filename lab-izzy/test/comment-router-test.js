@@ -14,29 +14,35 @@ const mockComment = require('./lib/mock-comment.js');
 
 const API_URL = process.env.API_URL;
 
+const newPost = {
+  title: 'hello world',
+  author: 'Izabellaaaa',
+};
+
 describe('testing /api/comments', () => {
   before(server.start);
   after(server.stop);
   after(clearDB);
 
+  let tempPost;
+  let tempComment;
+
   describe('testing POST /api/comments', () => {
-    it('should create a comment', () => {
-      let tempPost;
-      let tempComment;
+
+    it('should create a comment and respond with 200', () => {
+
       return mockPost.createOne()
         .then(post => {
           tempPost = post;
+          newPost.post = post._id.toString();
           return superagent.post(`${API_URL}/api/comments`)
-            .send({
-              title: 'hello world',
-              author: 'Izabella Arya Baer',
-              post: post._id.toString(),
-            });
+            .send(newPost);
         })
         .then(res => {
           expect(res.status).toEqual(200);
           expect(res.body._id).toExist();
           expect(res.body.title).toEqual('hello world');
+          expect(res.body.author).toEqual('Izabellaaaa');
           expect(res.body.post).toEqual(tempPost._id.toString());
           tempComment = res.body;
           return Post.findById(tempPost._id);
@@ -63,6 +69,7 @@ describe('testing /api/comments', () => {
     });
 
     it('should respond with a 409', () => {
+      console.log(tempComment, 'tempComment');
       return superagent.post(`${API_URL}/api/comments`)
         .send(tempComment)
         .then(res => {
@@ -103,7 +110,7 @@ describe('testing /api/comments', () => {
           let tempComment = comment;
           let tempPost = post;
           return superagent.put(`${API_URL}/api/comments/${tempComment._id.toString()}`)
-            .send({author: 'slugz'});
+            .send({author: ''});
         })
         .then(res => {
           throw res;

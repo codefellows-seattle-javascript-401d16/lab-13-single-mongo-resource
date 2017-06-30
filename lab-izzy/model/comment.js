@@ -5,7 +5,7 @@ const Post = require('./post.js');
 
 const commentSchema = mongoose.Schema({
   title: {type: String, required: true},
-  author: {type: String, required: true, unique: true, minlength: 10},
+  author: {type: String, required: true, minlength: 1},
   post: {type: mongoose.Schema.Types.ObjectId, ref: 'post'},
 });
 
