@@ -15,12 +15,11 @@ mockTeam.createOne = () => {
     return new Team({
       nation: nation._id.toString(),
       name: faker.random.words(3),
-
     })
     .save();
   })
-  .then(task => {
-    result.task = task;
+  .then(team => {
+    result.team = team;
     return result;
   });
 };
@@ -30,15 +29,15 @@ mockTeam.createMany = (n) => {
   return mockNation.createOne()
   .then(nation => {
     result.nation = nation;
-    let taskSavePromises = new Array(n).fill(0)
+    let teamSavePromises = new Array(n).fill(0)
       .map(() => new Team({
         nation: nation._id.toString(),
         name: faker.random.words(3),
       }).save());
-    return Promise.all(taskSavePromises);
+    return Promise.all(teamSavePromises);
   })
-  .then(tasks => {
-    result.tasks = tasks;
+  .then(teams => {
+    result.teams = teams;
     return result;
   });
 };

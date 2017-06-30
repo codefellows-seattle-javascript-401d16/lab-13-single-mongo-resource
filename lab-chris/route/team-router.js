@@ -26,15 +26,8 @@ teamRouter.put('/api/teams/:id', jsonParser, (req, res, next) => {
 });
 
 teamRouter.get('/api/teams/:id', (req, res, next) => {
-  let pageNumber = Number(req.query.page);
-  if(!pageNumber || pageNumber < 1) pageNumber = 1;
-  pageNumber--;
-
-  Team.find({})
-  .sort({nation: 'asc'})
-  .skip(pageNumber * 50)
-  .limit(50)
-  .then(teams => res.json(teams))
+  Team.findById(req.params.id)
+  .then(team => res.json(team))
   .catch(next);
 });
 
