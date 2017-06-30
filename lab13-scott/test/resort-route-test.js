@@ -14,7 +14,7 @@ let tempResort;
 describe('Testing for /api/resort routes', () => {
   before(server.start);
   after(server.stop);
-  afterEach(clearDB);
+  afterEach(clearDB.resort);
 
   describe('Testing POST routes', () => {
     describe('If successful', () => {
