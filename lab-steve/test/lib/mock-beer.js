@@ -11,8 +11,8 @@ const mockBeer = module.exports = {};
 
 mockBeer.createOne = () => {
   return new Beer({
-    name: faker.lorem.word() + 'ale',
-    type: faker.random.words(3),
+    name: faker.lorem.words(2) + ' ale',
+    type: faker.lorem.words(3),
   })
     .save();
 };

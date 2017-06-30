@@ -24,7 +24,7 @@ describe('testing /api/beers', () => {
   //hooks
   before(server.start);
   after(server.stop);
-  // afterEach(clearDB);
+  afterEach(clearDB);
   //end of hooks
 
   describe('testing POST /api/beers', () => {
@@ -38,10 +38,70 @@ describe('testing /api/beers', () => {
           expect(res.body.timeStamp).toExist();
           expect(res.body.name).toEqual(data.name);
           expect(res.body.type).toEqual(data.type);
-          // expect(res.body.grain).toEqual([]);
+          expect(res.body.grain).toEqual([]);
           tempBeer = res.body;
         });
     });
-  });
-//end of top-level describe block
-});
+    it('should respond with a 400 status code if no body is sent.', () => {
+      return request.post(`${API_URL}/api/beers`)
+        .send(null)
+        .catch(res => {
+          expect(res.status).toEqual(400);
+        });
+    });
+    it('should respond with a 409 status code if a beer object already exists.', () => {
+      return request.post(`${API_URL}/api/beers`)
+        .send(tempBeer)
+        .catch(res => {
+          expect(res.status).toEqual(409);
+        });
+    });
+  }); //end of testing POST block
+  describe('testing GET /api/beers/:id', () => {
+    it('should respond with a 200 status code and a beer object.', () => {
+      let tempBeer;
+      return mockBeer.createOne()
+        .then(beer => {
+          tempBeer = beer;
+          console.log(tempBeer);
+          return request.get(`${API_URL}/api/beers/${tempBeer._id}`);
+        })
+        .then(res => {
+          expect(res.status).toEqual(200);
+          expect(res.body.name).toEqual(tempBeer.name);
+          expect(res.body.type).toEqual(tempBeer.type);
+          expect(res.body.grain).toEqual([]);
+          expect(res.body._id).toExist();
+        });
+    });
+    it('should respond with a 404 status code and not return a beer object.', () => {
+      return request.get(`${API_URL}/api/beers/12345`)
+        .catch(res => {
+          expect(res.status).toEqual(404);
+          expect(res.body).toEqual(null);
+        });
+    });
+  }); //end of testing GET block
+  describe('testing GET /api/beers', () => {
+    it('should respond with a an array of 50 beers', () => {
+      // let tempBeers;
+      return mockBeer.createMany(100)
+        .then(() => {
+          // tempBeers = beers;
+          // console.log(tempBeers);
+          return request.get(`${API_URL}/api/beers`);
+        })
+        .then(res => {
+          console.log((res.body).map(beer => beer.name));
+          expect(res.status).toEqual(200);
+          expect(res.body.length).toEqual(50);
+          res.body.forEach(beer => {
+            expect(beer._id).toExist();
+            expect(beer.grain).toEqual([]);
+            expect(beer.name).toExist();
+            expect(beer.type).toExist();
+          });
+        });
+    });
+  });//end of testing /api/beers
+});//end of top-level describe block
