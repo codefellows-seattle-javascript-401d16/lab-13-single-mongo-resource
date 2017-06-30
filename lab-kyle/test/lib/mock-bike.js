@@ -1,8 +1,8 @@
 'use strict';
 
 const faker = require('faker');
+const Bike = require('../../model/bike.js');
 const mockBikeShop = require('./mock-bike-shop.js');
-const BikeShop = require('../../model/bike-shop.js');
 
 const mockBike = module.exports = {};
 
@@ -12,9 +12,10 @@ mockBike.create = (n) => {
   .then(shop => {
     result.shop = shop;
     let bikePromises = new Array(n).fill(0)
-      .map(() => new BikeShop({
-        make: faker.random.noun(),
-        model: faker.random.verb(),
+      .map(() => new Bike({
+        make: faker.hacker.noun(),
+        model: faker.hacker.verb(),
+        shop: shop._id,
       }).save());
     return Promise.all(bikePromises);
   })
