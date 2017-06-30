@@ -2,6 +2,7 @@
 
 const express = require('express');
 const mongoose = require('mongoose');
+const assignmentRouter = require('../route/assignment-router.js');
 const studentRouter = require('../route/student-routes.js');
 const errorMiddleware = require('./error-middleware.js');
 
@@ -12,7 +13,11 @@ let server;
 const app = express();
 
 app.use(studentRouter);
-app.use(errorMiddleware)
+app.use(assignmentRouter);
+
+app.all('/api/*', (req, res, next) => res.sendStatus(404));
+
+app.use(errorMiddleware);
 
 const serverControll = module.exports = {};
 

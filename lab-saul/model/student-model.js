@@ -9,7 +9,7 @@ const studentSchema = mongoose.Schema({
   grade: {type: Number, required: true},
   gender: {type: String, required: false},
   race: {type: String, required: false},
-  assignments: [{type: mongoose.}]
+  assignments: [{type: mongoose.Schema.Types.ObjectId, res: assignment}],
 });
 
 module.exports = mongoose.model('student', studentSchema);
