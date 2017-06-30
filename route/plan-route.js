@@ -12,13 +12,13 @@ planRouter.post('/api/plans', jsonParser, (req, res, next) => {
   .catch(next);
 });
 
-planRouter.get('/api/plans', (req, res, next) => {
+planRouter.get('/api/plans/:id', (req, res, next) => {
   Plan.findById(req.params.id)
   .then(plan => res.json(plan))
   .catch(next);
 });
 
-planRouter.put('/api/plans', jsonParser, (req, res, next) => {
+planRouter.put('/api/plans/:id', jsonParser, (req, res, next) => {
   let options = {
     new: true,
     runValidators: true,
@@ -28,8 +28,10 @@ planRouter.put('/api/plans', jsonParser, (req, res, next) => {
   .catch(next);
 });
 
-planRouter.delete('/api/plans', (req, res, next) => {
+planRouter.delete('/api/plans/:id', (req, res, next) => {
   Plan.findByIdAndRemove(req.params.id)
-  .then(plan => res.json(plan))
+  .then(() => {
+    res.sendStatus(204);
+  })
   .catch(next);
 });

@@ -13,11 +13,9 @@ const planSchema = mongoose.Schema( {
 planSchema.pre('save', function(next) {
   Trainer.findById(this.trainer)
   .then(trainer => {
-    let planIdSet = new Set(trainer.plans);
+    let planIdSet = new Set(trainer.plan);
     planIdSet.add(this._id);
-    console.log('id set', planIdSet);
-    trainer.plans = Array.from(planIdSet);
-    console.log('testing', trainer.plans);
+    trainer.plan = Array.from(planIdSet);
     return trainer.save();
   })
   .then(() => next())
