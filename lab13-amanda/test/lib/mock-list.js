@@ -2,7 +2,6 @@
 
 const faker = require('faker');
 const List = require('../../model/list.js');
-
 const mockList = module.exports = {};
 
 mockList.createOne = () => {
@@ -17,3 +16,5 @@ mockList.createMany = (n) => {
     .fill(0).map(() => mockList.createOne());
   return Promise.all(mockListArray);
 };
+
+//what is n doing here?

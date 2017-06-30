@@ -50,7 +50,7 @@ describe('testing /api/lists', () => {
   });
 
   describe('testing GET /api/lists', () => {
-    it('should respond with a an array of 50 list', () => {
+    it('should respond with a an array of 20 list', () => {
       let tempLists;
       return mockList.createMany(100)
       .then(lists => {
@@ -60,7 +60,7 @@ describe('testing /api/lists', () => {
       .then(res => {
         console.log(res.body.map(list => list.title));
         expect(res.status).toEqual(200);
-        expect(res.body.length).toEqual(50);
+        expect(res.body.length).toEqual(20);
         res.body.forEach(list => {
           expect(list._id).toExist();
           expect(list.tasks).toEqual([]);
@@ -69,7 +69,7 @@ describe('testing /api/lists', () => {
       });
     });
 
-    it('should respond with a an array of 50 list', () => {
+    it('should respond with an array of 20 list', () => {
       let tempLists;
       return mockList.createMany(100)
       .then(lists => {
@@ -79,7 +79,7 @@ describe('testing /api/lists', () => {
       .then(res => {
         console.log(res.body.map(list => list.title));
         expect(res.status).toEqual(200);
-        expect(res.body.length).toEqual(50);
+        expect(res.body.length).toEqual(20);
         res.body.forEach(list => {
           expect(list._id).toExist();
           expect(list.tasks).toEqual([]);
@@ -88,7 +88,7 @@ describe('testing /api/lists', () => {
       });
     });
 
-    it('should respond with a an array of 50 list', () => {
+    it('should respond with a an array of 20 list', () => {
       let tempLists;
       return mockList.createMany(100)
       .then(lists => {
