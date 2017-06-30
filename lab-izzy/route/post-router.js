@@ -6,7 +6,7 @@ const postRouter = module.exports = new require('express').Router();
 const Post = require('../model/post.js');
 
 postRouter.post('/api/posts', jsonParser, (req, res, next) => {
-  console.log('hittin POST /api/posts, yall');
+  console.log('hittin POST routes for POSTS, yall');
   new Post(req.body)
     .save()
     .then(post => res.json(post))
@@ -15,7 +15,7 @@ postRouter.post('/api/posts', jsonParser, (req, res, next) => {
 });
 
 postRouter.get('/api/posts/:id', (req, res, next) => {
-  console.log('hittin GET /api/posts/:id, yall');
+  console.log('hittin GET routes for POSTS, yall');
 
   Post.findById(req.params.id)
     .then(post => res.json(post))
@@ -23,7 +23,7 @@ postRouter.get('/api/posts/:id', (req, res, next) => {
 });
 
 postRouter.get('/api/posts', (req, res, next) => {
-  console.log('hittin pagenation /api/posts, yall');
+  console.log('hittin pagenation for POSTS, yall');
 
   let archivedPageNumber = Number(req.query.page);
   if(!archivedPageNumber || archivedPageNumber < 1) archivedPageNumber = 1;
@@ -38,7 +38,7 @@ postRouter.get('/api/posts', (req, res, next) => {
 });
 
 postRouter.put('/api/posts/:id', jsonParser, (req, res, next) => {
-  console.log('hittin PUT /api/posts/:id, yall');
+  console.log('hittin PUT routes for POSTS, yall');
 
   let options = {
     runValidators: true,
@@ -51,7 +51,7 @@ postRouter.put('/api/posts/:id', jsonParser, (req, res, next) => {
 });
 
 postRouter.delete('/api/posts/:id', (req, res, next) => {
-  console.log('hittin DELETE /api/posts/:id, yall');
+  console.log('hittin DELETE routes for POSTS, yall');
 
   Post.findByIdAndRemove(req.params.id)
     .then(() => res.sendStatus(204))
