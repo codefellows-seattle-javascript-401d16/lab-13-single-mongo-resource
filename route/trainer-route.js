@@ -27,6 +27,8 @@ trainerRouter.put('/api/trainers/:id', jsonParser, (req, res, next) => {
 
 trainerRouter.delete('/api/trainers/:id', (req, res, next) => {
   Trainer.findByIdAndRemove(req.params.id)
-  .then(res.sendStatus(204))
+  .then(() => {
+    res.sendStatus(204);
+  })
   .catch(next);
 });
