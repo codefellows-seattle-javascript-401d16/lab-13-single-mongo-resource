@@ -4,18 +4,23 @@ require('dotenv').config({ path: `${__dirname}/.env`});
 
 const server = require('../lib/server.js');
 const Recipe = require('../model/recipe.js');
-const mockRecipes = require('./lib/mock-recipes.js');
+const Ingredient = require('../model/ingredient.js');
+const mockDatabase = require('./lib/mock-database.js');
 
 const API_URL = `http://localhost:${process.env.PORT}/api/recipes`;
-const PAGE_LENGTH = 20;
+const INGREDIENT_URL = `http://localhost:${process.env.PORT}/api/ingredients`;
+const RECIPE_PAGE_LENGTH = 20;
+const INGREDIENT_PAGE_LENGTH = 25;
 
 describe('server pagination test', () => {
 
   before(() => {
     return server.start()
+      .then(() => Ingredient.remove({}))
       .then(() => Recipe.remove({}))
-      .then(() => mockRecipes.createMany(200))
-      .then(() => console.log('200 mock recipes added to db'));
+      .then(() => mockDatabase(1))
+      .then(() => Ingredient.find({}))
+      .then(() => console.log('100 mock recipes (with ingredients) added to db'));
   });
 
   after(() => {
@@ -27,7 +32,7 @@ describe('server pagination test', () => {
     return superagent.get(`${API_URL}`)
       .then(res => {
         expect(res.status).toEqual(200);
-        expect(res.body.length).toEqual(PAGE_LENGTH);
+        expect(res.body.length).toEqual(RECIPE_PAGE_LENGTH);
         res.body.forEach((recipe) => {
           expect(recipe._id).toExist();
           expect(recipe.title).toExist();
@@ -38,17 +43,44 @@ describe('server pagination test', () => {
   });
 
   it('should return a requested page of recipes', () => {
-    return superagent.get(`${API_URL}?page=5`)
+    return superagent.get(`${API_URL}?page=2`)
     .then(res => {
       expect(res.status).toEqual(200);
-      expect(res.body.length).toEqual(PAGE_LENGTH);
+      expect(res.body.length).toEqual(RECIPE_PAGE_LENGTH);
       res.body.forEach((recipe) => {
         expect(recipe._id).toExist();
         expect(recipe.title).toExist();
         expect(recipe.author).toExist();
         expect(recipe.text).toExist();
-        console.log(recipe.title);
       });
     });
+  });
+
+  it('should return the first page of ingredients', () => {
+    return superagent.get(`${INGREDIENT_URL}`)
+      .then(res => {
+        expect(res.status).toEqual(200);
+        expect(res.body.length).toEqual(INGREDIENT_PAGE_LENGTH);
+        res.body.forEach((ingredient) => {
+          expect(ingredient._id).toExist();
+          expect(ingredient.name).toExist();
+          expect(ingredient.description).toExist();
+          expect(ingredient.recipe).toExist();
+        });
+      });
+  });
+
+  it('should return a requested page of ingredients', () => {
+    return superagent.get(`${INGREDIENT_URL}?page=2`)
+      .then(res => {
+        expect(res.status).toEqual(200);
+        expect(res.body.length).toEqual(INGREDIENT_PAGE_LENGTH);
+        res.body.forEach((ingredient) => {
+          expect(ingredient._id).toExist();
+          expect(ingredient.name).toExist();
+          expect(ingredient.description).toExist();
+          expect(ingredient.recipe).toExist();
+        });
+      });
   });
 });

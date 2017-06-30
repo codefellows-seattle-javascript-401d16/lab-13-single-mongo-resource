@@ -8,7 +8,7 @@ const recipeSchema = mongoose.Schema({
   timestamp: { type: Date, default: Date.now() },
   text: { type: String },
   ingredients: {
-    type: [{ type: mongoose.Schema.Types.ObjectId}],
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'ingredient' }],
   },
 });
 

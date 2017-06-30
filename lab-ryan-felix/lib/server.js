@@ -11,6 +11,7 @@ const app = express();
 app.use(morgan('dev'));
 
 app.use(require('../route/recipe-route.js'));
+app.use(require('../route/ingredient-route.js'));
 
 app.all('/api/*', (req, res) => {
   res.sendStatus(404);
