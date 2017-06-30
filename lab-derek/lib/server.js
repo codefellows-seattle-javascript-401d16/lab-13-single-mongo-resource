@@ -24,6 +24,7 @@ app.use(cors());
 // * load routes
 
 app.use(require('../route/year-router.js'));
+app.use(require('../route/day-router.js'));
 
 // * load 404 route
 app.all('/api/*', (req, res, next) => {
