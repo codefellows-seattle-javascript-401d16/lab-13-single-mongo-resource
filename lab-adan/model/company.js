@@ -4,8 +4,8 @@ const mongoose = require('mongoose');
 
 // define a schema for your model
 const companySchema = mongoose.Schema({
-  name: {type:String, required: true},
-  products: {type:String, required: true},
+  companyName: {type:String, required: true},
+  products: [{type: mongoose.Schema.Types.ObjectId, ref: 'products'}],
 });
 
 // export a model

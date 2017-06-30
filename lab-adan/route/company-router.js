@@ -2,39 +2,37 @@
 
 const Router = require('express').Router;
 const jsonParser = require('body-parser').json();
-const Movie = require('../model/movie.js');
+const Company = require('../model/company.js');
 
-let movieRouter = module.exports = new Router();
+let companyRouter = module.exports = new Router();
 
-movieRouter.post('/api/movie', jsonParser, (req, res, next) => {
-  console.log('hit /api/movie');
-  req.body.created = new Date();
-
-  new Movie(req.body)
+companyRouter.post('/api/company', jsonParser, (req, res, next) => {
+  console.log('hit /api/company');
+  new Company(req.body)
     .save()
-    .then(movie => res.json(movie))
+    .then(company => res.json(company))
     .catch(next);
 });
-movieRouter.get('/api/movie',(req, res, next) => {
-  Movie.find({})
-    .then(movie => res.json(movie))
+companyRouter.get('/api/company',(req, res, next) => {
+  Company.find({})
+    .then(company => res.json(company))
     .catch(next);
 
 });
-movieRouter.get('/api/movie/:id', (req, res, next) => {
-  console.log('hit get /api/movie/:id');
-  Movie.findById(req.params.id)
-    .then(movie => res.json(movie))
+companyRouter.get('/api/company/:id', (req, res, next) => {
+  console.log('hit get /api/company/:id');
+  Company.findById(req.params.id)
+    .then(company => res.json(company))
     .catch(next);
 });
-movieRouter.put('/api/movie/:id', jsonParser, (req, res, next) => {
-  Movie.update({_id: req.params.id}, {name: req.body.name, score: req.body.score})
+companyRouter.put('/api/company/:id', jsonParser, (req, res, next) => {
+  Company.update({_id: req.params.id}, {companyName: req.body.companyName, products: req.body.products})
     .then(() => res.json(req.body)) // because update doesnt return the updated record
     .catch(next);
 });
 
-movieRouter.delete('/api/movie/:id', (req, res, next) => {
-  Movie.deleteOne({_id: req.params.id})
+companyRouter.delete('/api/company/:id', (req, res, next) => {
+  Company.deleteOne({_id: req.params.id})
     .then(() => res.sendStatus(200))
     .catch(next);
 });
