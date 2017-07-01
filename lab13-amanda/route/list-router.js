@@ -1,13 +1,10 @@
 'use strict';
 
-// npm modules
 const jsonParser = require('body-parser').json();
 const listRouter = module.exports = new require('express').Router();
 
-// app modules
 const List = require('../model/list.js');
 
-// module logic POST
 listRouter.post('/api/lists', jsonParser, (req, res, next) => {
   console.log('hit POST /api/lists');
 
@@ -17,7 +14,6 @@ listRouter.post('/api/lists', jsonParser, (req, res, next) => {
   .catch(next);
 });
 
-//GET
 listRouter.get('/api/lists/:id', (req, res, next) => {
   console.log('hit /api/lists');
 
@@ -26,7 +22,6 @@ listRouter.get('/api/lists/:id', (req, res, next) => {
   .catch(next);
 });
 
-//PUT
 listRouter.put('/api/lists/:id', jsonParser, (req, res, next) => {
   console.log('hit PUT /api/lists/:id', req.params.id);
   let options = {
@@ -42,7 +37,6 @@ listRouter.put('/api/lists/:id', jsonParser, (req, res, next) => {
 .then(list => res.json(list))
 .catch(next);
 
-//DELETE
   listRouter.delete('/api/lists/:id',  jsonParser, (req, res, next) => {
     console.log('DELETE /api/lists/:id');
 

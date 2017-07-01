@@ -59,11 +59,9 @@ describe('testing /api/lists', () => {
       return mockList.createOne()
       .then(list => {
         tempList = list;
-        console.log('list', list._id);
         return superagent.get(`${API_URL}/api/lists/${list._id}`);
       })
       .then(res => {
-        console.log(res.body);
         expect(res.status).toEqual(200);
         expect(res.body.title).toEqual(tempList.title);
         expect(res.body.tasks).toEqual([]);
