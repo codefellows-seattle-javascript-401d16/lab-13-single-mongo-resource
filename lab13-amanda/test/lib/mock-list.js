@@ -11,11 +11,5 @@ mockList.createOne = () => {
   .save();
 };
 
-mockList.createMany = (n) => {
-  let mockListArray = new Array(n)
-    .fill(0).map(() => mockList.createOne());
-  return Promise.all(mockListArray);
-};
 
-//what is n doing here?
-//map keeps breaing my code
+//what is n doing here? n = number

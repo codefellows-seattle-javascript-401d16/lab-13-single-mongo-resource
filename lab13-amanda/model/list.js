@@ -8,4 +8,4 @@ const listSchema = mongoose.Schema({
 
 });
 
-const Note = module.exports = mongoose.model('list', listSchema);
+module.exports = mongoose.model('list', listSchema);
