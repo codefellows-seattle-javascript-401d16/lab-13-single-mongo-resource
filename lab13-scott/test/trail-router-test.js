@@ -22,16 +22,17 @@ describe('Testing /API/TRAILS routes', () => {
 
   describe('Testing POST /api/trails route', () => {
     describe('if successful', () => {
-      it('it should return a new trail with resort reference', () => {
+      it('it should return a new trail with resort reference and 200', () => {
         return mockResort.createOne()
         .then(resort => {
           tempResort = resort;
-          console.log('tempResortTrail: ', tempResort);
+          console.log('tempResort: ', tempResort);
 
           return superagent.post(`${API_URL}/api/trails`)
-          .send({name: 'big air trail'});
+          .send({name: 'big air trail', resort: tempResort._id});
         })
         .then(res => {
+          console.log('res body', res.body);
           expect(res.status).toEqual(200);
           expect(res.body.name).toEqual('big air trail');
           expect(res.body._id).toExist();
@@ -60,7 +61,7 @@ describe('Testing /API/TRAILS routes', () => {
           console.log('tempResort: ', tempResort);
           console.log('tempTrail: ', tempTrail);
           return superagent.post(`${API_URL}/api/trails`)
-          .send(tempTrail.name);
+          .send({name: tempTrail.name, resort: tempResort._id});
         })
         .catch(res => expect(res.status).toEqual(409));
       });

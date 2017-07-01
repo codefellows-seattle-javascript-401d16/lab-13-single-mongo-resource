@@ -12,7 +12,8 @@ mongoose.connect(process.env.MONGODB_URI);
 
 app.use(cors());
 app.use(morgan('dev'));
-app.use(require('../route/resort-route.js'));
+app.use(require('../route/resort-router.js'));
+app.use(require('../route/trail-router.js'));
 app.all('/api/*', (req, res, next) => res.sendStatus(404));
 app.use(require('./error-middleware.js'));
 
