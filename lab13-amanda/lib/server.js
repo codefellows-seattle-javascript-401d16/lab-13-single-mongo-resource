@@ -1,6 +1,5 @@
 'use strict';
 
-// npm modules
 const cors = require('cors');
 const morgan = require('morgan');
 const express = require('express');
@@ -19,7 +18,6 @@ app.all('/api/*', (req, res, next) => {
   res.sendStatus(404);
 });
 
-// export start and stop
 const server = module.exports = {};
 server.isOn = false;
 server.start = () => {
