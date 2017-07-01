@@ -18,14 +18,12 @@ describe('testing /api/lists', () => {
   after(server.stop);
   afterEach(clearDB);
 
-//POST
   describe('testing POST /api/lists', () => {
     let data = {title: faker.name.title()};
     it('should respond with a list', () => {
       return superagent.post(`${API_URL}/api/lists`)
       .send(data)
       .then(res => {
-        console.log('data', data);
         expect(res.status).toEqual(200);
         expect(res.body.title).toEqual(data.title);
         expect(res.body.tasks).toEqual([]);
@@ -55,7 +53,6 @@ describe('testing /api/lists', () => {
     });
   });
 
-//GET
   describe('testing GET /api/lists/:id', () => {
     it('should respond with a list', () => {
       let tempList;
@@ -75,7 +72,6 @@ describe('testing /api/lists', () => {
     });
   });
 
-//PUT
   describe('testing PUT /api/lists/:id', () => {
     it('should respond with an updated list', () => {
       let tempList;
@@ -121,7 +117,6 @@ describe('testing /api/lists', () => {
       });
     });
 
-//DELETE
     describe('testing DELETE', () => {
       after(clearDB);
       let tempList;
