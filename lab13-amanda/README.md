@@ -1,5 +1,5 @@
 
-. 1. nm run start-db (starts mongo db)
+. 1. npm run start-db (starts mongo db)
 
 ERRORS:
 
@@ -55,14 +55,14 @@ your tests should start your server when they begin and stop your server when th
 write a test to ensure that your api returns a status code of 404 for routes that have not been registered
 write tests to ensure your /api/resource-name endpoint responds as described for each condition below:
 GET - test 404, responds with 'not found' for valid request made with an id that was not found
-GET - test 200, response body like {<data>} for a request made with a valid id
+X GET - test 200, response body like {<data>} for a request made with a valid id
 X PUT - test 200, response body like {<data>} for a post request with a valid body
 PUT - test 400, with invalid body
 PUT - test 404, with invalid id
 DELETE - test 204, with valid id
 DELETE - test 404, with invalid id
-POST - test 200, response body like {<data>} for a post request with a valid body
-POST - test 400, with an invalid request body
-POST - test 409, with an a conflict for a unique property
+X POST - test 200, response body like {<data>} for a post request with a valid body
+X POST - test 400, with an invalid request body
+X POST - test 409, with an a conflict for a unique property
 Bonus 2pts
 create a GET /api/resource route that has pagination using query strings
