@@ -54,11 +54,11 @@ Tests
 your tests should start your server when they begin and stop your server when they finish
 write a test to ensure that your api returns a status code of 404 for routes that have not been registered
 write tests to ensure your /api/resource-name endpoint responds as described for each condition below:
-GET - test 404, responds with 'not found' for valid request made with an id that was not found
+X GET - test 404, responds with 'not found' for valid request made with an id that was not found
 X GET - test 200, response body like {<data>} for a request made with a valid id
 X PUT - test 200, response body like {<data>} for a post request with a valid body
-PUT - test 400, with invalid body
-PUT - test 404, with invalid id
+X PUT - test 400, with invalid body
+X PUT - test 404, with invalid id
 DELETE - test 204, with valid id
 DELETE - test 404, with invalid id
 X POST - test 200, response body like {<data>} for a post request with a valid body

@@ -120,5 +120,34 @@ describe('testing /api/lists', () => {
         expect(res.status).toEqual(404);
       });
     });
+
+//DELETE
+    describe('testing DELETE', () => {
+      after(clearDB);
+      let tempList;
+      it('should result in a 204', () => {
+        return mockList.createOne()
+        .then(result => {
+          tempList = result;
+          return superagent.delete(`${API_URL}/api/lists/${tempList._id}`)
+          .then(res => {
+            expect(res.status).toEqual(204);
+          });
+        });
+      });
+      it('should respond with a 404', () => {
+        return mockList.createOne()
+            .then(list => {
+              tempList = list;
+              return superagent.delete(`${API_URL}/api/lists/12345}`);
+            })
+              .then(res => {
+                throw res;
+              })
+          .catch(res => {
+            expect(res.status).toEqual(404);
+          });
+      });
+    });
   });
 });

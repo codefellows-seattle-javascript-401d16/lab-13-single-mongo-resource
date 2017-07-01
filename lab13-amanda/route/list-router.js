@@ -43,7 +43,7 @@ listRouter.put('/api/lists/:id', jsonParser, (req, res, next) => {
 .catch(next);
 
 //DELETE
-  listRouter.delete('/api/lists/:id', (req, res, next) => {
+  listRouter.delete('/api/lists/:id',  jsonParser, (req, res, next) => {
     console.log('DELETE /api/lists/:id');
 
     List.findByIdAndRemove(req.params.id)
