@@ -20,13 +20,14 @@ describe('Testing /API/TRAILS routes', () => {
   afterEach(clearDB.trail);
   afterEach(clearDB.resort);
 
-  describe('Testing POST /api/trails route', () => {
+  describe('\nTesting POST /api/trails route\n', () => {
     describe('if successful', () => {
       it('it should return a new trail with resort reference and 200', () => {
         return mockResort.createOne()
         .then(resort => {
           tempResort = resort;
           console.log('tempResort: ', tempResort);
+          console.log('tempTrial: ', tempTrail);
 
           return superagent.post(`${API_URL}/api/trails`)
           .send({name: 'big air trail', resort: tempResort._id});
@@ -64,6 +65,60 @@ describe('Testing /API/TRAILS routes', () => {
           .send({name: tempTrail.name, resort: tempResort._id});
         })
         .catch(res => expect(res.status).toEqual(409));
+      });
+    });
+  });
+
+  describe('\nTesting GET /api/trails route\n', () => {
+    describe('if successful', () => {
+      it('it should return an existing trail at specifed id and 200 status', () => {
+        return mockTrail.createOne()
+        .then(data => {
+          tempResort = data.resort;
+          tempTrail = data.trail;
+          console.log('tempResort: ', tempResort);
+          console.log('tempTrail: ', tempTrail);
+          return superagent.get(`${API_URL}/api/trails/${tempTrail._id}`);
+        })
+        .then(res => {
+          console.log('res body', res.body);
+          expect(res.status).toEqual(200);
+          expect(res.body.name).toExist();
+          expect(res.body._id).toEqual(tempTrail._id);
+          expect(res.body.resort).toEqual(tempResort._id);
+        });
+      });
+    });
+    describe('if successful', () => {
+      it('it should create 20, return 10, map 20 to resort.trail and 200', () => {
+        return mockTrail.createMultiple(20)
+        .then(data => {
+          tempResort = data.resort;
+          tempTrail = data.trail;
+          console.log('tempResort: ', tempResort);
+          console.log('tempTrail: ', tempTrail);
+          return superagent.get(`${API_URL}/api/trails/${tempTrail._id}`);
+        })
+        .then(res => {
+          console.log('res body', res.body);
+          expect(res.status).toEqual(200);
+          expect(res.body.name).toExist();
+          expect(res.body._id).toEqual(tempTrail._id);
+          expect(res.body.resort).toEqual(tempResort._id);
+        });
+      });
+    });
+    describe('if passing in a bad pathname', () => {
+      it('it should return a 404 status', () => {
+        return mockTrail.createOne()
+        .then(data => {
+          tempResort = data.resort;
+          tempTrail = data.trail;
+          console.log('tempResort: ', tempResort);
+          console.log('tempTrail: ', tempTrail);
+          return superagent.get(`${API_URL}/api/trails/notanid`);
+        })
+        .catch(res => expect(res.status).toEqual(404));
       });
     });
   });

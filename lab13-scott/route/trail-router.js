@@ -16,3 +16,11 @@ trailRouter.post('/api/trails', jsonParser, (req, res, next) => {
   .then(trail => res.json(trail))
   .catch(next);
 });
+
+trailRouter.get('/api/trails/:id', (req, res, next) => {
+  console.log('Hit GET /api/trails/:id route');
+
+  Trail.findById(req.params.id)
+  .then(trail => res.json(trail))
+  .catch(next);
+});
