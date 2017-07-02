@@ -24,3 +24,13 @@ trailRouter.get('/api/trails/:id', (req, res, next) => {
   .then(trail => res.json(trail))
   .catch(next);
 });
+
+trailRouter.get('/api/trails', (req, res, next) => {
+  console.log('Hit GET /api/trails route');
+
+  Trail.find({})
+  .sort({name: 'asc'})
+  .limit(10)
+  .then(trails => res.json(trails))
+  .catch(next);
+});

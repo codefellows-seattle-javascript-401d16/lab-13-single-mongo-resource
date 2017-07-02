@@ -81,7 +81,6 @@ describe('Testing /API/TRAILS routes', () => {
           return superagent.get(`${API_URL}/api/trails/${tempTrail._id}`);
         })
         .then(res => {
-          console.log('res body', res.body);
           expect(res.status).toEqual(200);
           expect(res.body.name).toExist();
           expect(res.body._id).toEqual(tempTrail._id);
@@ -97,14 +96,16 @@ describe('Testing /API/TRAILS routes', () => {
           tempTrail = data.trail;
           console.log('tempResort: ', tempResort);
           console.log('tempTrail: ', tempTrail);
-          return superagent.get(`${API_URL}/api/trails/${tempTrail._id}`);
+          return superagent.get(`${API_URL}/api/trails`);
         })
         .then(res => {
           console.log('res body', res.body);
           expect(res.status).toEqual(200);
-          expect(res.body.name).toExist();
-          expect(res.body._id).toEqual(tempTrail._id);
-          expect(res.body.resort).toEqual(tempResort._id);
+          expect(res.body.length).toEqual(10);
+          res.body.forEach(trail => {
+            expect(trail.name).toExist();
+            expect(trail._id).toExist();
+          });
         });
       });
     });

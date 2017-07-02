@@ -24,20 +24,19 @@ mockTrail.createOne = () => {
 
 mockTrail.createMultiple = (num) => {
   let result = {};
-  return mockResort()
+  return mockResort.createOne()
   .then(resort => {
     result.resort = resort;
-    let manyTrailPromises = new Array(num).fill(0).map(() => {
+    let manyTrailPromises = new Array(num).fill(0).map(() =>
       new Trail({
-        name: `${faker.company.bsBuzz()} trail`,
+        name: `${faker.company.catchPhrase()} trail`,
         resort: result.resort._id,
       })
-      .save();
-      return Promise.all(manyTrailPromises);
-    }).
-    then(trails => {
+      .save());
+    return Promise.all(manyTrailPromises);
+  })
+    .then(trails => {
       result.trails = trails;
       return result;
     });
-  });
 };
