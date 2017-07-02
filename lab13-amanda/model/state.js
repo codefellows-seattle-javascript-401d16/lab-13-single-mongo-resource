@@ -2,7 +2,6 @@
 
 const mongoose = require('mongoose');
 const issue = require('./issue.js');
-
 const stateSchema = mongoose.Schema({
   content: {type: String, required: true},
   issue: {type: mongoose.Schema.Types.objectId, required: true, ref :'issue'},
@@ -20,6 +19,10 @@ stateSchema.pre('save', function(next) {
 .then(() => next())
 .catch(() =>
   next(new Error('validation failed to create state because issue does not exist')));
+  })
+.then(() => next())
+.catch(() =>
+  next(new Error('validation failed to create state because place does not exist')));
 });
 
 stateSchema.post('remove', function(doc, next){
