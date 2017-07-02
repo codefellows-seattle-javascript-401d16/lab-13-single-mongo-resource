@@ -7,44 +7,44 @@ const expect = require('expect');
 const superagent = require('superagent');
 const server = require('../lib/server.js');
 const clearDB = require('./lib/clear-db.js');
-const Note = require('../model/list.js');
-const mockList = require('./lib/mock-list.js');
+const Loc = require('../model/loc.js');
+const mockLoc = require('./lib/mock-loc.js');
 
-let tempList;
+let tempLoc;
 const API_URL = process.env.API_URL;
 
-describe('testing /api/lists', () => {
+describe('testing /api/locs', () => {
   before(server.start);
   after(server.stop);
   afterEach(clearDB);
 
-  describe('testing POST /api/lists', () => {
+  describe('testing POST /api/locs', () => {
     let data = {title: faker.name.title()};
-    it('should respond with a list', () => {
-      return superagent.post(`${API_URL}/api/lists`)
+    it('should respond with a loc', () => {
+      return superagent.post(`${API_URL}/api/locs`)
       .send(data)
       .then(res => {
         expect(res.status).toEqual(200);
         expect(res.body.title).toEqual(data.title);
         expect(res.body.tasks).toEqual([]);
         expect(res.body._id).toExist();
-        tempList = res.body;
+        tempLoc = res.body;
       });
     });
-    it('should respond with a 400 status', () => {
-      return superagent.post(`${API_URL}/api/lists`)
+    it('should respond with a 400', () => {
+      return superagent.post(`${API_URL}/api/locs`)
       .send({})
       .catch(err => {
         expect(err.status).toEqual(400);
       });
     });
-    it('should respond with a 409 status', () => {
-      let tempList;
-      return mockList.createOne()
-      .then(list => {
-        tempList = list;
-        return superagent.post(`${API_URL}/api/lists`)
-        .send(tempList);
+    it('should respond with a 409', () => {
+      let tempLoc;
+      return mockLoc.createOne()
+      .then(loc => {
+        tempLoc = loc;
+        return superagent.post(`${API_URL}/api/locs`)
+        .send(tempLoc);
       })
       .then(res => {throw res;})
       .catch(res => {
@@ -53,46 +53,46 @@ describe('testing /api/lists', () => {
     });
   });
 
-  describe('testing GET /api/lists/:id', () => {
-    it('should respond with a list', () => {
-      let tempList;
-      return mockList.createOne()
-      .then(list => {
-        tempList = list;
-        return superagent.get(`${API_URL}/api/lists/${list._id}`);
+  describe('testing GET /api/locs/:id', () => {
+    it('should respond with a loc', () => {
+      let tempLoc;
+      return mockLoc.createOne()
+      .then(loc => {
+        tempLoc = loc;
+        return superagent.get(`${API_URL}/api/locs/${loc._id}`);
       })
       .then(res => {
         expect(res.status).toEqual(200);
-        expect(res.body.title).toEqual(tempList.title);
+        expect(res.body.title).toEqual(tempLoc.title);
         expect(res.body.tasks).toEqual([]);
         expect(res.body._id).toExist();
       });
     });
   });
 
-  describe('testing PUT /api/lists/:id', () => {
-    it('should respond with an updated list', () => {
-      let tempList;
-      return mockList.createOne()
-    .then(list => {
-      tempList = list;
-      console.log('templist', tempList);
-      return  superagent.put(`${API_URL}/api/lists/${tempList._id.toString()}`)
+  describe('testing PUT /api/locs/:id', () => {
+    it('should respond with an updated loc', () => {
+      let tempLoc;
+      return mockLoc.createOne()
+    .then(loc => {
+      tempLoc = loc;
+      console.log('tempLoc', tempLoc);
+      return  superagent.put(`${API_URL}/api/locs/${tempLoc._id.toString()}`)
       .send({title: 'puttest'});
     })
     .then(res => {
       expect(res.status).toEqual(200);
       expect(res.body.title).toEqual('puttest');
       expect(res.body.tasks).toEqual([]);
-      expect(res.body._id).toEqual(tempList._id);
-      return Note.findById(tempList._id);
+      expect(res.body._id).toEqual(tempLoc._id);
+      return Loc.findById(tempLoc._id);
     });
     });
-    it('should respond with a 400 status', () => {
-      return mockList.createOne()
-      .then(list => {
-        tempList = list;
-        return superagent.put(`${API_URL}/api/lists/${tempList._id.toString()}`)
+    it('should respond with a 400', () => {
+      return mockLoc.createOne()
+      .then(loc => {
+        tempLoc = loc;
+        return superagent.put(`${API_URL}/api/locs/${tempLoc._id.toString()}`)
         .send({});
       })
       .then(res => {throw res;})
@@ -101,10 +101,10 @@ describe('testing /api/lists', () => {
       });
     });
     it('should respond with a 404', () => {
-      return mockList.createOne()
-      .then(list => {
-        tempList = list;
-        return superagent.put(`${API_URL}/api/lists/12345}`)
+      return mockLoc.createOne()
+      .then(loc => {
+        tempLoc = loc;
+        return superagent.put(`${API_URL}/api/locs/12345}`)
         .send({title:'unfound'});
       })
       .then(res => {
@@ -117,22 +117,22 @@ describe('testing /api/lists', () => {
 
     describe('testing DELETE', () => {
       after(clearDB);
-      let tempList;
+      let tempLoc;
       it('should result in a 204', () => {
-        return mockList.createOne()
+        return mockLoc.createOne()
         .then(result => {
-          tempList = result;
-          return superagent.delete(`${API_URL}/api/lists/${tempList._id}`)
+          tempLoc = result;
+          return superagent.delete(`${API_URL}/api/locs/${tempLoc._id}`)
           .then(res => {
             expect(res.status).toEqual(204);
           });
         });
       });
       it('should respond with a 404', () => {
-        return mockList.createOne()
-            .then(list => {
-              tempList = list;
-              return superagent.delete(`${API_URL}/api/lists/12345}`);
+        return mockLoc.createOne()
+            .then(loc => {
+              tempLoc = loc;
+              return superagent.delete(`${API_URL}/api/locs/12345}`);
             })
               .then(res => {
                 throw res;
