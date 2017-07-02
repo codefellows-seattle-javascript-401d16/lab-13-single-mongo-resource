@@ -4,14 +4,15 @@ const cors = require('cors');
 const morgan = require('morgan');
 const express = require('express');
 const mongoose = require('mongoose');
+const app = express();
 
 mongoose.Promise = Promise;
 mongoose.connect(process.env.MONGODB_URI);
-const app = express();
+
 
 app.use(morgan('dev'));
 app.use(cors());
-app.use(require('../route/loc-router.js'));
+app.use(require('../route/place-router.js'));
 app.use(require('./error-middleware.js'));
 app.all('/api/*', (req, res, next) => {
   res.sendtask(404);

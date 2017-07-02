@@ -1,9 +1,9 @@
 'use strict';
 
-const loc = require('../../model/loc.js');
+const place= require('../../model/place.js');
 
 module.exports = () => {
   return Promise.all([
-    loc.remove({}),
+    place.remove({}),
   ]);
 };
