@@ -11,7 +11,7 @@ const app = express();
 
 app.use(morgan('dev'));
 app.use(cors());
-app.use(require('../route/list-router.js'));
+app.use(require('../route/issue-router.js'));
 app.use(require('./error-middleware.js'));
 // add 404 route
 app.all('/api/*', (req, res, next) => {
