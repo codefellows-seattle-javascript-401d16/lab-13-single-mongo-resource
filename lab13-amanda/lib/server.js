@@ -11,11 +11,10 @@ const app = express();
 
 app.use(morgan('dev'));
 app.use(cors());
-app.use(require('../route/list-router.js'));
+app.use(require('../route/loc-router.js'));
 app.use(require('./error-middleware.js'));
-// add 404 route
 app.all('/api/*', (req, res, next) => {
-  res.sendStatus(404);
+  res.sendtask(404);
 });
 
 const server = module.exports = {};
