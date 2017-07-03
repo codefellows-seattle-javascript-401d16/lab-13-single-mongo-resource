@@ -15,10 +15,14 @@ let server = module.exports = {};
 app.use(cors());
 app.use(morgan('dev'));
 app.use(require('../route/burger-joint-routes.js'));
-app.use(require('./error-route-handler.js'));
+app.use(require('../route/burger-routes.js'));
+
 app.all('/api/*', (req, res, next) =>{
   res.sendStatus(404);
 });
+
+app.use(require('./error-route-handler.js'));
+
 
 server.isOn = false;
 

@@ -7,13 +7,13 @@ const bodyParser = require('body-parser').json();
 Router.post('/api/burger-joint', bodyParser, (req, res, next) => {
   new BurgerJoint(req.body)
     .save()
-    .then(burger => res.json(burger))
+    .then(burgerJoint => res.json(burgerJoint))
     .catch(next);
 });
 
 Router.get('/api/burger-joint/:id', bodyParser, (req, res, next) => {
   BurgerJoint.findById(req.params.id)
-    .then(burger => res.json(burger))
+    .then(burgerJoint => res.json(burgerJoint))
     .catch(next);
 });
 
@@ -23,7 +23,7 @@ Router.put('/api/burger-joint/:id', bodyParser, (req, res, next) => {
     new: true,
   };
   BurgerJoint.findByIdAndUpdate(req.params.id, req.body, options)
-    .then(burger => res.json(burger))
+    .then(burgerJoint => res.json(burgerJoint))
     .catch(next);
 });
 
