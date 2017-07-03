@@ -1,8 +1,8 @@
 'use strict';
 
-const faker = require ('faker');
+const faker = require('faker');
 const mockIssue = require('./mock-issue.js');
-const State = require ('../../model/state.js');
+const State = require('../../model/state.js');
 const mockState = module.exports = {};
 
 mockState.createOne = () => {

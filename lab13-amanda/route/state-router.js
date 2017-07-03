@@ -1,7 +1,7 @@
 'use strict';
 
 const jsonParser = require('body-parser').json;
-const stateRouter = module.expoerts = new require('express').Router();
+const stateRouter = module.exports = new require('express').Router();
 
 const State = require('../model/state.js');
 

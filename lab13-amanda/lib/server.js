@@ -13,11 +13,7 @@ mongoose.connect(process.env.MONGODB_URI);
 app.use(morgan('dev'));
 app.use(cors());
 app.use(require('../route/issue-router.js'));
-<<<<<<< HEAD
 app.use(require('../route/state-router.js'));
-=======
-app.use(require('../route/place-router.js'));
->>>>>>> 0233dd57a7a45ea0e56e598d65ef63acdc38d76e
 app.use(require('./error-middleware.js'));
 app.all('/api/*', (req, res, next) => {
   res.sendtask(404);
