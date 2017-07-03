@@ -1,7 +1,11 @@
 'use strict';
 
 const mongoose = require('mongoose');
+<<<<<<< HEAD
+const Issue = require('./issue.js');
+=======
 const issue = require('./issue.js');
+>>>>>>> 0233dd57a7a45ea0e56e598d65ef63acdc38d76e
 const stateSchema = mongoose.Schema({
   content: {type: String, required: true},
   issue: {type: mongoose.Schema.Types.objectId, required: true, ref :'issue'},
@@ -9,7 +13,7 @@ const stateSchema = mongoose.Schema({
 
 stateSchema.pre('save', function(next) {
   console.log('pre save doc', this);
-  issue.findById(this.issue)
+  Issue.findById(this.issue)
   .then(issue=> {
     let stateIDSet = new Set(issue.states);
     stateIDSet.add(this._id);
@@ -27,7 +31,7 @@ stateSchema.pre('save', function(next) {
 
 stateSchema.post('remove', function(doc, next){
   console.log('post remove doc', doc);
-  issue.findById(doc.list)
+  Issue.findById(doc.list)
   .then(issue => {
     issue.states = issue.states.filter(state => state._id !==doc._id);
     return issue.save();
