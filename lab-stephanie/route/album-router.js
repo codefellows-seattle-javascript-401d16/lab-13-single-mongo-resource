@@ -30,3 +30,19 @@ albumRouter.get('/api/albums', (req, res, next) => {
     .then(albums => res.json(albums))
     .catch(next);
 });
+
+albumRouter.put('/api/albums/:id', jsonParser, (req, res, next) => {
+  console.log('hit PUT /api/albums/:id');
+
+  PhotoAlbum.findByIdAndUpdate(req.params.id, req.body, { new: true })
+    .then(album => res.json(album))
+    .catch(next);
+});
+
+albumRouter.delete('/api/albums/:id', (req, res, next) => {
+  console.log('hit DELETE /api/albums/:id');
+
+  PhotoAlbum.findByIdAndRemove(req.params.id)
+    .then(res.sendStatus(204))
+    .catch(next);
+});
