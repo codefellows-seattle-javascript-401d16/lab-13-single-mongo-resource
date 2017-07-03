@@ -124,4 +124,54 @@ describe('Testing /API/TRAILS routes', () => {
     });
   });
 
+  describe('\nTesting PUT /api/trails/:id route\n', () => {
+    describe('if successful', () => {
+      it('it should return an updated existing trail at specifed id and 200 status', () => {
+        return mockTrail.createOne()
+        .then(data => {
+          tempResort = data.resort;
+          tempTrail = data.trail;
+          console.log('tempResort: ', tempResort);
+          console.log('tempTrail: ', tempTrail);
+          return superagent.put(`${API_URL}/api/trails/${tempTrail._id}`)
+          .send({name: 'Put it down trail', resort: `${tempResort._id}`});
+        })
+        .then(res => {
+          console.log('res.body.name: ', res.body.name);
+          expect(res.status).toEqual(200);
+          expect(res.body.name).toEqual('Put it down trail');
+          expect(res.body._id).toEqual(tempTrail._id);
+        });
+      });
+    });
+    describe('if passing in a bad pathname', () => {
+      it('it should return a 404 status', () => {
+        return mockTrail.createOne()
+        .then(data => {
+          tempResort = data.resort;
+          tempTrail = data.trail;
+          console.log('tempResort: ', tempResort);
+          console.log('tempTrail: ', tempTrail);
+          return superagent.put(`${API_URL}/api/trails/notanid`)
+          .send({name: 'Put it down trail', resort: `${tempResort._id}`});
+        })
+        .catch(res => expect(res.status).toEqual(404));
+      });
+    });
+    describe('if passing in bad content', () => {
+      it('it should return a 400 status', () => {
+        return mockTrail.createOne()
+        .then(data => {
+          tempResort = data.resort;
+          tempTrail = data.trail;
+          console.log('tempResort: ', tempResort);
+          console.log('tempTrail: ', tempTrail);
+          return superagent.put(`${API_URL}/api/trails/${tempTrail._id}`)
+          .send();
+        })
+        .catch(res => expect(res.status).toEqual(400));
+      });
+    });
+  });
+
 });

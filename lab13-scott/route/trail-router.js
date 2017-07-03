@@ -34,3 +34,21 @@ trailRouter.get('/api/trails', (req, res, next) => {
   .then(trails => res.json(trails))
   .catch(next);
 });
+
+trailRouter.put('/api/trails/:id', jsonParser, (req, res, next) => {
+  console.log('Hit PUT /api/trails/:id route');
+  let keys = Object.keys(req.body);
+  if (keys.length < 1 || typeof req.body.name !== 'string' || req.body.name.length < 1) {
+    return res.sendStatus(400);
+  }
+
+  let options = {
+    new: true,
+    runValidators: true,
+  };
+  Trail.findByIdAndUpdate(req.params.id, req.body, options)
+  .then(updatedTrail => {
+    return res.json(updatedTrail);
+  })
+  .catch(next);
+});
