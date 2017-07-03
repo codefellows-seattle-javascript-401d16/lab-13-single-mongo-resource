@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const photoAlbumSchema = mongoose.Schema({
   userName: { type: String, required: true, unique: true },
   albumName: { type: String, required: true, unique: true },
-  picture: [{ type: mongoose.Schema.Types.ObjectId, ref: 'image' }]
+  photo: [{ type: mongoose.Schema.Types.ObjectId, ref: 'photo' }]
 });
 
 module.exports = mongoose.model('PhotoAlbum', photoAlbumSchema);

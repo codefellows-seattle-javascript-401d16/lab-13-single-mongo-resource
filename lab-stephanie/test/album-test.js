@@ -52,7 +52,7 @@ describe('testing /api/albums', () => {
   });
 
   describe('testing GET /api/albums', () => {
-    it('should respond with a an array of pictures', () => {
+    it('should respond with a an array of photos', () => {
       let tempPhotoAlbums;
       return mockPhotoAlbum
         .createMany(20)
@@ -64,13 +64,13 @@ describe('testing /api/albums', () => {
           expect(res.status).toEqual(200);
           res.body.forEach(album => {
             expect(album._id).toExist();
-            expect(album.pictures).toEqual([]);
+            expect(album.photo).toEqual([]);
             expect(album.userName).toExist();
           });
         });
     });
 
-    it('should respond with a an array of pictures', () => {
+    it('should respond with a an array of photos', () => {
       let tempPhotoAlbums;
       return mockPhotoAlbum
         .createMany(10)
@@ -82,13 +82,13 @@ describe('testing /api/albums', () => {
           expect(res.status).toEqual(200);
           res.body.forEach(album => {
             expect(album._id).toExist();
-            expect(album.pictures).toEqual([]);
+            expect(album.photo).toEqual([]);
             expect(album.userName).toExist();
           });
         });
     });
 
-    it('should respond with a an array of pictures', () => {
+    it('should respond with a an array of photos', () => {
       let tempPhotoAlbums;
       return mockPhotoAlbum
         .createMany(10)

@@ -3,7 +3,7 @@
 const jsonParser = require('body-parser').json();
 const albumRouter = (module.exports = new require('express').Router());
 
-const PhotoAlbum = require('../model/photo-album.js');
+const PhotoAlbum = require('../model/album.js');
 
 albumRouter.post('/api/albums', jsonParser, (req, res, next) => {
   console.log('hit POST /api/albums');
