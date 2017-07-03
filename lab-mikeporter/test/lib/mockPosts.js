@@ -22,6 +22,21 @@ mockPosts.one = () => {
     });
 };
 
-mockPosts.many = () => {
-
-}
+mockPosts.many = (number) => {
+  let result = {};
+  return mockUsers.one()
+    .then((user) => {
+      result.user = user;
+      let postsToSave = new Array(number).fill(0).map(() => new Post({
+        phoneNumber: faker.phone.phoneNumber(),
+        address: faker.address.streetAddress(),
+        ad: faker.hacker.phrase(),
+        user: user.id,
+      }).save());
+      return Promise.all(postsToSave);
+    })
+    .then((posts) => {
+      result.posts = posts;
+      return result;
+    });
+};
