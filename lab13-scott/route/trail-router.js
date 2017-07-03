@@ -10,7 +10,6 @@ const trailRouter = module.exports = new Router();
 
 trailRouter.post('/api/trails', jsonParser, (req, res, next) => {
   console.log('Hit POST /api/trails route');
-  console.log('req.body: ', req.body);
   new Trail(req.body)
   .save()
   .then(trail => res.json(trail))
@@ -37,6 +36,7 @@ trailRouter.get('/api/trails', (req, res, next) => {
 
 trailRouter.put('/api/trails/:id', jsonParser, (req, res, next) => {
   console.log('Hit PUT /api/trails/:id route');
+
   let keys = Object.keys(req.body);
   if (keys.length < 1 || typeof req.body.name !== 'string' || req.body.name.length < 1) {
     return res.sendStatus(400);
@@ -50,5 +50,14 @@ trailRouter.put('/api/trails/:id', jsonParser, (req, res, next) => {
   .then(updatedTrail => {
     return res.json(updatedTrail);
   })
+  .catch(next);
+});
+
+
+trailRouter.delete('/api/trails/:id', (req, res, next) => {
+  console.log('Hit DELETE /api/trails/:id route');
+
+  Trail.findByIdAndRemove(req.params.id)
+  .then(() => res.sendStatus(204))
   .catch(next);
 });

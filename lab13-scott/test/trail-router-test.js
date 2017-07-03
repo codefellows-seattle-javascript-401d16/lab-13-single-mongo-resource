@@ -1,6 +1,5 @@
 'use strict';
 
-const faker = require('faker');
 const dotenv = require('dotenv').config({path: `${__dirname}/../.test.env`});
 const superagent = require('superagent');
 const expect = require('expect');
@@ -26,14 +25,10 @@ describe('Testing /API/TRAILS routes', () => {
         return mockResort.createOne()
         .then(resort => {
           tempResort = resort;
-          console.log('tempResort: ', tempResort);
-          console.log('tempTrial: ', tempTrail);
-
           return superagent.post(`${API_URL}/api/trails`)
           .send({name: 'big air trail', resort: tempResort._id});
         })
         .then(res => {
-          console.log('res body', res.body);
           expect(res.status).toEqual(200);
           expect(res.body.name).toEqual('big air trail');
           expect(res.body._id).toExist();
@@ -46,7 +41,6 @@ describe('Testing /API/TRAILS routes', () => {
         return mockResort.createOne()
         .then(resort => {
           tempResort = resort;
-          console.log('tempResort: ', tempResort);
           return superagent.post(`${API_URL}/api/trails`)
           .send({});
         })
@@ -59,8 +53,6 @@ describe('Testing /API/TRAILS routes', () => {
         .then(data => {
           tempResort = data.resort;
           tempTrail = data.trail;
-          console.log('tempResort: ', tempResort);
-          console.log('tempTrail: ', tempTrail);
           return superagent.post(`${API_URL}/api/trails`)
           .send({name: tempTrail.name, resort: tempResort._id});
         })
@@ -76,8 +68,6 @@ describe('Testing /API/TRAILS routes', () => {
         .then(data => {
           tempResort = data.resort;
           tempTrail = data.trail;
-          console.log('tempResort: ', tempResort);
-          console.log('tempTrail: ', tempTrail);
           return superagent.get(`${API_URL}/api/trails/${tempTrail._id}`);
         })
         .then(res => {
@@ -94,12 +84,9 @@ describe('Testing /API/TRAILS routes', () => {
         .then(data => {
           tempResort = data.resort;
           tempTrail = data.trail;
-          console.log('tempResort: ', tempResort);
-          console.log('tempTrail: ', tempTrail);
           return superagent.get(`${API_URL}/api/trails`);
         })
         .then(res => {
-          console.log('res body', res.body);
           expect(res.status).toEqual(200);
           expect(res.body.length).toEqual(10);
           res.body.forEach(trail => {
@@ -115,8 +102,6 @@ describe('Testing /API/TRAILS routes', () => {
         .then(data => {
           tempResort = data.resort;
           tempTrail = data.trail;
-          console.log('tempResort: ', tempResort);
-          console.log('tempTrail: ', tempTrail);
           return superagent.get(`${API_URL}/api/trails/notanid`);
         })
         .catch(res => expect(res.status).toEqual(404));
@@ -131,13 +116,10 @@ describe('Testing /API/TRAILS routes', () => {
         .then(data => {
           tempResort = data.resort;
           tempTrail = data.trail;
-          console.log('tempResort: ', tempResort);
-          console.log('tempTrail: ', tempTrail);
           return superagent.put(`${API_URL}/api/trails/${tempTrail._id}`)
           .send({name: 'Put it down trail', resort: `${tempResort._id}`});
         })
         .then(res => {
-          console.log('res.body.name: ', res.body.name);
           expect(res.status).toEqual(200);
           expect(res.body.name).toEqual('Put it down trail');
           expect(res.body._id).toEqual(tempTrail._id);
@@ -150,8 +132,6 @@ describe('Testing /API/TRAILS routes', () => {
         .then(data => {
           tempResort = data.resort;
           tempTrail = data.trail;
-          console.log('tempResort: ', tempResort);
-          console.log('tempTrail: ', tempTrail);
           return superagent.put(`${API_URL}/api/trails/notanid`)
           .send({name: 'Put it down trail', resort: `${tempResort._id}`});
         })
@@ -164,12 +144,39 @@ describe('Testing /API/TRAILS routes', () => {
         .then(data => {
           tempResort = data.resort;
           tempTrail = data.trail;
-          console.log('tempResort: ', tempResort);
-          console.log('tempTrail: ', tempTrail);
           return superagent.put(`${API_URL}/api/trails/${tempTrail._id}`)
           .send();
         })
         .catch(res => expect(res.status).toEqual(400));
+      });
+    });
+  });
+
+  describe('\nTesting DELETE /api/trails/:id route\n', () => {
+    describe('if successful', () => {
+      it('it should delete a trail and return 204', () => {
+        return mockTrail.createOne()
+        .then(data => {
+          tempResort = data.resort;
+          tempTrail = data.trail;
+          return superagent.delete(`${API_URL}/api/trails/${tempTrail._id}`);
+        })
+        .then(res => {
+          expect(res.status).toEqual(204);
+          expect(res.body.name).toNotExist();
+          expect(res.body._id).toNotExist();
+        });
+      });
+    });
+    describe('if passing in a bad pathname', () => {
+      it('it should return a 404 status', () => {
+        return mockTrail.createOne()
+        .then(data => {
+          tempResort = data.resort;
+          tempTrail = data.trail;
+          return superagent.delete(`${API_URL}/api/trails/notanid`);
+        })
+        .catch(res => expect(res.status).toEqual(404));
       });
     });
   });
