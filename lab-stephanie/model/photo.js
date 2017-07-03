@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const Album = require('./album.js');
 
 const photoSchema = mongoose.Schema({
-  name: { type: String, required: true },
+  name: { type: String, required: true, unique: true },
   date: { type: Date, requires: true },
   image: {
     type: mongoose.Schema.Types.ObjectId,

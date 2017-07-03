@@ -28,7 +28,7 @@ describe('testing /api/photos', () => {
         .then(photo => {
           tempAlbum = photo;
           return superagent.post(`${API_URL}/api/photos`).send({
-            name: faker.random.word(1),
+            name: 'beach',
             date: Date.now(),
             image: faker.random.word(1)
           });
@@ -52,11 +52,21 @@ describe('testing /api/photos', () => {
           date: Date.now(),
           image: faker.random.image(1)
         })
-        .then(res => {
-          throw res;
-        })
         .catch(res => {
           expect(res.status).toEqual(400);
+        });
+    });
+
+    it('should respond with status 409', () => {
+      return superagent
+        .post(`${API_URL}/api/photos`)
+        .send({
+          name: 'beach',
+          date: Date.now(),
+          image: faker.random.image(1)
+        })
+        .catch(res => {
+          expect(res.status).toEqual(409);
         });
     });
   });
@@ -81,6 +91,99 @@ describe('testing /api/photos', () => {
         })
         .then(photo => {
           expect(photo.image.length).toEqual(1);
+        });
+    });
+
+    it('should respond with status 400 invalid request body', () => {
+      let tempAlbum, tempPhoto;
+      return mockPhoto
+        .createOne()
+        .then(({ photo, album }) => {
+          tempPhoto = photo;
+          tempAlbum = album;
+          return superagent
+            .put(`${API_URL}/api/photos/${tempPhoto._id}`)
+            .send(null);
+        })
+        .catch(err => {
+          expect(err.status).toEqual(400);
+        });
+    });
+
+    it('should respond with status 404 not found', () => {
+      let tempAlbum, tempPhoto;
+      return mockPhoto
+        .createOne()
+        .then(({ photo, album }) => {
+          tempPhoto = photo;
+          tempAlbum = album;
+          return superagent
+            .put(`${API_URL}/api/photos/124`)
+            .send({ name: 'cats' });
+        })
+        .catch(err => {
+          expect(err.status).toEqual(404);
+        });
+    });
+  });
+
+  describe('testing GET /api/photos/:id', () => {
+    it('should respond with a photo', () => {
+      let tempAlbum, tempPhoto;
+      return mockPhoto
+        .createOne()
+        .then(({ photo, album }) => {
+          tempPhoto = photo;
+          tempAlbum = album;
+          return superagent.get(`${API_URL}/api/photos/${tempPhoto._id}`);
+        })
+        .then(res => {
+          expect(res.status).toEqual(200);
+          expect(res.body.name).toEqual(tempPhoto.name);
+        });
+    });
+
+    it('should respond with status 404 not found', () => {
+      let tempAlbum, tempPhoto;
+      return mockPhoto
+        .createOne()
+        .then(({ photo, album }) => {
+          tempPhoto = photo;
+          tempAlbum = album;
+          return superagent.get(`${API_URL}/api/photos/124`);
+        })
+        .catch(err => {
+          expect(err.status).toEqual(404);
+        });
+    });
+  });
+
+  describe('testing DELETE /api/photos/:id', () => {
+    it('should respond with status 204 -deleted', () => {
+      let tempAlbum, tempPhoto;
+      return mockPhoto
+        .createOne()
+        .then(({ photo, album }) => {
+          tempPhoto = photo;
+          tempAlbum = album;
+          return superagent.delete(`${API_URL}/api/photos/${tempPhoto._id}`);
+        })
+        .then(res => {
+          expect(res.status).toEqual(204);
+        });
+    });
+
+    it('should respond with status 404 not found', () => {
+      let tempAlbum, tempPhoto;
+      return mockPhoto
+        .createOne()
+        .then(({ photo, album }) => {
+          tempPhoto = photo;
+          tempAlbum = album;
+          return superagent.delete(`${API_URL}/api/photos/124`);
+        })
+        .catch(err => {
+          expect(err.status).toEqual(404);
         });
     });
   });

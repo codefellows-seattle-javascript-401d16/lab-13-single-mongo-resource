@@ -10,32 +10,15 @@ photoRouter.post('/api/photos', jsonParser, (req, res, next) => {
 });
 
 photoRouter.put('/api/photos/:id', jsonParser, (req, res, next) => {
-  let options = {
-    new: true,
-    runValidators: true
-  };
-
-  Photo.findById(req.params.id, req.body, options)
+  Photo.findByIdAndUpdate(req.params.id, req.body, { new: true })
     .then(photo => res.json(photo))
     .catch(next);
 });
 
-photoRouter.get('/api/photos/:id', jsonParser, (req, res, next) => {
-  let options = {
-    new: true,
-    runValidators: true
-  };
-
+photoRouter.get('/api/photos/:id', (req, res, next) => {
   Photo.findById(req.params.id).then(photo => res.json(photo)).catch(next);
 });
 
-photoRouter.delete('/api/photos/:id', jsonParser, (req, res, next) => {
-  let options = {
-    new: true,
-    runValidators: true
-  };
-
-  Photo.findByIdAndRemove(req.params.id, req.body, options)
-    .then(photo => res.json(photo))
-    .catch(next);
+photoRouter.delete('/api/photos/:id', (req, res, next) => {
+  Photo.findByIdAndRemove(req.params.id).then(res.sendStatus(204)).catch(next);
 });
