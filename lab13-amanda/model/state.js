@@ -1,7 +1,11 @@
 'use strict';
 
 const mongoose = require('mongoose');
+<<<<<<< HEAD
 const Issue = require('./issue.js');
+=======
+const issue = require('./issue.js');
+>>>>>>> 0233dd57a7a45ea0e56e598d65ef63acdc38d76e
 const stateSchema = mongoose.Schema({
   content: {type: String, required: true},
   issue: {type: mongoose.Schema.Types.objectId, required: true, ref :'issue'},
@@ -19,6 +23,10 @@ stateSchema.pre('save', function(next) {
 .then(() => next())
 .catch(() =>
   next(new Error('validation failed to create state because issue does not exist')));
+  })
+.then(() => next())
+.catch(() =>
+  next(new Error('validation failed to create state because place does not exist')));
 });
 
 stateSchema.post('remove', function(doc, next){
