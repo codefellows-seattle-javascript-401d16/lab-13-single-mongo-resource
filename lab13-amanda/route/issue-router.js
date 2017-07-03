@@ -7,6 +7,7 @@ const Issue = require('../model/issue.js');
 
 issueRouter.post('/api/issues', jsonParser, (req, res, next) => {
   console.log('hit POST /api/issues');
+  console.log(req.body, 'hit req body POST');
   new Issue(req.body)
   .save()
   .then(issue => res.json(issue))

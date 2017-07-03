@@ -7,11 +7,16 @@ const expect = require('expect');
 const superagent = require('superagent');
 const server = require('../lib/server.js');
 const clearDB = require('./lib/clear-db.js');
-const issue= require('../model/issue.js');
-const mockissue= require('./lib/mock-issue.js');
+const issue = require('../model/issue.js');
+const mockIssue = require('./lib/mock-issue.js');
 
 let tempissue;
 const API_URL = process.env.API_URL;
+
+let data = {building: `${faker.company.companyName(2)}`,
+  room: `${faker.random.number(3)}`,
+  type: mockIssue.randomIssueType()};
+
 
 describe('testing /api/issues', () => {
   before(server.start);
@@ -19,8 +24,8 @@ describe('testing /api/issues', () => {
   afterEach(clearDB);
 
   describe('testing POST /api/issues', () => {
-    let data = {title: faker.name.title()};
     it('should respond with a issue', () => {
+      console.log('data PUT 200', data);
       return superagent.post(`${API_URL}/api/issues`)
       .send(data)
       .then(res => {
@@ -40,7 +45,7 @@ describe('testing /api/issues', () => {
     });
     it('should respond with a 409', () => {
       let tempissue;
-      return mockissue.createOne()
+      return mockIssue.createOne()
       .then(issue=> {
         tempissue= issue;
         return superagent.post(`${API_URL}/api/issues`)
@@ -56,7 +61,7 @@ describe('testing /api/issues', () => {
   describe('testing GET /api/issues/:id', () => {
     it('should respond with a issue', () => {
       let tempissue;
-      return mockissue.createOne()
+      return mockIssue.createOne()
       .then(issue => {
         tempissue = issue;
         return superagent.get(`${API_URL}/api/issues/${issue._id}`);
@@ -73,7 +78,7 @@ describe('testing /api/issues', () => {
   describe('testing PUT /api/issues/:id', () => {
     it('should respond with an updated issue', () => {
       let tempissue;
-      return mockissue.createOne()
+      return mockIssue.createOne()
     .then(issue=> {
       tempissue= issue;
       console.log('tempissue', tempissue);
@@ -89,7 +94,7 @@ describe('testing /api/issues', () => {
     });
     });
     it('should respond with a 400', () => {
-      return mockissue.createOne()
+      return mockIssue.createOne()
       .then(issue=> {
         tempissue= issue;
         return superagent.put(`${API_URL}/api/issues/${tempissue._id.toString()}`)
@@ -101,7 +106,7 @@ describe('testing /api/issues', () => {
       });
     });
     it('should respond with a 404', () => {
-      return mockissue.createOne()
+      return mockIssue.createOne()
       .then(issue=> {
         tempissue= issue;
         return superagent.put(`${API_URL}/api/issues/12345}`)
@@ -119,7 +124,7 @@ describe('testing /api/issues', () => {
       after(clearDB);
       let tempissue;
       it('should result in a 204', () => {
-        return mockissue.createOne()
+        return mockIssue.createOne()
         .then(result => {
           tempissue= result;
           return superagent.delete(`${API_URL}/api/issues/${tempissue._id}`)
@@ -129,7 +134,7 @@ describe('testing /api/issues', () => {
         });
       });
       it('should respond with a 404', () => {
-        return mockissue.createOne()
+        return mockIssue.createOne()
             .then(issue=> {
               tempissue= issue;
               return superagent.delete(`${API_URL}/api/issues/12345}`);

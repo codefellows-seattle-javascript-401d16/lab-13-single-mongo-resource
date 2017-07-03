@@ -8,7 +8,7 @@ const superagent = require('superagent');
 const clearDB = require ('./lib/clear-db.js');
 const server = require ('../lib/server.js');
 const issue = require('../model/issue.js');
-const mockIssue = require('./lib/mock-issue.js');
+// const mockIssue = require('./lib/mock-issue.js');
 const mockState = require('./lib/mock-state.js');
 
 const API_URL = process.env.API_URL; //what is process.env.API_URL again?
