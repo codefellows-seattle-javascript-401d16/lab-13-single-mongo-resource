@@ -1,7 +1,5 @@
 ## Lab-Steve Lab-13 Documentation
 
-UPDATE THE BELOW FOR LAB-13
-
 ### This app functions as a data store for beers and their basic characteristics that uses a RESTful API for data storage, display, and manipulation.
 
   * Installation:
