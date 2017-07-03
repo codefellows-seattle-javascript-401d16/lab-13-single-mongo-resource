@@ -1,7 +1,7 @@
 'use strict';
 
 const faker = require('faker');
-const PhotoAlbum = require('../../model/photo-album.js');
+const PhotoAlbum = require('../../model/album.js');
 
 const mockPhotoAlbum = (module.exports = {});
 
