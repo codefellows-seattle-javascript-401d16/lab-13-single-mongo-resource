@@ -5,7 +5,6 @@ const BurgerJoints = require('../../model/burger-joint.js');
 
 const mockBurgerJoints = module.exports = {};
 
-
 mockBurgerJoints.createBurgerJoints = function(n){
   let mockBurgerJointsArray = new Array(n)
     .fill(0)
