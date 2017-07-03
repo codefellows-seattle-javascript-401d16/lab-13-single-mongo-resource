@@ -8,10 +8,17 @@
 
  * to run server in terminal: npm run start  
 
-#routes
+#Album routes
 
- * POST: '/api/products'  
- * PUT: '/api/products/:id'  
- * GET: '/api/products/:id'  
- * DELETE: '/api/products/:id'
- 
+ * POST: '/api/albums'  
+ * PUT: '/api/albums/:id'  
+ * GET: '/api/albums/:id'  
+ * DELETE: '/api/albums/:id'
+
+
+#Photo routes
+
+ * POST: '/api/photos'  
+ * PUT: '/api/photos/:id'  
+ * GET: '/api/photos/:id'  
+ * DELETE: '/api/photos/:id'
