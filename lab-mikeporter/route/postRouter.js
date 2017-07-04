@@ -19,6 +19,10 @@ postRouter.get('/api/posts/:id', (req, res, next) => {
 });
 
 postRouter.put('/api/posts/:id', (req, res, next) => {
+  let keys = Object.keys(req.body);
+  if (keys.length < 1) {
+    return res.sendStatus(400);
+  }
   let options = {
     new: true,
     runValidators: true,

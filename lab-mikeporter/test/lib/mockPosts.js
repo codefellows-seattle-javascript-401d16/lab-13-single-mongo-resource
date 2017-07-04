@@ -17,7 +17,7 @@ mockPosts.one = () => {
         phoneNumber: faker.phone.phoneNumber(),
         address: faker.address.streetAddress(),
         ad: faker.hacker.phrase(),
-        user: user._id,
+        user: user._id.toString(),
       });
     });
 };
