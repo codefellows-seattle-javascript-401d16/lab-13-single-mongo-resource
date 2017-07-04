@@ -31,3 +31,5 @@ postSchema.post('remove', function(doc, next) {
     .then(() => next())
     .catch(next);
 });
+
+module.exports = mongoose.model('post', postSchema);

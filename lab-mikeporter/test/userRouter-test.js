@@ -73,7 +73,8 @@ describe('testing /api/users paths', () => {
         });
     });
     it('valid GET to /api/users returns 10 users', () => {
-      return mockUsers.many(30)
+      // this may error due to duplicate names
+      return mockUsers.many(25)
         .then(() => {
           return superagent.get(`${API_URL}/api/users`);
         })
