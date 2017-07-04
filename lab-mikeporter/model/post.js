@@ -10,7 +10,7 @@ const postSchema = mongoose.Schema({
   user: {type: mongoose.Schema.Types.ObjectId, required: true, ref: 'user'},
 });
 
-postSchema.pre('save', function(next) {
+postSchema.pre('save', function (next) {
   User.findById(this.user)
     .then((user) => {
       let postIDSet = new Set(user.posts);
@@ -22,7 +22,7 @@ postSchema.pre('save', function(next) {
     .catch(() => next(new Error('Cannot create POST without valid USER')));
 });
 
-postSchema.post('remove', function(doc, next) {
+postSchema.post('remove', function (doc, next) {
   User.findById(doc.user)
     .then((user) => {
       user.posts = user.posts.filter((post) => post._id !== doc._id);
