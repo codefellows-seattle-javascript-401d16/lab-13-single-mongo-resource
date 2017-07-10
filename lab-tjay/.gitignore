@@ -1,8 +1,7 @@
-
 # Created by https://www.gitignore.io/api/osx,linux,node,vim
 
-.env
 .test.env
+.env
 db/
 build/
 

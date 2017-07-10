@@ -1,5 +1,6 @@
-
 'use strict';
 
 require('dotenv').config();
-require('./lib/server.js').start();
+const server = require('./lib/server.js');
+
+server.start();
