@@ -1,9 +1,10 @@
 'use strict';
 
 const jsonParser = require('body-parser').json();
-const bikeShopRouter = module.exports = new require('express').Router();
 
 const BikeShop = require('../model/bike-shop.js');
+
+const bikeShopRouter = module.exports = new require('express').Router();
 
 bikeShopRouter.post('/api/bikeShops', jsonParser, (req, res, next) => {
   new BikeShop(req.body)
