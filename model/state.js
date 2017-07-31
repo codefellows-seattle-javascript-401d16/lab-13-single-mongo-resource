@@ -1,33 +1,32 @@
 'use strict';
 
 const mongoose = require('mongoose');
-const Place = require('./place.js');
-
+const Issue = require('./issue.js');
 const stateSchema = mongoose.Schema({
   content: {type: String, required: true},
-  place: {type: mongoose.Schema.Types.objectId, required: true, ref :'place'},
+  issue: {type: String, required: true, ref :'issue'},
 });
 
 stateSchema.pre('save', function(next) {
   console.log('pre save doc', this);
-  Place.findById(this.place)
-  .then(place=> {
-    let stateIDSet = new Set(place.states);
+  Issue.findById(this.issue)
+  .then(issue=> {
+    let stateIDSet = new Set(issue.states);
     stateIDSet.add(this._id);
-    place.states = Array.from(stateIDSet);
-    return place.save();
+    issue.states = Array.from(stateIDSet);
+    return issue.save();
   })
 .then(() => next())
 .catch(() =>
-  next(new Error('validation failed to create state because place does not exist')));
+  next(new Error('validation failed to create state because issue does not exist')));
 });
 
 stateSchema.post('remove', function(doc, next){
   console.log('post remove doc', doc);
-  Place.findById(doc.list)
-  .then(place => {
-    place.states = place.states.filter(state => state._id !==doc._id);
-    return place.save();
+  Issue.findById(doc.list)
+  .then(issue => {
+    issue.states = issue.states.filter(state => state._id !==doc._id);
+    return issue.save();
   })
   .then(() => next())
   .catch(next);
