@@ -1,8 +1,6 @@
 **/node_modules/*
 **/vendor/*
-**/*.min.js
 **/coverage/*
-**/build/*
 **/build/*
 .env
 .test.env

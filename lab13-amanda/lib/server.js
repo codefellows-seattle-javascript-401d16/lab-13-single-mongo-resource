@@ -25,7 +25,6 @@ app.use(require('../route/expense-router.js'))
 // add 404 route
 app.all('/api/*', (req, res, next) => res.sendStatus(404))
 
-
 //    * load error middleware
 app.use(require('./error-middleware.js'))
 
@@ -42,7 +41,7 @@ server.start = () => {
       })
       return
     }
-    reject(new Error('server allread running'))
+    reject(new Error('server allready running'))
   })
 }
 
@@ -51,10 +50,10 @@ server.stop = () => {
     if(server.http && server.isOn){
       return server.http.close(() => {
         server.isOn = false
-        console.log('server down')
+        console.log('__SERVER_DOWN__')
         resolve()
       })
     }
-    reject(new Error('ther server is not running'))
+    reject(new Error('the server is not running'))
   })
 }
