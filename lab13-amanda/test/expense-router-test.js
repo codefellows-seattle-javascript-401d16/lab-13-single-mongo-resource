@@ -8,9 +8,10 @@ const superagent = require('superagent')
 
 const server = require('../lib/server.js')
 const clearDB = require('./lib/clear-db.js')
+const mockExpense= require('./lib/mock-expense.js')
 const mockCategory = require('./lib/mock-category.js')
 
-let tempExpensel
+let tempExpense
 const API_URL = process.env.API_URL
 
 describe('testing POST /api/expenses', () => {
@@ -27,8 +28,8 @@ describe('testing POST /api/expenses', () => {
           console.log('data', data)
           expect(res.status).toEqual(200)
           expect(res.body.title).toEqual(data.title)
-          expect(res.body.expenses).toEqual
-          epect(res.body._id).toExist()
+          expect(res.body.expenses).toEqual([])
+          expect(res.body._id).toExist()
         })
     })
   })

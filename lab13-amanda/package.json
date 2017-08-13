@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
+    "watch": "nodemon index.js",
     "start-db": "mkdir -p ./db && mongod --dbpath ./db",
     "stop-db": "killall mongod",
     "test": "mocha"
@@ -27,5 +28,10 @@
     "faker": "^4.1.0",
     "mocha": "^3.4.2",
     "superagent": "^3.5.2"
+  },
+
+  "dependencies": {
+    "eslint": "^4.4.1",
+    "i": "^0.3.5"
   }
 }
