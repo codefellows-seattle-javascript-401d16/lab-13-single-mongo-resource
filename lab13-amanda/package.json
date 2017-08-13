@@ -25,5 +25,13 @@
     "faker": "^4.1.0",
     "mocha": "^3.4.2",
     "superagent": "^3.5.2"
+  },
+    "name": "lab-13-single-mongo-resource",
+    "version": "1.0.0",
+    "main": "index.js",
+    "repository": "https://github.com/amandakoster/lab-13-single-mongo-resource.git",
+    "author": "Amanda Koster <‘amandakoster@gmail.com’>",
+    "license": "MIT"
   }
+
 }
