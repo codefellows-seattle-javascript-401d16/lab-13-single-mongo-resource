@@ -3,7 +3,6 @@
 const faker = require('faker')
 const Category = require('../../model/category.js')
 
-
 const mockCategory = module.exports = {}
 
 mockCategory.createOne = () => {

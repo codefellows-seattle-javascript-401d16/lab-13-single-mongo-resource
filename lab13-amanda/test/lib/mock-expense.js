@@ -1,9 +1,7 @@
 'use strict'
 
-// npm modules
 const faker = require('faker')
 
-// app modules
 const mockCategory = require('./mock-category.js')
 const Expense = require('../../model/expense.js')
 

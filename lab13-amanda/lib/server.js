@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 // npm modules
 const cors = require('cors')
@@ -31,14 +31,14 @@ app.use(require('./error-middleware.js'))
 
 // export start and stop
 const server = module.exports = {}
-server.isOn = false;
+server.isOn = false
 server.start = () => {
   return new Promise((resolve, reject) => {
     if(!server.isOn){
       server.http = app.listen(process.env.PORT, () => {
-        server.isOn = true;
+        server.isOn = true
         console.log('server up', process.env.PORT)
-        resolve();
+        resolve()
       })
       return
     }
@@ -47,14 +47,14 @@ server.start = () => {
 }
 
 server.stop = () => {
-   return new Promise((resolve, reject) => {
-     if(server.http && server.isOn){
-       return server.http.close(() => {
-         server.isOn = false
-         console.log('server down')
-         resolve()
-       })
-     }
-     reject(new Error('ther server is not running'))
-   })
+  return new Promise((resolve, reject) => {
+    if(server.http && server.isOn){
+      return server.http.close(() => {
+        server.isOn = false
+        console.log('server down')
+        resolve()
+      })
+    }
+    reject(new Error('ther server is not running'))
+  })
 }

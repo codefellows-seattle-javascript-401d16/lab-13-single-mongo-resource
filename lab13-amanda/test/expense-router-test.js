@@ -8,6 +8,7 @@ const superagent = require('superagent')
 
 const server = require('../lib/server.js')
 const clearDB = require('./lib/clear-db.js')
+const mockExpense= require('./lib/mock-expense.js')
 const mockCategory = require('./lib/mock-category.js')
 
 let tempExpensel
@@ -28,7 +29,7 @@ describe('testing POST /api/expenses', () => {
           expect(res.status).toEqual(200)
           expect(res.body.title).toEqual(data.title)
           expect(res.body.expenses).toEqual
-          epect(res.body._id).toExist()
+          expect(res.body._id).toExist()
         })
     })
   })
