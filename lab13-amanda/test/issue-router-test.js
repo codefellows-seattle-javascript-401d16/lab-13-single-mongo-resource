@@ -17,7 +17,6 @@ let data = {building: `${faker.company.companyName(2)}`,
   room: `${faker.random.number(3)}`,
   type: mockIssue.randomIssueType()};
 
-
 describe('testing /api/issues', () => {
   before(server.start);
   after(server.stop);
