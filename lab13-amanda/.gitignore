@@ -1,0 +1,8 @@
+**/node_modules/*
+**/vendor/*
+**/coverage/*
+**/build/*
+.env
+.test.env
+db
+node_modules
